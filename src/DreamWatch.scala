@@ -2,7 +2,11 @@ import ch.hevs.gdx2d.desktop.PortableApplication
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.graphics.Color
 
-class DreamWatch extends PortableApplication {
+import Globals.{WINDOW_HEIGHT, WINDOW_WIDTH}
+
+
+
+class DreamWatch extends PortableApplication(WINDOW_WIDTH, WINDOW_HEIGHT) {
   println("1. DemoDebug constructor starts")
 
   var a = {
@@ -15,8 +19,7 @@ class DreamWatch extends PortableApplication {
   println("4. DemoDebug constructor about to call parent constructor")
 
   override def onInit(): Unit = {
-    println(s"5. onInit() called, a = $a")
-    setTitle("demo" + a)
+    setTitle("Dreamwatch")
   }
 
   override def onGraphicRender(g: GdxGraphics): Unit = {
