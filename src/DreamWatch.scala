@@ -1,35 +1,34 @@
 import ch.hevs.gdx2d.desktop.PortableApplication
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.graphics.Color
-
 import Globals.{WINDOW_HEIGHT, WINDOW_WIDTH}
+import ch.hevs.gdx2d.components.bitmaps.BitmapImage
+import ch.hevs.gdx2d.components.physics.primitives.PhysicsCircle
+import ch.hevs.gdx2d.components.physics.utils.PhysicsScreenBoundaries
+import ch.hevs.gdx2d.desktop.physics.DebugRenderer
+import ch.hevs.gdx2d.lib.physics.PhysicsWorld
+import com.badlogic.gdx.{Gdx, Input}
+import com.badlogic.gdx.math.Vector2
+
+import java.util
+import java.util.{Iterator, LinkedList}
 
 
 
 class DreamWatch extends PortableApplication(WINDOW_WIDTH, WINDOW_HEIGHT) {
-  println("1. DemoDebug constructor starts")
-
-  var a = {
-    println("2. Field 'a' initialization starting")
-    val result = 1
-    println(s"3. Field 'a' initialized to $result")
-    result
-  }
-
-  println("4. DemoDebug constructor about to call parent constructor")
 
   override def onInit(): Unit = {
     setTitle("Dreamwatch")
+    World2D.init()
   }
 
   override def onGraphicRender(g: GdxGraphics): Unit = {
-    a += 1
     g.clear()
-    g.drawRectangle(10, 10, 20, 20, 0)
-    g.drawAntiAliasedCircle(200, 200, a, Color.RED)
-  }
 
-  println("6. DemoDebug constructor completed")
+    World2D.update(GdxGraphics, Gdx.graphics.getDeltaTime)
+
+    g.drawFPS()
+  }
 
 
 }
