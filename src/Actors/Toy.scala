@@ -1,7 +1,0 @@
-package Actors
-
-
-
-class Toy {
-
-}

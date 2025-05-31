@@ -1,3 +1,5 @@
+package scripts
+
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
 

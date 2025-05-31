@@ -1,4 +1,7 @@
+package scripts.World
+
 import ch.hevs.gdx2d.lib.GdxGraphics
+import scripts.{Layers, Sprite}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -20,8 +23,8 @@ object World2D {
 
 class Scene {
   val gLayers: Layers[Sprite] = new Layers(3)
-  val uiLayers: Layers[UiElement] = new Layers(3)
-  val cLayers: Layers[CollisionObject] = new Layers(3)
+  //val uiLayers: Layers[UiElement] = new Layers(3)
+  //val cLayers: Layers[CollisionObject] = new Layers(3)
 
   def init(): Unit = {
 
@@ -40,9 +43,9 @@ class Scene {
     }
 
     // then renders the UI elements
-    for (layer <- uiLayers.get()){
+    /*for (layer <- uiLayers.get()){
       layer.elements.foreach(uiElement => return) // TODO: handle ui elements
-    }
+    }*/
   }
 
   def updatePhysics(deltaT: Float): Unit = {

@@ -1,7 +1,9 @@
+package scripts
+
 import scala.collection.mutable.ArrayBuffer
 
 /**
- * Layers object - contains all layers infos
+ * Layers class - contains all layers infos
  */
 class Layers[T](private var depth: Int) {
   // layers creation
