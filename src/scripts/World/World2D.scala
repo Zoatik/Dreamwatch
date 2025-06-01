@@ -1,6 +1,7 @@
 package scripts.World
 
 import ch.hevs.gdx2d.lib.GdxGraphics
+import scripts.World.BaseClass.Collider2D
 import scripts.{Layers, Sprite}
 
 import scala.collection.mutable.ArrayBuffer
@@ -38,7 +39,7 @@ class Scene {
         sprite.pos.y,
         sprite.angle,
         sprite.scale,
-        sprite.img)
+        sprite.current())
       )
     }
 
@@ -49,6 +50,8 @@ class Scene {
   }
 
   def updatePhysics(deltaT: Float): Unit = {
+    //updateMovement
+    Collider2D.update()
     // TODO: gérer la physique (déplacement + collisions)
   }
 

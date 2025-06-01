@@ -42,11 +42,20 @@ class Layers[T](private var depth: Int) {
 
 class Layer[T](var z: Int = 0) {
   val elements: ArrayBuffer[T] = ArrayBuffer.empty
+  private var _size: Int = 0
 
-  def add(element: T): Unit = elements += element
+  def add(element: T): Unit = {
+    elements += element
+    _size += 1
+  }
   def remove(element: T): Boolean =
     elements.indexOf(element) match {
       case -1 => false
-      case i  => { elements.remove(i); true }
+      case i  =>
+        elements.remove(i);
+        _size -= 1
+        true
     }
+
+  def size: Int = _size
 }
