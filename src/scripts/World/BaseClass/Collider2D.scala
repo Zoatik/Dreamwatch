@@ -1,36 +1,12 @@
 package scripts.World.BaseClass
 
 import com.badlogic.gdx.math.Vector2
+import scripts.World.Process
 import scripts.{Globals, Layer, Layers, Sprite}
 
 import scala.collection.mutable.ArrayBuffer
 
-
-
 object Collider2D {
-  val collisionLayers: Layers[Collider2D] = new Layers[Collider2D](1)
-
-  def update(layerZ: Int = -1): Unit = {
-    if (layerZ >= 0)
-      checkCollisions(collisionLayers.get(layerZ).get)
-
-    else {
-      for (layer <- collisionLayers.get()) {
-        checkCollisions(layer)
-      }
-    }
-  }
-
-  def create(area2D: Area2D, parent: Object2D, layerZ: Int): Collider2D = {
-    val newCollider = new Collider2D(area2D, parent)
-    collisionLayers.add(layerZ, newCollider)
-    newCollider
-  }
-
-  def destroy(collider2D: Collider2D): Unit = {
-    collisionLayers.remove(collider2D)
-  }
-
   private def checkCollisions(layer: Layer[Collider2D]): Unit = {
     val size = layer.size
     val elements = layer.elements
@@ -50,9 +26,23 @@ object Collider2D {
     }
   }
 
+
 }
 
-private class Collider2D(val collisionArea2D: Area2D, val parent: Object2D) {
+class CollisionObject2D(pos: Vector2, sprite: Sprite,
+                        override val collisionArea2D: Area2D,
+                        override val parent: Object2D,
+                        override var layerZ: Int)
+  extends Object2D(pos, sprite) with Collider2D{
+
+}
+
+trait Collider2D{
+  val collisionArea2D: Area2D
+  val parent: Object2D
+  var layerZ: Int
+  Scene2D.addToCurrentScene(this, layerZ)
+
   private val collisionEventListeners: ArrayBuffer[Collider2D => Unit] = ArrayBuffer()
 
   def onCollision(listener: Collider2D => Unit): Unit = {
@@ -66,6 +56,11 @@ private class Collider2D(val collisionArea2D: Area2D, val parent: Object2D) {
   def collidesWith(other: Collider2D): Boolean = {
     collisionArea2D.intersects(other.collisionArea2D)
   }
+
+  def destroy(): Unit = {
+    Collider2D.collisionLayers.remove(this)
+  }
+
 }
 
 

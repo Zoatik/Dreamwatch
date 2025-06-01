@@ -1,11 +1,13 @@
 package scripts.World.BaseClass
 
 import com.badlogic.gdx.math.Vector2
-import scripts.Sprite
 
 
-trait Movable { self: Object2D =>
+trait Movement2D { self: Object2D =>
+  Scene2D.addToCurrentScene(this)
+
   protected var _speed: Vector2 = new Vector2(0,0)
+
 
   def speed: Vector2 = _speed
 
@@ -18,8 +20,14 @@ trait Movable { self: Object2D =>
     _speed.y = _speed.y * multFactor
   }
 
+  override def destroy(): Unit = {
+    self.destroy()
+    movableObjects -= this
+  }
+
   def move(deltaT: Float): Unit = {
     pos.x += speed.x * deltaT
     pos.y += speed.y * deltaT
   }
+
 }
