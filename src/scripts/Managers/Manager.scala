@@ -1,4 +1,4 @@
-package scripts.World
+package scripts.Managers
 
 import ch.hevs.gdx2d.lib.GdxGraphics
 import scripts.Layer

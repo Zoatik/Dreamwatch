@@ -1,7 +1,4 @@
-package scripts.World
-
-import ch.hevs.gdx2d.lib.GdxGraphics
-import scripts.World.graphics.Graphics2D
+package scripts.Managers
 
 
 object RenderingManager extends Manager[RenderingContext] {

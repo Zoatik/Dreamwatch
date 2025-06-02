@@ -3,7 +3,6 @@ package scripts.World.graphics
 import ch.hevs.gdx2d.lib.GdxGraphics
 import scripts.Sprite
 import scripts.World.Actors.Base.Object2D
-import scripts.World.Scene2D
 
 
 trait Graphics2D { self: Object2D =>
@@ -19,5 +18,8 @@ trait Graphics2D { self: Object2D =>
       sprite.current()
     )
   }
+
+
+
 }
 

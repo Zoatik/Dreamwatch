@@ -1,9 +1,11 @@
 package scripts.World.Actors.Base
 
-import scripts.World.SceneManager
+import scripts.Managers.SceneManager
 
 abstract class Entity {
-  def destroy(): Unit
+  def destroy(): Unit = {
+    SceneManager.removeFromCurrentScene(this)
+  }
 
   def spawn(): Entity = {
     SceneManager.addToCurrentScene(this)

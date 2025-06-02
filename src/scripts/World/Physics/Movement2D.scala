@@ -1,8 +1,8 @@
 package scripts.World.Physics
 
 import com.badlogic.gdx.math.Vector2
+import scripts.Managers.SceneManager
 import scripts.World.Actors.Base.Object2D
-import scripts.World.SceneManager
 
 
 trait Movement2D { self: Object2D =>
@@ -19,11 +19,6 @@ trait Movement2D { self: Object2D =>
     val multFactor: Float = newSpeed / absSpeed
     _speed.x = _speed.x * multFactor
     _speed.y = _speed.y * multFactor
-  }
-
-  override def destroy(): Unit = {
-    self.destroy()
-    SceneManager.removeFromCurrentScene(this)
   }
 
   def move(deltaT: Float): Unit = {

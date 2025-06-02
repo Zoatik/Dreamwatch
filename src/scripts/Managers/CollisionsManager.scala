@@ -1,6 +1,6 @@
-package scripts.World
+package scripts.Managers
 
-import scripts.{Layer, Layers}
+import scripts.Layer
 import scripts.World.Physics.Collider2D
 
 
@@ -17,7 +17,7 @@ object CollisionsManager extends Manager[CollisionContext]{
 
   private def checkAndNotifyCollisions(layer: Layer[Collider2D]): Unit = {
     val size = layer.size
-    val elements = layer.elements
+    val elements = layer.elements.toArray
     var i = 0
     while (i < size) {
       var j = i + 1

@@ -14,5 +14,17 @@ case class Sprite(images: ArrayBuffer[BitmapImage], var pos: Vector2, var angle:
     current()
   }
 
+  def setWidth(newWidth: Float): Unit = {
+    images.foreach(image => {
+      val w: Float = image.getImage.getWidth
+      scale *= newWidth/w
+    })
+  }
+
+
+  def destroy(): Unit = {
+    images.foreach(_.dispose())
+  }
+
   def current(): BitmapImage = images(currImageIdx)
 }

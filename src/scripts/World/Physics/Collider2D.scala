@@ -1,8 +1,9 @@
 package scripts.World.Physics
 
 import com.badlogic.gdx.math.Vector2
+import scripts.Managers.SceneManager
 import scripts.World.Actors.Base.{Entity, Object2D}
-import scripts.World.{Scene2D, SceneManager}
+import scripts.World.Actors.TopLevel.Scene2D
 import scripts.{Layer, Sprite}
 
 import scala.collection.mutable.ArrayBuffer
@@ -27,9 +28,7 @@ trait Collider2D{ self: Entity =>
     collisionArea2D.intersects(other.collisionArea2D)
   }
 
-  override def destroy(): Unit = {
-    SceneManager.removeFromCurrentScene(this)
-  }
+
 
 }
 

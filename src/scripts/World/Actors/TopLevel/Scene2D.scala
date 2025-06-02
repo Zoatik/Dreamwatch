@@ -1,6 +1,7 @@
-package scripts.World
+package scripts.World.Actors.TopLevel
 
 import ch.hevs.gdx2d.lib.GdxGraphics
+import scripts.Managers._
 import scripts.World.Actors.Base.Entity
 import scripts.World.Physics.{Collider2D, Movement2D}
 import scripts.World.graphics.Graphics2D
@@ -46,6 +47,8 @@ class Scene2D {
     entity match {
       case g: Graphics2D =>
         gLayers.remove(g)
+        // must dispose manually otherwise crashes
+        g.sprite.images.foreach(_.dispose())
     }
 
     entity match {

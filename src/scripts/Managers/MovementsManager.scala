@@ -1,5 +1,4 @@
-package scripts.World
-
+package scripts.Managers
 
 object MovementsManager extends Manager[MovementContext] {
 

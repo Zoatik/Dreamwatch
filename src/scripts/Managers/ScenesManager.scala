@@ -1,10 +1,9 @@
-package scripts.World
+package scripts.Managers
 
 import ch.hevs.gdx2d.lib.GdxGraphics
-import scripts.World.Actors.Base.{Entity, Object2D}
-import scripts.World.Physics.{Collider2D, Movement2D}
-import scripts.World.graphics.Graphics2D
-import scripts.{Globals, Layers}
+import scripts.Globals
+import scripts.World.Actors.Base.Entity
+import scripts.World.Actors.TopLevel.Scene2D
 
 import scala.collection.mutable.ArrayBuffer
 

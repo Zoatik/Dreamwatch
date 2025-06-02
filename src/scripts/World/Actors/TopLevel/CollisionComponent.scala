@@ -1,11 +1,11 @@
-package scripts.World.Actors.Base
+package scripts.World.Actors.TopLevel
 
+import scripts.World.Actors.Base.{Entity, Object2D}
 import scripts.World.Physics.{Area2D, Collider2D}
 
-abstract class CollisionEntity(override val collisionArea2D: Area2D,
+class CollisionComponent(override val collisionArea2D: Area2D,
                       override val parent: Object2D,
                       override var collisionLayerZ: Int)
   extends Entity with Collider2D{
 
-  override def destroy(): Unit = super.destroy()
 }

@@ -1,7 +1,7 @@
 package scripts.World.Physics
 
 import com.badlogic.gdx.math.Vector2
-import scripts.InputManager
+import scripts.Managers.InputManager
 
 import scala.collection.mutable.ArrayBuffer
 
