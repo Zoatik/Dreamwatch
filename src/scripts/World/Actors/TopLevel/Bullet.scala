@@ -29,7 +29,9 @@ class Bullet(pos: Vector2,
   var explosionRadius: Float = baseExplosionRadius(bulletType)
   var damage: Float = 1.0f
   private val bulletArea = new CircleArea2D(pos, explosionRadius)
-  private val explosionCollider = new CollisionEntity(bulletArea, this, 0)
+  private val explosionCollider = new CollisionEntity(bulletArea, this, 0) {
+    override def spawn(): Entity = ???
+  }
 
 
   override def destroy(): Unit = {
