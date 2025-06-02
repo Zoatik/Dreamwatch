@@ -7,7 +7,6 @@ import scripts.World.Scene2D
 
 
 trait Graphics2D { self: Object2D =>
-  //Scene2D.addToCurrentScene(this)
   val sprite: Sprite
   val graphicLayerZ: Int
 

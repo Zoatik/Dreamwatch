@@ -9,10 +9,7 @@ import scala.collection.mutable.ArrayBuffer
 
 object World2D{
 
-  InputManager.onMousePressed((pos, button) => {
-    val bullet: Bullet = new Bullet(pos, Bullet.Small, 0, null, 0)
-    Scene2D.addToCurrentScene(bullet)
-  })
+
 
 }
 
