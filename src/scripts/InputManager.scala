@@ -1,6 +1,6 @@
 package scripts
 
-import com.badlogic.gdx.InputAdapter
+import com.badlogic.gdx.{Gdx, InputAdapter}
 import com.badlogic.gdx.math.Vector2
 
 import scala.collection.mutable.ArrayBuffer
@@ -49,7 +49,8 @@ object InputManager extends InputAdapter {
    */
   override def mouseMoved(screenX: Int, screenY: Int): Boolean = {
     // Notify every listener of the new mouse position
-    mouseMotionListeners.foreach(_(new Vector2(screenX, screenY)))
+    val transformedY: Int = Gdx.graphics.getHeight - screenY
+    mouseMotionListeners.toArray.foreach(_(new Vector2(screenX, transformedY)))
     true
   }
 
@@ -65,7 +66,8 @@ object InputManager extends InputAdapter {
    */
   override def touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean = {
     // Notify every listener of the click position and button code
-    mousePressedListeners.foreach(_(new Vector2(screenX, screenY), button))
+    val transformedY: Int = Gdx.graphics.getHeight - screenY
+    mousePressedListeners.toArray.foreach(_(new Vector2(screenX, transformedY), button))
     true
   }
 
@@ -81,7 +83,8 @@ object InputManager extends InputAdapter {
    */
   override def touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean = {
     // Notify every listener of the release position and button code
-    mouseReleasedListeners.foreach(_(new Vector2(screenX, screenY), button))
+    val transformedY: Int = Gdx.graphics.getHeight - screenY
+    mouseReleasedListeners.toArray.foreach(_(new Vector2(screenX, transformedY), button))
     true
   }
 
@@ -94,7 +97,7 @@ object InputManager extends InputAdapter {
    */
   override def keyDown(keycode: Int): Boolean = {
     // Notify every listener of the pressed key code
-    keyPressedListeners.foreach(_(keycode))
+    keyPressedListeners.toArray.foreach(_(keycode))
     true
   }
 
@@ -107,7 +110,7 @@ object InputManager extends InputAdapter {
    */
   override def keyUp(keycode: Int): Boolean = {
     // Notify every listener of the released key code
-    keyReleasedListeners.foreach(_(keycode))
+    keyReleasedListeners.toArray.foreach(_(keycode))
     true
   }
 

@@ -1,4 +1,4 @@
-package scripts.World.BaseClass
+package scripts.World.Physics
 
 import com.badlogic.gdx.math.Vector2
 import scripts.InputManager
@@ -124,7 +124,7 @@ abstract class Area2D(var pos: Vector2) {
    * @param mousePos The position at which the mouse entered.
    */
   protected def mouseEntered(mousePos: Vector2): Unit = {
-    mouseEnterListeners.foreach(_(mousePos))
+    mouseEnterListeners.toArray.foreach(_(mousePos))
   }
 
   /** Invoke all registered mouse-leave callbacks with the given position.
@@ -132,7 +132,7 @@ abstract class Area2D(var pos: Vector2) {
    * @param mousePos The position at which the mouse left.
    */
   protected def mouseLeft(mousePos: Vector2): Unit = {
-    mouseLeaveListeners.foreach(_(mousePos))
+    mouseLeaveListeners.toArray.foreach(_(mousePos))
   }
 
   /** Invoke all registered mouse-press callbacks if the mouse is currently over this area.
@@ -142,7 +142,7 @@ abstract class Area2D(var pos: Vector2) {
    */
   protected def mousePressed(mousePos: Vector2, mouseButton: Int): Unit = {
     if (isMouseOver(mousePos))
-      mousePressedListeners.foreach(_(mousePos, mouseButton))
+      mousePressedListeners.toArray.foreach(_(mousePos, mouseButton))
   }
 
   /** Invoke all registered mouse-release callbacks if the mouse is currently over this area.
@@ -152,7 +152,7 @@ abstract class Area2D(var pos: Vector2) {
    */
   protected def mouseReleased(mousePos: Vector2, mouseButton: Int): Unit = {
     if (isMouseOver(mousePos))
-      mouseReleasedListeners.foreach(_(mousePos, mouseButton))
+      mouseReleasedListeners.toArray.foreach(_(mousePos, mouseButton))
   }
 }
 

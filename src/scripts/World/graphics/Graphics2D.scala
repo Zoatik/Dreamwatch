@@ -1,12 +1,15 @@
-package scripts.World.BaseClass
+package scripts.World.graphics
 
 import ch.hevs.gdx2d.lib.GdxGraphics
 import scripts.Sprite
+import scripts.World.Actors.Base.Object2D
+import scripts.World.Scene2D
 
 
 trait Graphics2D { self: Object2D =>
-  Scene2D.addToCurrentScene(this)
+  //Scene2D.addToCurrentScene(this)
   val sprite: Sprite
+  val graphicLayerZ: Int
 
   def draw(g: GdxGraphics): Unit = {
     g.drawTransformedPicture(

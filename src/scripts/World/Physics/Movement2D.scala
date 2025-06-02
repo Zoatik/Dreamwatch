@@ -1,10 +1,12 @@
-package scripts.World.BaseClass
+package scripts.World.Physics
 
 import com.badlogic.gdx.math.Vector2
+import scripts.World.Actors.Base.Object2D
+import scripts.World.Scene2D
 
 
 trait Movement2D { self: Object2D =>
-  Scene2D.addToCurrentScene(this)
+  //Scene2D.addToCurrentScene(this)
 
   protected var _speed: Vector2 = new Vector2(0,0)
 
@@ -22,7 +24,7 @@ trait Movement2D { self: Object2D =>
 
   override def destroy(): Unit = {
     self.destroy()
-    movableObjects -= this
+    Scene2D.removeFromCurrentScene(this)
   }
 
   def move(deltaT: Float): Unit = {

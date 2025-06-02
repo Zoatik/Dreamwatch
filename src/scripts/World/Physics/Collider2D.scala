@@ -1,13 +1,14 @@
-package scripts.World.BaseClass
+package scripts.World.Physics
 
 import com.badlogic.gdx.math.Vector2
-import scripts.World.Process
-import scripts.{Globals, Layer, Layers, Sprite}
+import scripts.World.Actors.Base.{Entity, Object2D}
+import scripts.World.Scene2D
+import scripts.{Layer, Sprite}
 
 import scala.collection.mutable.ArrayBuffer
 
 object Collider2D {
-  private def checkCollisions(layer: Layer[Collider2D]): Unit = {
+  def checkAndNotifyCollisions(layer: Layer[Collider2D]): Unit = {
     val size = layer.size
     val elements = layer.elements
     var i = 0
@@ -26,22 +27,32 @@ object Collider2D {
     }
   }
 
+  def checkAndNotifyCollisions(collider2D: Collider2D, layer: Layer[Collider2D]): Unit = {
+    layer.elements.foreach(_.collidesWith(collider2D))
+  }
+
+  def checkAndNotifyCollisions(a: Collider2D, b: Collider2D): Unit = {
+    if (checkCollision(a, b))
+      notifyCollision(a, b)
+  }
+
+  def checkCollision(a: Collider2D, b: Collider2D): Boolean = {
+    a.collidesWith(b)
+  }
+
+  private def notifyCollision(a: Collider2D, b: Collider2D): Unit = {
+    a.collided(b)
+    b.collided(a)
+  }
 
 }
 
-class CollisionObject2D(pos: Vector2, sprite: Sprite,
-                        override val collisionArea2D: Area2D,
-                        override val parent: Object2D,
-                        override var layerZ: Int)
-  extends Object2D(pos, sprite) with Collider2D{
 
-}
-
-trait Collider2D{
+trait Collider2D{ self: Entity =>
   val collisionArea2D: Area2D
   val parent: Object2D
-  var layerZ: Int
-  Scene2D.addToCurrentScene(this, layerZ)
+  var collisionLayerZ: Int
+  //Scene2D.addToCurrentScene(this, layerZ)
 
   private val collisionEventListeners: ArrayBuffer[Collider2D => Unit] = ArrayBuffer()
 
@@ -57,8 +68,8 @@ trait Collider2D{
     collisionArea2D.intersects(other.collisionArea2D)
   }
 
-  def destroy(): Unit = {
-    Collider2D.collisionLayers.remove(this)
+  override def destroy(): Unit = {
+    Scene2D.removeFromCurrentScene(this)
   }
 
 }
