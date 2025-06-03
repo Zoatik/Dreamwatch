@@ -8,7 +8,7 @@ object MovementsManager extends Manager[MovementContext] {
 
   override def update(deltaT: Float, ctx: MovementContext): Unit = {
     /** Movements Here */
-    ctx.movableObjects.foreach(_.move(deltaT))
+    ctx.movableObjects.toArray.foreach(_.move(deltaT))
 
   }
 }

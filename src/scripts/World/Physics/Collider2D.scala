@@ -1,10 +1,6 @@
 package scripts.World.Physics
 
-import com.badlogic.gdx.math.Vector2
-import scripts.Managers.SceneManager
 import scripts.World.Actors.Base.{Entity, Object2D}
-import scripts.World.Actors.TopLevel.Scene2D
-import scripts.{Layer, Sprite}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -14,9 +10,11 @@ trait Collider2D{ self: Entity =>
   val parent: Object2D
   var collisionLayerZ: Int
 
-  private val collisionEventListeners: ArrayBuffer[Collider2D => Unit] = ArrayBuffer()
+  private val collisionEventListeners: ArrayBuffer[Collider2D => Unit] = ArrayBuffer(other => onCollision(other) )
 
-  def onCollision(listener: Collider2D => Unit): Unit = {
+  protected def onCollision(other: Collider2D): Unit
+
+  def addCollisionListener(listener: Collider2D => Unit): Unit = {
     collisionEventListeners += listener
   }
 
@@ -25,7 +23,9 @@ trait Collider2D{ self: Entity =>
   }
 
   def collidesWith(other: Collider2D): Boolean = {
-    collisionArea2D.intersects(other.collisionArea2D)
+    if (other != this)
+      return collisionArea2D.intersects(other.collisionArea2D)
+    false
   }
 
 

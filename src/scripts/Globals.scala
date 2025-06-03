@@ -9,4 +9,10 @@ object Globals {
 
   val NB_OF_SCENES = 3
 
+  val BULLET_G_LAYER = 1
+  val NIGHTMARE_G_LAYER = 0
+
+  val BULLET_C_LAYER = 0
+  val NIGHTMARE_C_LAYER = 0
+
 }

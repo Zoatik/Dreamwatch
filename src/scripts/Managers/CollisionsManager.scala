@@ -34,9 +34,7 @@ object CollisionsManager extends Manager[CollisionContext]{
     }
   }
 
-  private def checkAndNotifyCollisions(collider2D: Collider2D, layer: Layer[Collider2D]): Unit = {
-    layer.elements.foreach(_.collidesWith(collider2D))
-  }
+
 
   private def checkAndNotifyCollisions(a: Collider2D, b: Collider2D): Unit = {
     if (checkCollision(a, b))
@@ -55,5 +53,9 @@ object CollisionsManager extends Manager[CollisionContext]{
   def checkAndNotifyCollision(a: Collider2D, b: Collider2D): Unit = {
     if(checkCollision(a, b))
       notifyCollision(a, b)
+  }
+
+  def checkAndNotifyCollisions(collider2D: Collider2D, layer: Layer[Collider2D]): Unit = {
+    layer.elements.foreach(_.collidesWith(collider2D))
   }
 }

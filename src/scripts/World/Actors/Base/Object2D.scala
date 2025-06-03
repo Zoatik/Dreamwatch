@@ -5,9 +5,10 @@ import scripts.Sprite
 import scripts.World.graphics.Graphics2D
 
 abstract class Object2D(protected var _pos: Vector2,
-               override val sprite: Sprite,
-               override val graphicLayerZ: Int)
-  extends Entity with Graphics2D {
+                        override val sprite: Sprite,
+                        override val graphicLayerZ: Int,
+                        lifeTime: Option[Float] = None)
+  extends Entity(lifeTime) with Graphics2D {
   def pos: Vector2 = _pos
   def pos_=(newPos: Vector2): Unit = {
     _pos = newPos

@@ -4,8 +4,7 @@ import ch.hevs.gdx2d.desktop.PortableApplication
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.Gdx
 import scripts.Globals.{WINDOW_HEIGHT, WINDOW_WIDTH}
-import scripts.Managers.{GameManager, InputManager, SceneManager}
-import scripts.World.Actors.TopLevel.Bullet
+import scripts.Managers.{GameManager, InputManager}
 
 
 class DreamWatch extends PortableApplication(WINDOW_WIDTH, WINDOW_HEIGHT){

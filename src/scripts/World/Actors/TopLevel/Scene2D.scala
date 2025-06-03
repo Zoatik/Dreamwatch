@@ -14,15 +14,21 @@ class Scene2D {
   private val cLayers: Layers[Collider2D] = new Layers(Globals.C_LAYERS_SIZE)
   private val movableObjects: ArrayBuffer[Movement2D] = ArrayBuffer()
 
+  private val entities: ArrayBuffer[Entity] = ArrayBuffer()
+
   var deltaScale: Float = 1.0f
 
 
   def add(entity: Entity): Unit = {
+    entities += entity
+
     entity match {
       case g: Graphics2D =>
         val z: Int = g.graphicLayerZ
         if (z >= 0 && z < Globals.G_LAYERS_SIZE)
           gLayers.add(z, g)
+
+      case _ =>
     }
 
     entity match {
@@ -44,11 +50,15 @@ class Scene2D {
   }
 
   def remove(entity: Entity): Unit = {
+    entities -= entity
+
     entity match {
       case g: Graphics2D =>
         gLayers.remove(g)
         // must dispose manually otherwise crashes
         g.sprite.images.foreach(_.dispose())
+
+      case _ =>
     }
 
     entity match {
@@ -65,6 +75,14 @@ class Scene2D {
       case _ =>
     }
   }
+
+  def getCollisionLayers: Layers[Collider2D] = cLayers
+
+  def getGraphicLayers: Layers[Graphics2D] = gLayers
+
+  def getMovableObjects: ArrayBuffer[Movement2D] = movableObjects
+
+  def getEntities: ArrayBuffer[Entity] = entities
 
 
   def updateCollisions(deltaT: Float): Unit = {
@@ -85,6 +103,10 @@ class Scene2D {
     /*for (layer <- uiLayers.get()){
       layer.elements.foreach(uiElement => return) // TODO: handle ui elements
     }*/
+  }
+
+  def updateEntities(deltaT: Float): Unit = {
+    entities.toArray.foreach(_.update(deltaT))
   }
 
 }

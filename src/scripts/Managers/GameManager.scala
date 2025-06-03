@@ -18,28 +18,18 @@ object GameManager extends Manager[GdxGraphics]{
 
   override def init(): Unit = {
     println("CollisionsManager ready")
-    SceneManager.init()
+    ScenesManager.init()
 
     InputManager.onMousePressed((pos, button) => {
-      if (button == 0) {
-        val newBullet = Bullet.spawn(new Vector2(toyPos), pos, Bullet.Small)
-        newBullet.onCollision {
-          case nightmare: Nightmare =>
-            nightmare.destroy()
-            newBullet.destroy()
-          case _ =>
-        }
-      }
-      else if (button == 1) {
-        val newBullet = Bullet.spawn(new Vector2(toyPos), pos, Bullet.Big)
-        newBullet.onCollision {
-          case nightmare: Nightmare =>
-            nightmare.destroy()
-            newBullet.destroy()
-          case _ =>
-        }
+      button match {
+        case 0 => new Bullet(new Vector2(toyPos), new Vector2(pos), Bullet.Small).spawn()
+        case 1 => new Bullet(new Vector2(toyPos), new Vector2(pos), Bullet.Big).spawn()
+        case 2 => new Bullet(new Vector2(toyPos), new Vector2(pos), Bullet.Laser).spawn()
+        case _ =>
       }
     })
+
+
 
 
 
@@ -48,14 +38,14 @@ object GameManager extends Manager[GdxGraphics]{
 
   override def update(deltaT: Float, g: GdxGraphics): Unit = {
     /** GAME LOGIC HERE */
-    SceneManager.update(deltaT, g)
+    ScenesManager.update(deltaT, g)
 
     if (rnd.nextFloat() < deltaT * spawnRate) {
       val startX = rnd.nextFloat() * g.getScreenWidth
       val startY = g.getScreenHeight
       val targetX = rnd.nextFloat() * g.getScreenWidth
       val targetY = 0
-      Nightmare.spawn(new Vector2(startX, startY), new Vector2(targetX, targetY), Nightmare.Small)
+      new Nightmare(new Vector2(startX, startY), new Vector2(targetX, targetY), Nightmare.Small).spawn()
     }
   }
 

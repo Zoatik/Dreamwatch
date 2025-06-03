@@ -7,7 +7,7 @@ import scripts.World.Actors.TopLevel.Scene2D
 
 import scala.collection.mutable.ArrayBuffer
 
-object SceneManager extends Manager[GdxGraphics] {
+object ScenesManager extends Manager[GdxGraphics] {
   val scenes: ArrayBuffer[Scene2D] = ArrayBuffer.fill(Globals.NB_OF_SCENES)(new Scene2D)
   var currentScene: Scene2D = scenes(0)
 
@@ -18,6 +18,7 @@ object SceneManager extends Manager[GdxGraphics] {
   }
 
   override def update(deltaT: Float, g: GdxGraphics): Unit = {
+    currentScene.updateEntities(deltaT)
     currentScene.updateCollisions(deltaT)
     currentScene.updateMovement(deltaT)
     currentScene.updateGraphics(deltaT, g)
