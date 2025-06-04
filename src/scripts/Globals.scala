@@ -1,5 +1,7 @@
 package scripts
 
+import scripts.World.Actors.TopLevel.Boss
+
 object Globals {
   val WINDOW_WIDTH = 1920
   val WINDOW_HEIGHT = 1080
@@ -12,13 +14,16 @@ object Globals {
 
   val BULLET_G_LAYER = 1
   val NIGHTMARE_G_LAYER = 0
+  val BOSS_G_LAYER = 2
 
   val BULLET_C_LAYER = 0
   val NIGHTMARE_C_LAYER = 0
+  val BOSS_C_LAYER = 0
 
-  val WAVE_LENGTH: Float = 5
-  val NBR_WAVES_B4_BOSS: Int = 5
-  val NBR_OF_BOSSES: Int = 4
+  val WAVE_LENGTH: Float = 1          // Should be 60
   val DEFAULT_SPAWN_RATE: Float = 0.5f
+
+  val NBR_WAVES_BEFORE_BOSS: Int = 1  // Should be 5
+  val NBR_OF_BOSSES: Int = 4
 
 }
