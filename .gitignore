@@ -46,3 +46,6 @@ build/
 ### Scala ###
 .bsp/
 /lib
+.idea/misc.xml
+.idea/.name
+.idea/misc.xml

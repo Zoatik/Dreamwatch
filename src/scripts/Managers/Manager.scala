@@ -37,7 +37,9 @@ trait Manager[T] {
    * @param deltaT Time elapsed since last frame (in seconds).
    * @param ctx    Context object providing additional data needed for update.
    */
-  def update(deltaT: Float, ctx: T): Unit
+  def update(deltaT: Float, ctx: T): Unit = {
+    if(_isPaused) return
+  }
 
   /**
    * Pause this manager, preventing its update logic from running until resumed.
@@ -76,3 +78,5 @@ case class RenderingContext(gLayer: Layer[Graphics2D], g: GdxGraphics)
 // The following contexts could be used for more complex scene or game-level updates:
 // case class SceneContext(renderingCtx: RenderingContext)
 // case class GameContext(sceneContext: SceneContext)
+
+case class WaveContext()

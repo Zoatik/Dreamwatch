@@ -15,4 +15,8 @@ object Globals {
   val BULLET_C_LAYER = 0
   val NIGHTMARE_C_LAYER = 0
 
+  val WAVE_LENGTH: Long = 10_000
+  val NBR_WAVES_B4_BOSS: Long = 4
+  val NBR_OF_BOSSES: Int = 0
+
 }

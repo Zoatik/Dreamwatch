@@ -1,5 +1,7 @@
 package scripts.Managers
 
+import scripts.Globals
+
 
 object WaveManager extends Manager[WaveContext]{
   private var waveCounter: Int = 0
@@ -8,39 +10,79 @@ object WaveManager extends Manager[WaveContext]{
   private var currentTime: Long = System.currentTimeMillis()
 
   private var maxNightmares: Int = 20
-  private var waveStatus: String = "normal"
+  // Has to be called and modified somewhere else:
+  var noMoreNightmaresInScene: Boolean = false
 
-  private val WAVE_LENGTH: Long = 10_000
-  private val NBR_WAVES_B4_BOSS: Long = 4
+  private var waveStatus: String = "normal"
+  var cardsSelectionDone: Boolean = false
+
+  private var bossCounter: Int = 0
+  private var bossDefeated: Boolean = false
+
+
+
 
   // Overrides
   override def init(): Unit = {
-    // Will probably do a thing where it wait for you to press enter for ex.
+    // Will probably do a thing where it wait for you to press "enter" for ex.
     startNewWave()
   }
   override def update(deltaT: Float, ctx: WaveContext): Unit = {
     waveStatus match {
       case "normal" =>
         waveTimer = currentTime - waveStartTime
-        if (waveTimer < WAVE_LENGTH) {
-          // Do stuff during the wave
+        if (waveTimer < Globals.WAVE_LENGTH) {
+          // Do stuff here during the normal wave
         }
         else {
-          // end of the wave. Do this:
-          // show cards
-          if(waveCounter % NBR_WAVES_B4_BOSS == 0){
-            startNewBossWave()
+          // End of the wave. Do this:
+          if(noMoreNightmaresInScene) {
+            waveStatus = "idle"
+          }
+        }
+
+
+
+      case "boss" =>
+        // What happens during the boss wave
+        if(!bossDefeated){
+
+        }
+
+        // What happens when the boss is defeated
+        else{
+          if(bossCounter == Globals.NBR_OF_BOSSES){
+            //Game is won !
           }
           else{
+            bossCounter += 1
+          }
+        }
+
+
+
+      case "idle" =>
+        // Show cards (will most likely handle the cards showing that will access this object and modify the cardsSelectionDone
+        if (!cardsSelectionDone) {
+          if (waveCounter % Globals.NBR_WAVES_B4_BOSS == 0) {
+            startNewBossWave()
+          }
+          else {
             startNewWave()
           }
         }
-      case "boss" =>
-        println("OUi")
+        // What happens once you've chosen you're upgrade card
+        else {
+          // Will become true when entering so it's done => have to set it back
+          cardsSelectionDone = false
+        }
 
+      // Final default case
       case _ =>
     }
   }
+
+
 
   // Wave functions
   def startNewWave(): Unit = {
