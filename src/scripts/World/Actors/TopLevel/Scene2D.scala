@@ -20,6 +20,8 @@ class Scene2D {
    */
   private val gLayers: Layers[Graphics2D] = new Layers(Globals.G_LAYERS_SIZE)
 
+  private val uiLayers: Layers
+
   /**
    * Layers for collision detection: a collection of Collider2D instances grouped by layer index.
    */
@@ -179,9 +181,9 @@ class Scene2D {
     }
 
     // Placeholder for future UI rendering logic
-    /*for (layer <- uiLayers.get()){
+    for (layer <- uiLayers.get()){
       layer.elements.foreach(uiElement => return) // TODO: handle ui elements
-    }*/
+    }
   }
 
   /**

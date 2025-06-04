@@ -8,7 +8,7 @@ import scripts.World.Actors.Base.Object2D
  * Trait that adds rendering capability to an Object2D.
  * Expects the implementing class to provide a Sprite and a render layer index.
  */
-trait Graphics2D { self: Object2D =>
+trait Graphics2D {
   /**
    * Sprite used for rendering this object (contains images, position, scale, and rotation).
    */
@@ -28,8 +28,8 @@ trait Graphics2D { self: Object2D =>
   def draw(g: GdxGraphics): Unit = {
     // Use drawTransformedPicture to render with rotation and scale:
     g.drawTransformedPicture(
-      pos.x,
-      pos.y,
+      sprite.pos.x,
+      sprite.pos.y,
       sprite.angle,
       sprite.scale,
       sprite.current()

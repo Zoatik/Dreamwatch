@@ -17,11 +17,14 @@ case class Sprite(
   images: ArrayBuffer[BitmapImage],
   var pos: Vector2,
   var angle: Float = 0.0f,
-  var scale: Float = 1.0f
+  var scale: Float = 1.0f,
 ) {
 
   // Ensure at least one image frame is provided
   require(images.nonEmpty, "Sprite must contain at least one BitmapImage")
+
+  private var _width: Float = images(0).getImage.getWidth
+  private var _height: Float = images(0).getImage.getHeight
 
   /**
    * Index of the current image frame in the `images` buffer.
@@ -45,13 +48,17 @@ case class Sprite(
    * @param newWidth Desired width in pixels.
    */
   def setWidth(newWidth: Float): Unit = {
-    images.foreach { image =>
-      // Retrieve the original image width
-      val originalWidth: Float = image.getImage.getWidth
+    images.foreach { _ =>
       // Multiply the current scale by ratio of desired to original width
-      scale *= (newWidth / originalWidth)
+      scale *= (newWidth / _width)
+      _width = newWidth
+      _height *= scale
     }
   }
+
+  def width: Float = _width
+
+  def height: Float = _height
 
   /**
    * Dispose of all BitmapImage resources held by this sprite.

@@ -5,6 +5,24 @@ import scripts.Managers.InputManager
 
 import scala.collection.mutable.ArrayBuffer
 
+object Area2D{
+
+  def createArea2D(areaType: Area2D.Type, pos: Vector2, width: Float, height: Float = 0): Area2D = {
+    require(width > 0 && height >= 0)
+    areaType match {
+      case Area2D.Box =>
+        if (height <= 0) new BoxArea2D(pos, width, width)
+        else new BoxArea2D(pos, width, height)
+
+      case Area2D.Circle => new CircleArea2D(pos, width)
+    }
+  }
+
+  sealed trait Type
+  case object Circle extends Type
+  case object Box extends Type
+}
+
 /**
  * Abstract base class representing a 2D area with mouse interaction capabilities.
  * Provides collision methods to be implemented by concrete shapes, and manages
