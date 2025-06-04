@@ -12,6 +12,7 @@ import scala.collection.mutable.ArrayBuffer
  */
 object InputManager extends InputAdapter {
 
+
   /** List of functions to call when the mouse is moved.
    * Each listener receives the new mouse position as a Vector2(screenX, screenY).
    */
