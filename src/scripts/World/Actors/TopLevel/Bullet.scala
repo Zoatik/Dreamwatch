@@ -32,12 +32,11 @@ class Bullet(pos: Vector2,
 
   initMovement(bulletTrajectory(bulletType))
 
-  var explosionRadius: Float = baseExplosionRadius(bulletType)
   var damage: Float = 1.0f
+  var explosionRadius: Float = baseExplosionRadius(bulletType)
   var explosionDamage: Float = 1.0f
   private val explosionArea = new CircleArea2D(pos, explosionRadius)
   private val explosionCollider = new CollisionComponent(explosionArea, this, 0, Some(0.1f))
-
 
   override protected def onCollision(other: Collider2D): Unit = other match {
     case _: Nightmare =>

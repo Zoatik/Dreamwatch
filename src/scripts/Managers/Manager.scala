@@ -27,3 +27,4 @@ case class RenderingContext(gLayer: Layer[Graphics2D], g: GdxGraphics)
 
 //case class GameContext(sceneContext: SceneContext)
 
+case class WaveContext()
