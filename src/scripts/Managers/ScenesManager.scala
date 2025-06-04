@@ -1,6 +1,7 @@
 package scripts.Managers
 
 import ch.hevs.gdx2d.lib.GdxGraphics
+import scripts.GUI.UiElement
 import scripts.Globals
 import scripts.World.Actors.Base.Entity
 import scripts.World.Actors.TopLevel.Scene2D
@@ -56,6 +57,10 @@ object ScenesManager extends Manager[GdxGraphics] {
     currentScene.updateMovement(deltaT)
     // 4. Render all graphics in the scene using the provided GdxGraphics
     currentScene.updateGraphics(deltaT, g)
+
+    currentScene.updateUi(deltaT)
+
+
   }
 
   /**
@@ -65,10 +70,14 @@ object ScenesManager extends Manager[GdxGraphics] {
    * @param entity The Entity to add to the active scene.
    */
   def addToCurrentScene(entity: Entity): Unit = {
-    if (currentScene != null) {
-      // Add the entity to the active scene
+    if (currentScene != null)
       currentScene.add(entity)
-    }
+
+  }
+
+  def addToCurrentScene(uiElement: UiElement): Unit = {
+    if (currentScene != null)
+      currentScene.add(uiElement)
   }
 
   /**
@@ -78,10 +87,13 @@ object ScenesManager extends Manager[GdxGraphics] {
    * @param entity   The Entity to add to that scene.
    */
   def addToScene(sceneIdx: Int, entity: Entity): Unit = {
-    if (0 <= sceneIdx && sceneIdx < scenes.length) {
-      // Add the entity to the specified scene
+    if (0 <= sceneIdx && sceneIdx < scenes.length && scenes(sceneIdx) != null)
       scenes(sceneIdx).add(entity)
-    }
+  }
+
+  def addToScene(sceneIdx: Int, uiElement: UiElement): Unit = {
+    if (0 <= sceneIdx && sceneIdx < scenes.length && scenes(sceneIdx) != null)
+      scenes(sceneIdx).add(uiElement)
   }
 
   /**
@@ -91,10 +103,13 @@ object ScenesManager extends Manager[GdxGraphics] {
    * @param entity The Entity to remove from the active scene.
    */
   def removeFromCurrentScene(entity: Entity): Unit = {
-    if (currentScene != null) {
-      // Remove the entity from the active scene
+    if (currentScene != null)
       currentScene.remove(entity)
-    }
+  }
+
+  def removeFromCurrentScene(uiElement: UiElement): Unit = {
+    if (currentScene != null)
+      currentScene.remove(uiElement)
   }
 
   /**
@@ -104,9 +119,15 @@ object ScenesManager extends Manager[GdxGraphics] {
    * @param entity   The Entity to remove from that scene.
    */
   def removeFromScene(sceneIdx: Int, entity: Entity): Unit = {
-    if (0 <= sceneIdx && sceneIdx < scenes.length) {
-      // Remove the entity from the specified scene
+    if (0 <= sceneIdx && sceneIdx < scenes.length && scenes(sceneIdx) != null) {
       scenes(sceneIdx).remove(entity)
     }
   }
+
+  def removeFromScene(sceneIdx: Int, uiElement: UiElement): Unit = {
+    if (0 <= sceneIdx && sceneIdx < scenes.length && scenes(sceneIdx) != null) {
+      scenes(sceneIdx).remove(uiElement)
+    }
+  }
+
 }

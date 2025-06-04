@@ -1,10 +1,14 @@
 package scripts.Managers
 
+import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.math.Vector2
+import scripts.GUI.UiElement
 import scripts.World.Actors.TopLevel.{Bullet, Nightmare}
-import scripts.Globals
+import scripts.{Globals, Sprite}
+import scripts.World.Physics.Area2D
 
+import scala.collection.mutable.ArrayBuffer
 import scala.util.Random
 
 /**
@@ -31,6 +35,27 @@ object GameManager extends Manager[GameContext] {
 
     // Register a mouse-pressed listener: depending on button, spawn different bullet types.
     InputManager.onMousePressed((pos, button) => {
+      handleMouseInput(pos, button)
+    })
+    val s: Sprite = Sprite(ArrayBuffer(new BitmapImage("res/sprites/soccer.png")), new Vector2(100,100))
+    new UiElement(Area2D.Circle, s, 0).instantiate()
+  }
+
+  /**
+   * Update method called each frame. Contains game logic and random enemy spawning.
+   *
+   * @param deltaT Time elapsed since last frame (in seconds).
+   * @param g      GdxGraphics used for rendering (passed to ScenesManager).
+   */
+  override def update(deltaT: Float, ctx: GameContext): Unit = {
+    // First, update all scene-related managers (rendering, collisions, etc.)
+    ScenesManager.update(deltaT, ctx.g)
+    WavesManager.update(deltaT, ctx.g)
+
+  }
+
+  def handleMouseInput(pos: Vector2, button: Int): Unit = {
+    if(!UiManager.isMouseOverUi){
       button match {
         case 0 =>
           // Left click: small bullet fired from toyPos toward mouse position.
@@ -44,18 +69,6 @@ object GameManager extends Manager[GameContext] {
         case _ =>
         // Other buttons: no action.
       }
-    })
-  }
-
-  /**
-   * Update method called each frame. Contains game logic and random enemy spawning.
-   *
-   * @param deltaT Time elapsed since last frame (in seconds).
-   * @param g      GdxGraphics used for rendering (passed to ScenesManager).
-   */
-  override def update(deltaT: Float, ctx: GameContext): Unit = {
-    // First, update all scene-related managers (rendering, collisions, etc.)
-    ScenesManager.update(deltaT, ctx.g)
-    WavesManager.update(deltaT, ctx.g)
+    }
   }
 }

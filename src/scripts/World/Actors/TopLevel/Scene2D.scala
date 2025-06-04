@@ -1,12 +1,13 @@
 package scripts.World.Actors.TopLevel
 
 import ch.hevs.gdx2d.lib.GdxGraphics
+import com.badlogic.gdx.Input
 import scripts.GUI.UiElement
 import scripts.Managers._
 import scripts.World.Actors.Base.Entity
 import scripts.World.Physics.{Collider2D, Movement2D}
 import scripts.World.graphics.Graphics2D
-import scripts.{Globals, Layers}
+import scripts.{Globals, Layer, Layers}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -80,7 +81,9 @@ class Scene2D {
   }
 
   def add(uiElement: UiElement): Unit = {
-    //uiLayers.add(uiElement, Globals.)
+    val z: Int = uiElement.graphicLayerZ
+    if (z >= 0 && z < Globals.UI_LAYERS_SIZE)
+      uiLayers.add(z, uiElement)
   }
 
   /**
@@ -115,6 +118,10 @@ class Scene2D {
         movableObjects -= m
       case _ =>
     }
+  }
+
+  def remove(uiElement: UiElement): Unit = {
+    uiLayers.remove(uiElement)
   }
 
   /**
@@ -187,7 +194,13 @@ class Scene2D {
 
     // Placeholder for future UI rendering logic
     for (layer <- uiLayers.get()){
-      layer.elements.foreach(uiElement => return) // TODO: handle ui elements
+      RenderingManager.update(deltaT, RenderingContext(layer.asInstanceOf[Layer[Graphics2D]], g))
+    }
+  }
+
+  def updateUi(deltaT: Float): Unit = {
+    for (layer <- uiLayers.get()){
+      UiManager.update(deltaT, UiContext(layer))
     }
   }
 

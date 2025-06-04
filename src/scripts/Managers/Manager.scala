@@ -1,6 +1,8 @@
 package scripts.Managers
 
 import ch.hevs.gdx2d.lib.GdxGraphics
+import com.badlogic.gdx.math.Vector2
+import scripts.GUI.UiElement
 import scripts.Layer
 import scripts.World.Physics.{Collider2D, Movement2D}
 import scripts.World.graphics.Graphics2D
@@ -82,3 +84,5 @@ case class RenderingContext(gLayer: Layer[Graphics2D], g: GdxGraphics)
 case class WaveContext(g: GdxGraphics)
 
 case class GameContext(g: GdxGraphics)
+
+case class UiContext(uiLayer: Layer[UiElement])
