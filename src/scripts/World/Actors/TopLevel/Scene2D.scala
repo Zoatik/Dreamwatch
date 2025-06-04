@@ -1,6 +1,7 @@
 package scripts.World.Actors.TopLevel
 
 import ch.hevs.gdx2d.lib.GdxGraphics
+import scripts.GUI.UiElement
 import scripts.Managers._
 import scripts.World.Actors.Base.Entity
 import scripts.World.Physics.{Collider2D, Movement2D}
@@ -20,7 +21,7 @@ class Scene2D {
    */
   private val gLayers: Layers[Graphics2D] = new Layers(Globals.G_LAYERS_SIZE)
 
-  private val uiLayers: Layers
+  private val uiLayers: Layers[UiElement] = new Layers(Globals.UI_LAYERS_SIZE)
 
   /**
    * Layers for collision detection: a collection of Collider2D instances grouped by layer index.
@@ -76,6 +77,10 @@ class Scene2D {
         movableObjects += m
       case _ =>
     }
+  }
+
+  def add(uiElement: UiElement): Unit = {
+    //uiLayers.add(uiElement, Globals.)
   }
 
   /**

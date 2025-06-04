@@ -6,6 +6,7 @@ object Globals {
 
   val G_LAYERS_SIZE = 3
   val C_LAYERS_SIZE = 3
+  val UI_LAYERS_SIZE = 1
 
   val NB_OF_SCENES = 3
 
