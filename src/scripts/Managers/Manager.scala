@@ -79,4 +79,6 @@ case class RenderingContext(gLayer: Layer[Graphics2D], g: GdxGraphics)
 // case class SceneContext(renderingCtx: RenderingContext)
 // case class GameContext(sceneContext: SceneContext)
 
-case class WaveContext()
+case class WaveContext(g: GdxGraphics)
+
+case class GameContext(g: GdxGraphics)
