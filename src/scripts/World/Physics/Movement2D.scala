@@ -1,7 +1,7 @@
 package scripts.World.Physics
 
 import com.badlogic.gdx.math.Vector2
-import scripts.World.Actors.Base.Object2D
+import scripts.World.Actors.BaseClass.Abstract.Object2D
 
 /**
  * Trait that adds movement behavior to any Object2D in the world.

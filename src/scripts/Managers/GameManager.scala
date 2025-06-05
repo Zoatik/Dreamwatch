@@ -4,11 +4,11 @@ import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.{Gdx, Input}
 import com.badlogic.gdx.math.Vector2
-import scripts.GUI.UiElement
-import scripts.Globals
-import scripts.World.Actors.Base.Scene
+import scripts.World.Actors.BaseClass.Abstract.Scene
+import scripts.World.Actors.BaseClass.Instantiable.UiElement
 import scripts.World.Actors.TopLevel.GameScene
 import scripts.World.Physics.Area2D
+import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -51,7 +51,7 @@ object GameManager{
       if(button == Input.Keys.ESCAPE) _isPaused = !_isPaused
     })
 
-    currentScene = new GameScene
+    currentScene = new GameScene().instantiate()
     scenes += currentScene
 
     val im = ArrayBuffer(new BitmapImage("res/sprites/soccer.png"))

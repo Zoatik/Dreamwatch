@@ -1,11 +1,13 @@
 package scripts.World.Actors.TopLevel
 
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
-import com.badlogic.gdx.math.{Circle, Vector2}
-import scripts.Globals
-import scripts.World.Actors.Base.{CollisionObject2D, CollisionSprite2D}
-import scripts.World.Actors.TopLevel.Bullet.{Big, Laser, Small, Type}
+import com.badlogic.gdx.math.Vector2
+import scripts.Managers.GameManager
+import scripts.World.Actors.BaseClass.Abstract.{Component, Object2D}
+import scripts.World.Actors.BaseClass.Instantiable.{CollisionObject2D, CollisionSprite2D}
+import scripts.World.Actors.TopLevel.Boss.bossHp
 import scripts.World.Physics.{Area2D, Collider2D, Movement2D}
+import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -27,10 +29,27 @@ class Boss(pos: Vector2,
   override var speed: Float = 0
   override var target: Vector2 = new Vector2(0,0)
 
+  var hp: Float = bossHp(bossType)
 
-  override protected def onCollision(other: Collider2D): Unit = {
-    // Does nothing atm
+
+  override protected def onCollision(other: Collider2D): Unit = other match{
+    case b: Bullet =>
+      takeDamage(b.damage)
+    case e: CollisionObject2D with Component[Bullet] =>
+      takeDamage(e.parent.explosionDamage)
+    case _ =>
+      println("collision but no cigar")
   }
+
+  protected def takeDamage(amount: Float): Unit = {
+    println("Boss has taken damage")
+    hp -= amount
+    if(hp <= 0){
+      GameManager.currentScene.asInstanceOf[GameScene].bossDefeated = true
+      this.destroy()
+    }
+  }
+
 }
 
 object Boss{
@@ -46,6 +65,13 @@ object Boss{
     case Ghost => 500.0f
     case TheGrimReaper => 500.0f
     case _ => 500.0f
+  }
+
+  private def bossHp(bossType: Type): Float = bossType match {
+    case UneAraignee => Globals.DEFAULT_BOSS_HP
+    case Ghost => Globals.DEFAULT_BOSS_HP
+    case TheGrimReaper => Globals.DEFAULT_BOSS_HP
+    case ZeMudry => Globals.DEFAULT_BOSS_HP
   }
 
 

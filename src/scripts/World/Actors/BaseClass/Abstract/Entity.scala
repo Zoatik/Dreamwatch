@@ -1,4 +1,4 @@
-package scripts.World.Actors.Base
+package scripts.World.Actors.BaseClass.Abstract
 
 /**
  * Base class for all entities in the game world.

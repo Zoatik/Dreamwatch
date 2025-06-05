@@ -1,9 +1,9 @@
-package scripts.World.Actors.Base
+package scripts.World.Actors.BaseClass.Instantiable
 
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.math.Vector2
-import scripts.Managers.GameManager
+import scripts.World.Actors.BaseClass.Abstract.{Entity, Object2D}
 import scripts.World.Physics.Area2D
 import scripts.World.graphics.Graphics2D
 

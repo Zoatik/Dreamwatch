@@ -1,9 +1,7 @@
-package scripts.GUI
+package scripts.World.Actors.BaseClass.Instantiable
 
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
-import scripts.Managers.GameManager
-import scripts.World.Actors.Base.Sprite2D
 import scripts.World.Physics.Area2D
 
 import scala.collection.mutable.ArrayBuffer

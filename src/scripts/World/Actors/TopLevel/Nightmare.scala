@@ -2,10 +2,11 @@ package scripts.World.Actors.TopLevel
 
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
-import scripts.Globals
-import scripts.World.Actors.Base.{CollisionObject2D, CollisionSprite2D, Component}
+import scripts.World.Actors.BaseClass.Abstract.Component
+import scripts.World.Actors.BaseClass.Instantiable.{CollisionObject2D, CollisionSprite2D}
 import scripts.World.Actors.TopLevel.Nightmare.baseNightmareSpeed
 import scripts.World.Physics.{Area2D, Collider2D, Movement2D}
+import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -30,7 +31,7 @@ class Nightmare (pos: Vector2,
 
   override protected def onCollision(other: Collider2D): Unit = other match{
     case _: Bullet => this.destroy()
-    case _: CollisionObject2D with Component => this.destroy()
+    case _: CollisionObject2D with Component[Bullet] => this.destroy()
     case _ =>
   }
 

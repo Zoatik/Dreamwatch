@@ -1,9 +1,10 @@
-package scripts.World.Actors.Base
+package scripts.World.Actors.BaseClass.Instantiable
 
 import com.badlogic.gdx.math.Vector2
 import scripts.Managers.GameManager
-import scripts.Layer
+import scripts.World.Actors.BaseClass.Abstract.{Entity, Object2D}
 import scripts.World.Physics.{Area2D, Collider2D}
+import scripts.utils.Layer
 
 /**
  * Abstract base for any 2D collision‐enabled object in the world.

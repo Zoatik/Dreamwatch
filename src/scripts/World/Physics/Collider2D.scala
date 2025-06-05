@@ -1,7 +1,7 @@
 package scripts.World.Physics
 
-import scripts.Layer
-import scripts.World.Actors.Base.{Entity, Object2D}
+import scripts.World.Actors.BaseClass.Abstract.{Entity, Object2D}
+import scripts.utils.Layer
 
 import scala.collection.mutable.ArrayBuffer
 

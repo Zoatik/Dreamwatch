@@ -1,4 +1,4 @@
-package scripts.World.Actors.Base
+package scripts.World.Actors.BaseClass.Abstract
 
 import com.badlogic.gdx.math.Vector2
 import scripts.Managers.GameManager

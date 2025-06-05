@@ -1,6 +1,6 @@
-package scripts
+package scripts.utils
 
-import scripts.World.Actors.TopLevel.Boss
+import com.badlogic.gdx.math.Vector2
 
 object Globals {
   val WINDOW_WIDTH = 1920
@@ -20,10 +20,12 @@ object Globals {
   val NIGHTMARE_C_LAYER = 0
   val BOSS_C_LAYER = 0
 
-  val WAVE_LENGTH: Float = 2          // Should be 60
+  val WAVE_LENGTH: Float = 1          // Should be 60
   val DEFAULT_SPAWN_RATE: Float = 0.5f
 
-  val NBR_WAVES_BEFORE_BOSS: Int = 2  // Should be 5
+  val NBR_WAVES_BEFORE_BOSS: Int = 2 // Should be 5
   val NBR_OF_BOSSES: Int = 3          // Should be 4
+  val DEFAULT_BOSS_POS: Vector2 = new Vector2(WINDOW_WIDTH/2, WINDOW_HEIGHT)
+  val DEFAULT_BOSS_HP: Float = 20
 
 }

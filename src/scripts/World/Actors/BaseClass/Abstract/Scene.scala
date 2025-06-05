@@ -1,10 +1,10 @@
-package scripts.World.Actors.Base
+package scripts.World.Actors.BaseClass.Abstract
 
 import com.badlogic.gdx.math.Vector2
-import scripts.GUI.UiElement
 import scripts.Managers._
+import scripts.World.Actors.BaseClass.Instantiable.{Sprite2D, UiElement}
 import scripts.World.Physics.{Collider2D, Movement2D}
-import scripts.{Globals, Layers}
+import scripts.utils.{Globals, Layers}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -186,6 +186,8 @@ abstract class Scene extends Entity {
     }
   }
 
+
+
   override def update(deltaT: Float): Unit = {
     super.update(deltaT)
     updateGraphics(deltaT)
@@ -220,11 +222,12 @@ abstract class Scene extends Entity {
    * Remove this entity from the current scene via the ScenesManager.
    * Called when the entity should no longer exist (e.g., lifetime expired or explicit destroy).
    */
-  override def destroy(): Unit = ???
+  override def destroy(): Unit = {}
 
   /**
    * Add (spawn) this entity into the current scene via the ScenesManager.
    * Returns `this` to allow method chaining if desired.
    */
-  override def instantiate(): Entity = ???
+  override def instantiate(): Scene = this
+
 }

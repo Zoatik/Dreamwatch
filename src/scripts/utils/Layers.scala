@@ -1,4 +1,4 @@
-package scripts
+package scripts.utils
 
 import scala.collection.mutable.ArrayBuffer
 

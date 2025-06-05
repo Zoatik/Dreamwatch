@@ -2,10 +2,11 @@ package scripts.World.Actors.TopLevel
 
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
-import scripts.Globals
-import scripts.World.Actors.Base.{CollisionObject2D, CollisionSprite2D, Component, Object2D, Sprite2D}
+import scripts.World.Actors.BaseClass.Abstract.{Component, Object2D}
+import scripts.World.Actors.BaseClass.Instantiable.{CollisionObject2D, CollisionSprite2D, Sprite2D}
 import scripts.World.Actors.TopLevel.Bullet.{baseBulletSpeed, baseExplosionRadius, bulletTrajectory}
 import scripts.World.Physics.{Area2D, Collider2D, Movement2D}
+import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -34,8 +35,8 @@ class Bullet(pos: Vector2,
   var damage: Float = 1.0f
   var explosionRadius: Float = baseExplosionRadius(bulletType)
   var explosionDamage: Float = 1.0f
-  private val explosionCollider = new CollisionObject2D(pos, Area2D.Circle, explosionRadius, 0, cLayerZ, lifeTime = Some(0.1f)) with Component {
-    override val parent: Object2D = this
+  private val explosionCollider = new CollisionObject2D(pos, Area2D.Circle, explosionRadius, 0, cLayerZ, lifeTime = Some(0.1f)) with Component[Bullet] {
+    override val parent: Bullet = Bullet.this
   }
 
   override protected def onCollision(other: Collider2D): Unit = other match {
