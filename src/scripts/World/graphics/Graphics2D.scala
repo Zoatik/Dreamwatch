@@ -28,13 +28,15 @@ trait Graphics2D {
    */
   def draw(g: GdxGraphics): Unit = {
     // Use drawTransformedPicture to render with rotation and scale:
-    g.drawTransformedPicture(
-      pos.x,
-      pos.y,
-      angle,
-      _scale,
-      image
-    )
+    if (image != null) {
+      g.drawTransformedPicture(
+        pos.x,
+        pos.y,
+        angle,
+        _scale,
+        image
+      )
+    }
   }
 }
 

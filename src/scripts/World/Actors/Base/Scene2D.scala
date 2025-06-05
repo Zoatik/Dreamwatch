@@ -69,7 +69,7 @@ abstract class Scene2D extends Entity {
     // If the entity supports collisions (Collider2D), add it to the appropriate collision layer
     object2D match {
       case c: Collider2D =>
-        val z: Int = c.collisionLayerZ
+        val z: Int = c.cLayerZ
         if (z >= 0 && z < Globals.C_LAYERS_SIZE)
           cLayers.add(z, c)
       case _ =>
@@ -121,7 +121,7 @@ abstract class Scene2D extends Entity {
   def remove(uiElement: UiElement): Unit = {
     uiLayers.remove(uiElement)
   }
-  
+
 
   /**
    * Perform collision detection across every collision layer.
@@ -175,12 +175,12 @@ abstract class Scene2D extends Entity {
    *
    * @param deltaT Time elapsed since last frame (in seconds).
    */
-  def updateObjectsLogic(deltaT: Float): Unit = {
+  private def updateObjectsLogic(deltaT: Float): Unit = {
     // Convert to array to avoid concurrent modification if entities are added/removed during update
     objects.toArray.foreach(_.update(deltaT))
   }
 
-  def updateUiLocic(deltaT: Float): Unit = {
+  private def updateUiLocic(deltaT: Float): Unit = {
     for (layer <- uiLayers.get()){
       layer.elements.toArray.foreach(_.update(deltaT))
     }

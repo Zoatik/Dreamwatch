@@ -48,13 +48,13 @@ class CollisionObject2D(
    *
    * @param other The other Collider2D involved in the collision.
    */
-  override protected def onCollision(other: Collider2D): Unit = ???
+  override protected def onCollision(other: Collider2D): Unit = {}
 
   /**
    * Remove this entity from the current scene via the ScenesManager.
    * Called when the entity should no longer exist (e.g., lifetime expired or explicit destroy).
    */
-  override def destroy(): Unit = ???
+  override def destroy(): Unit = {}
 
 
 }

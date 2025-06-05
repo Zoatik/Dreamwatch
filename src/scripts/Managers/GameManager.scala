@@ -35,9 +35,6 @@ object GameManager extends Manager[GdxGraphics] {
    */
   override def init(gdxGraphics: GdxGraphics): Unit = {
     g = gdxGraphics
-    println("GameManager ready")
-    // Initialize scene management (layers, etc.) before spawning anything.
-    WavesManager.init()
 
     // Register a mouse-pressed listener: depending on button, spawn different bullet types.
     InputManager.onMousePressed((pos, button) => {
@@ -49,6 +46,8 @@ object GameManager extends Manager[GdxGraphics] {
 
     val im = ArrayBuffer(new BitmapImage("res/sprites/soccer.png"))
     new UiElement(new Vector2(100,100), im, 0, Area2D.Circle).instantiate()
+
+    println("GameManager ready")
   }
 
   /**
@@ -61,7 +60,7 @@ object GameManager extends Manager[GdxGraphics] {
     // First, update all scene-related managers (rendering, collisions, etc.)
     require(g != null, "GameManager must be initialized with gdxGraphics !")
 
-    WavesManager.update(deltaT)
+    currentScene.update(deltaT)
 
   }
 
