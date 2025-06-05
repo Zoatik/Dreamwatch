@@ -6,18 +6,6 @@ import scripts.Managers.InputManager
 import scala.collection.mutable.ArrayBuffer
 
 object Area2D{
-
-  def createArea2D(areaType: Area2D.Type, pos: Vector2, width: Float, height: Float = 0): Area2D = {
-    require(width > 0 && height >= 0)
-    areaType match {
-      case Area2D.Box =>
-        if (height <= 0) new BoxArea2D(pos, width, width)
-        else new BoxArea2D(pos, width, height)
-
-      case Area2D.Circle => new CircleArea2D(pos, width)
-    }
-  }
-
   sealed trait Type
   case object Circle extends Type
   case object Box extends Type
@@ -30,8 +18,13 @@ object Area2D{
  *
  * @param pos The position (typically center or corner) of this Area2D in world coordinates.
  */
-abstract class Area2D(var pos: Vector2) {
+trait Area2D {
 
+  var pos: Vector2
+  var areaType: Area2D.Type
+
+  var areaWidth: Float
+  var areaHeight: Float
   /** List of functions to call when the mouse enters this area.
    * Each listener receives the mouse position as a Vector2(screenX, screenY).
    */
@@ -68,7 +61,43 @@ abstract class Area2D(var pos: Vector2) {
    * @param other Another Area2D instance to test intersection against.
    * @return True if the two areas overlap.
    */
-  def intersects(other: Area2D): Boolean
+  def intersects(other: Area2D): Boolean = {
+    areaType match {
+      case Area2D.Circle =>
+        other.areaType match {
+          case Area2D.Circle =>
+            // Compare squared distance between centers to squared sum of radii
+            val dist2 = pos.dst2(other.pos)
+            dist2 <= (areaWidth + other.areaWidth) * (areaWidth + other.areaWidth)
+
+          case Area2D.Box =>
+            // Clamp circle center to rectangle bounds, then test distance
+            val closestX = math.max(other.pos.x, math.min(pos.x, other.pos.x + other.areaWidth))
+            val closestY = math.max(other.pos.y, math.min(pos.y, other.pos.y + other.areaHeight))
+            val dx = pos.x - closestX
+            val dy = pos.y - closestY
+            dx * dx + dy * dy <= areaWidth * areaWidth
+
+          case _ => false
+        }
+      case Area2D.Box =>
+        other.areaType match {
+          case Area2D.Circle =>
+            other.intersects(this)
+
+          case Area2D.Box =>
+            val halfW1 = areaWidth  / 2f
+            val halfH1 = areaHeight / 2f
+            val halfW2 = other.areaWidth  / 2f
+            val halfH2 = other.areaHeight / 2f
+
+            math.abs(pos.x - other.pos.x) <= (halfW1 + halfW2) &&
+              math.abs(pos.y - other.pos.y) <= (halfH1 + halfH2)
+
+          case _ => false
+        }
+    }
+  }
 
   /**
    * Checks if a world-coordinate point is contained within this area.
@@ -77,7 +106,17 @@ abstract class Area2D(var pos: Vector2) {
    * @param p The point to test (world coordinates).
    * @return True if the point lies inside this area.
    */
-  def containsPoint(p: Vector2): Boolean
+  def containsPoint(p: Vector2): Boolean = {
+    areaType match {
+      case Area2D.Circle =>
+        p.sub(pos).len() <= areaWidth
+      case Area2D.Box =>
+        val halfW = areaWidth  / 2f
+        val halfH = areaHeight / 2f
+        p.x >= pos.x - halfW && p.x <= pos.x + halfW &&
+        p.y >= pos.y - halfH && p.y <= pos.y + halfH
+    }
+  }
 
   /**
    * Convenience method: returns true if the given mouse position is inside this area.
@@ -171,89 +210,6 @@ abstract class Area2D(var pos: Vector2) {
   protected def mouseReleased(mousePos: Vector2, mouseButton: Int): Unit = {
     if (isMouseOver(mousePos))
       mouseReleasedListeners.toArray.foreach(_(mousePos, mouseButton))
-  }
-}
-
-/**
- * Concrete implementation of Area2D representing a circle.
- *
- * @param pos    Center position of the circle.
- * @param radius Radius of the circle.
- */
-class CircleArea2D(pos: Vector2, var radius: Float) extends Area2D(pos) {
-
-  /**
-   * Checks intersection between this circle and another Area2D.
-   * Supports circle–circle and circle–axis-aligned box collisions.
-   */
-  override def intersects(other: Area2D): Boolean = other match {
-    case c: CircleArea2D =>
-      // Compare squared distance between centers to squared sum of radii
-      val dist2 = pos.dst2(c.pos)
-      dist2 <= (radius + c.radius) * (radius + c.radius)
-
-    case r: BoxArea2D =>
-      // Clamp circle center to rectangle bounds, then test distance
-      val closestX = math.max(r.pos.x, math.min(pos.x, r.pos.x + r.width))
-      val closestY = math.max(r.pos.y, math.min(pos.y, r.pos.y + r.height))
-      val dx = pos.x - closestX
-      val dy = pos.y - closestY
-      dx * dx + dy * dy <= radius * radius
-
-    case _ => false
-  }
-
-  /**
-   * Checks if a point lies inside this circle.
-   *
-   * @param p The point to test (world coordinates).
-   * @return True if the distance from p to center <= radius.
-   */
-  override def containsPoint(p: Vector2): Boolean = {
-    p.sub(pos).len() <= radius
-  }
-}
-
-/**
- * Concrete implementation of Area2D representing an axis-aligned rectangle.
- *
- * @param pos    Bottom-left corner of the rectangle.
- * @param width  Width of the rectangle.
- * @param height Height of the rectangle.
- */
-class BoxArea2D(pos: Vector2, var width: Float, var height: Float) extends Area2D(pos) {
-
-  /**
-   * Checks intersection between this rectangle and another Area2D.
-   * Supports rectangle–circle (delegates to circle logic) and rectangle–rectangle.
-   */
-  override def intersects(other: Area2D): Boolean = other match {
-    case c: CircleArea2D =>
-      c.intersects(this)
-
-    case r: BoxArea2D =>
-      val halfW1 = width  / 2f
-      val halfH1 = height / 2f
-      val halfW2 = r.width  / 2f
-      val halfH2 = r.height / 2f
-
-      math.abs(pos.x - r.pos.x) <= (halfW1 + halfW2) &&
-      math.abs(pos.y - r.pos.y) <= (halfH1 + halfH2)
-
-    case _ => false
-  }
-
-  /**
-   * Checks if a point lies inside this rectangle.
-   *
-   * @param p The point to test (world coordinates).
-   * @return True if p.x and p.y fall within the rectangle bounds.
-   */
-  override def containsPoint(p: Vector2): Boolean = {
-    val halfW = width  / 2f
-    val halfH = height / 2f
-    p.x >= pos.x - halfW && p.x <= pos.x + halfW &&
-    p.y >= pos.y - halfH && p.y <= pos.y + halfH
   }
 }
 

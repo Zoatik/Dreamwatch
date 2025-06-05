@@ -9,7 +9,7 @@ import scripts.World.Actors.TopLevel.{Boss, Nightmare}
 import scala.util.Random
 
 
-object WavesManager extends Manager[GdxGraphics]{
+object WavesManager extends Manager[Unit] {
   private var waveCounter: Int = 0
   private var waveTimer: Float = 0
   private var waveStatus: String = "normal"
@@ -29,15 +29,15 @@ object WavesManager extends Manager[GdxGraphics]{
   var isAlive: Boolean = true
 
   // Overrides
-  override def init(): Unit = {
+  override def init(nothing: Unit): Unit = {
     // Will probably do a thing where it wait for you to press "enter" for ex.
     startNewWave()
   }
-  override def update(deltaT: Float, g: GdxGraphics): Unit = {
-    super.update(deltaT, g)
+  override def update(deltaT: Float): Unit = {
+    super.update(deltaT)
     currentTime += deltaT
     waveTimer += deltaT
-    updateWave(deltaT, g)
+    updateWave(deltaT)
 
     // Test
     InputManager.onMousePressed((_,_) => bossDefeated = true)
@@ -59,7 +59,7 @@ object WavesManager extends Manager[GdxGraphics]{
           // End of the wave. Do this:
           // Stop spawning nightmares
           spawnRate = 0
-          if(!ScenesManager.currentScene.getEntities.exists(e => e.isInstanceOf[Nightmare])) {
+          if(!ScenesManager.currentScene.getObjects.exists(e => e.isInstanceOf[Nightmare])) {
             waveStatus = "idle"
           }
         }
@@ -134,11 +134,11 @@ object WavesManager extends Manager[GdxGraphics]{
   }
 
   // Basically handles all the spawning
-  def updateWave(deltaT: Float, g: GdxGraphics): Unit = {
+  def updateWave(deltaT: Float): Unit = {
       if (rnd.nextFloat() < deltaT * spawnRate) {
-      val startX = rnd.nextFloat() * g.getScreenWidth
-      val startY = g.getScreenHeight
-      val targetX = rnd.nextFloat() * g.getScreenWidth
+      val startX = rnd.nextFloat() * GameManager.g.getScreenWidth
+      val startY = GameManager.g.getScreenHeight
+      val targetX = rnd.nextFloat() * GameManager.g.getScreenWidth
       val targetY = 0f
       new Nightmare(new Vector2(startX, startY), new Vector2(targetX, targetY), Nightmare.Small).spawn()
       }

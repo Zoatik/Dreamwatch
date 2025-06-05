@@ -1,9 +1,9 @@
 package scripts.World.Actors.Base
 
 import com.badlogic.gdx.math.Vector2
-import scripts.Managers.{CollisionsManager, ScenesManager}
-import scripts.Sprite
-import scripts.World.Physics.{Area2D, BoxArea2D, CircleArea2D, Collider2D}
+import scripts.Managers.GameManager
+import scripts.Layer
+import scripts.World.Physics.{Area2D, Collider2D}
 
 /**
  * Abstract base for any 2D collision‐enabled object in the world.
@@ -17,25 +17,15 @@ import scripts.World.Physics.{Area2D, BoxArea2D, CircleArea2D, Collider2D}
  * @param lifeTime         Optional lifetime (in seconds). If defined, the object will be destroyed after expiration.
  * @param parent           Optional parent Object2D (for hierarchical transforms), default is null.
  */
-abstract class CollisionObject2D(
+class CollisionObject2D(
   pos: Vector2,
-  sprite: Sprite,
-  graphicLayerZ: Int,
-  override val collisionArea2D: Area2D,
-  override var collisionLayerZ: Int,
-  lifeTime: Option[Float] = None,
-  override val parent: Object2D = null
-) extends Object2D(pos, sprite, graphicLayerZ, lifeTime) with Collider2D {
+  override var areaType: Area2D.Type,
+  override var areaWidth: Float,
+  override var areaHeight: Float,
+  override var cLayerZ: Int,
+  lifeTime: Option[Float] = None
+) extends Object2D(pos, lifeTime) with Collider2D {
 
-  // Calculate sprite width based on collision shape:
-  // - If CircleArea2D, width is diameter.
-  // - If BoxArea2D, width is rectangle width.
-  private val spriteWidth: Float = collisionArea2D match {
-    case c: CircleArea2D => 2 * c.radius
-    case b: BoxArea2D    => b.width
-  }
-  // Apply computed width to the sprite for proper rendering scale
-  sprite.setWidth(spriteWidth)
 
   /**
    * Override spawn to run a collision check immediately upon creation.
@@ -44,16 +34,27 @@ abstract class CollisionObject2D(
    *
    * @return This entity, for chaining if needed.
    */
-  override def spawn(): Entity = {
+  override def instantiate(): Entity = {
+    super.instantiate()
     // Perform an immediate collision check with all colliders in the same layer
-    CollisionsManager.checkAndNotifyCollisions(
-      this,
-      ScenesManager.currentScene
-        .getCollisionLayers
-        .get(this.collisionLayerZ)
-        .get
-    )
-    // Delegate to Object2D.spawn, which adds to scene and returns `this`
-    super.spawn()
+    val cLayer: Layer[Collider2D] = GameManager.currentScene.cLayers.get(cLayerZ).get
+    Collider2D.checkAndNotifyCollisions(cLayer)
+    this
   }
+
+  /**
+   * Callback invoked when this object collides with another Collider2D.
+   * Subclasses implement this to respond to collision events.
+   *
+   * @param other The other Collider2D involved in the collision.
+   */
+  override protected def onCollision(other: Collider2D): Unit = ???
+
+  /**
+   * Remove this entity from the current scene via the ScenesManager.
+   * Called when the entity should no longer exist (e.g., lifetime expired or explicit destroy).
+   */
+  override def destroy(): Unit = ???
+
+
 }

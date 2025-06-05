@@ -1,26 +1,16 @@
 package scripts.GUI
 
-import scripts.Managers.ScenesManager
+import ch.hevs.gdx2d.components.bitmaps.BitmapImage
+import com.badlogic.gdx.math.Vector2
 import scripts.Sprite
-import scripts.World.Actors.Base.Entity
+import scripts.World.Actors.Base.{Entity, Sprite2D}
 import scripts.World.Physics.Area2D
 import scripts.World.graphics.Graphics2D
 
-class UiElement(areaType: Area2D.Type,
-                override val sprite: Sprite,
-                override val graphicLayerZ: Int) extends Graphics2D {
+import scala.collection.mutable.ArrayBuffer
 
-  val interactionArea: Area2D = Area2D.createArea2D(areaType, sprite.pos, sprite.width, sprite.height)
+class UiElement(pos: Vector2, images: ArrayBuffer[BitmapImage], gLayerZ: Int, area2DType: Area2D.Type)
+  extends Sprite2D(pos, images, gLayerZ, area2DType) {
 
-
-
-  def instantiate(): UiElement = {
-    ScenesManager.addToCurrentScene(this)
-    this
-  }
-
-  def destroy(): Unit = {
-    ScenesManager.removeFromCurrentScene(this)
-  }
 
 }

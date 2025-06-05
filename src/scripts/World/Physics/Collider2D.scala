@@ -1,28 +1,21 @@
 package scripts.World.Physics
 
+import scripts.Layer
 import scripts.World.Actors.Base.{Entity, Object2D}
+
 import scala.collection.mutable.ArrayBuffer
 
 /**
  * Trait for any object that has a collision area and participates in collision detection.
  * Classes mixing in Collider2D must be Entities and provide a collision shape and layer.
  */
-trait Collider2D { self: Entity =>
-  /**
-   * The Area2D shape used for collision tests for this object.
-   */
-  val collisionArea2D: Area2D
-
-  /**
-   * Reference to this object's parent Object2D, used for hierarchical transforms.
-   */
-  val parent: Object2D
+trait Collider2D extends Area2D { self: Entity =>
 
   /**
    * Index of the collision layer this Collider2D belongs to.
    * Collisions are only checked between objects in the same layer.
    */
-  var collisionLayerZ: Int
+  var cLayerZ: Int
 
   private val collisionEventListeners: ArrayBuffer[Collider2D => Unit] =
     ArrayBuffer(other => onCollision(other))
@@ -62,8 +55,91 @@ trait Collider2D { self: Entity =>
    */
   def collidesWith(other: Collider2D): Boolean = {
     if (other != this)
-      return collisionArea2D.intersects(other.collisionArea2D)
+      return this.intersects(other)
     false
+  }
+}
+
+object Collider2D{
+  def checkAndNotifyCollisions(layer: Layer[Collider2D]): Unit = {
+    // Get the number of colliders in the layer
+    val size = layer.size
+    // Copy elements to an array for indexed access
+    val elements = layer.elements.toArray
+    var i = 0
+    // Iterate over every unique pair (i, j) where i < j
+    while (i < size) {
+      var j = i + 1
+      while (j < size) {
+        val a = elements(i)
+        val b = elements(j)
+        // If the two colliders overlap, notify both
+        if (a.collidesWith(b)) {
+          a.collided(b)
+          b.collided(a)
+        }
+        j += 1
+      }
+      i += 1
+    }
+  }
+
+  /**
+   * Checks and notifies a specific pair of colliders if they overlap.
+   *
+   * @param a First collider.
+   * @param b Second collider.
+   */
+  private def checkAndNotifyCollisions(a: Collider2D, b: Collider2D): Unit = {
+    if (checkCollision(a, b))
+      notifyCollision(a, b)
+  }
+
+  /**
+   * Notifies both colliders of a collision event.
+   * Invokes the `collided` callback on both objects.
+   *
+   * @param a First collider (notified of collision with b).
+   * @param b Second collider (notified of collision with a).
+   */
+  private def notifyCollision(a: Collider2D, b: Collider2D): Unit = {
+    a.collided(b)
+    b.collided(a)
+  }
+
+  /**
+   * Determines whether two colliders overlap by delegating to their shapes.
+   *
+   * @param a First collider.
+   * @param b Second collider.
+   * @return True if their Area2D shapes intersect.
+   */
+  def checkCollision(a: Collider2D, b: Collider2D): Boolean = {
+    a.collidesWith(b)
+  }
+
+  /**
+   * Public method to check and notify a single pair of colliders.
+   * If the colliders overlap, both are notified via their `collided` callback.
+   *
+   * @param a First collider.
+   * @param b Second collider.
+   */
+  def checkAndNotifyCollision(a: Collider2D, b: Collider2D): Unit = {
+    if (checkCollision(a, b))
+      notifyCollision(a, b)
+  }
+
+  /**
+   * Checks a single Collider2D against every element in the provided layer.
+   * Invokes `collidesWith`, but does not trigger notifications here.
+   *
+   * @param collider2D Collider to test against the layer.
+   * @param layer      Layer of Collider2D objects.
+   */
+  def checkAndNotifyCollisions(collider2D: Collider2D, layer: Layer[Collider2D]): Unit = {
+    // Iterate through each collider in the layer and test for overlap
+    layer.elements.foreach(_.collidesWith(collider2D))
   }
 }
 

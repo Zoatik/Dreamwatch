@@ -1,9 +1,9 @@
-package scripts
+package scripts.World.Actors.Base
 
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
 import scripts.Managers.GameManager
-import scripts.World.Actors.Base.{Entity, Object2D}
+import scripts.World.Physics.Area2D
 import scripts.World.graphics.Graphics2D
 
 import scala.collection.mutable.ArrayBuffer
@@ -20,9 +20,11 @@ import scala.collection.mutable.ArrayBuffer
  */
 class Sprite2D(pos: Vector2,
                val images: ArrayBuffer[BitmapImage],
+               var gLayerZ: Int,
+               area2DType: Area2D.Type,
                var angle: Float = 0,
                spriteScale: Float = 1f,
-               lifeTime: Option[Float] = None) extends Object2D(pos, lifeTime) with Graphics2D {
+               lifeTime: Option[Float] = None) extends Object2D(pos, lifeTime) with Graphics2D with Area2D{
 
   // Ensure at least one image frame is provided
   require(images.nonEmpty, "Sprite must contain at least one BitmapImage")
@@ -30,11 +32,18 @@ class Sprite2D(pos: Vector2,
   private val baseWidth: Float = images(0).getImage.getWidth
   private val baseHeight: Float = images(0).getImage.getHeight
 
+  var isVisible: Boolean = true
+
+
   override var image: BitmapImage = current()
 
   override protected var _scale: Float = spriteScale
   override protected var _width: Float = baseWidth * scale
   override protected var _height: Float = baseHeight * scale
+
+  override var areaType: Area2D.Type = area2DType
+  override var areaWidth: Float = if (areaType == Area2D.Box) baseWidth else baseWidth / 2
+  override var areaHeight: Float = baseHeight
 
   def scale: Float = _scale
   def scale_=(newScale: Float): Unit = {
@@ -99,7 +108,8 @@ class Sprite2D(pos: Vector2,
 
   override def update(deltaT: Float): Unit = {
     super.update(deltaT)
-    draw(GameManager.g)
+    if(isVisible)
+      draw(GameManager.g)
   }
 
 

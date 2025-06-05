@@ -4,12 +4,12 @@ import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.math.Vector2
 import scripts.GUI.UiElement
-import scripts.World.Actors.TopLevel.{Bullet, Nightmare}
-import scripts.{Globals, Sprite}
+import scripts.Globals
+import scripts.World.Actors.Base.Scene2D
+import scripts.World.Actors.TopLevel.GameScene2D
 import scripts.World.Physics.Area2D
 
 import scala.collection.mutable.ArrayBuffer
-import scala.util.Random
 
 /**
  * GameManager handles high-level game logic: input-driven bullet spawning and random enemy spawning.
@@ -24,6 +24,9 @@ object GameManager extends Manager[GdxGraphics] {
 
   var g: GdxGraphics = _
 
+  val scenes: ArrayBuffer[Scene2D] = ArrayBuffer()
+  var currentScene: Scene2D = _
+
 
 
   /**
@@ -34,15 +37,18 @@ object GameManager extends Manager[GdxGraphics] {
     g = gdxGraphics
     println("GameManager ready")
     // Initialize scene management (layers, etc.) before spawning anything.
-    ScenesManager.init()
     WavesManager.init()
 
     // Register a mouse-pressed listener: depending on button, spawn different bullet types.
     InputManager.onMousePressed((pos, button) => {
       handleMouseInput(pos, button)
     })
-    val s: Sprite = Sprite(ArrayBuffer(new BitmapImage("res/sprites/soccer.png")), new Vector2(100,100))
-    new UiElement(Area2D.Circle, s, 0).instantiate()
+
+    currentScene = new GameScene2D
+    scenes += currentScene
+
+    val im = ArrayBuffer(new BitmapImage("res/sprites/soccer.png"))
+    new UiElement(new Vector2(100,100), im, 0, Area2D.Circle).instantiate()
   }
 
   /**
@@ -51,29 +57,15 @@ object GameManager extends Manager[GdxGraphics] {
    * @param deltaT Time elapsed since last frame (in seconds).
    * @param g      GdxGraphics used for rendering (passed to ScenesManager).
    */
-  override def update(deltaT: Float, ctx: GameContext): Unit = {
+  override def update(deltaT: Float): Unit = {
     // First, update all scene-related managers (rendering, collisions, etc.)
     require(g != null, "GameManager must be initialized with gdxGraphics !")
-    ScenesManager.update(deltaT, ctx.g)
-    WavesManager.update(deltaT, ctx.g)
+
+    WavesManager.update(deltaT)
 
   }
 
   def handleMouseInput(pos: Vector2, button: Int): Unit = {
-    if(!UiManager.isMouseOverUi){
-      button match {
-        case 0 =>
-          // Left click: small bullet fired from toyPos toward mouse position.
-          new Bullet(new Vector2(toyPos), new Vector2(pos), Bullet.Small).spawn()
-        case 1 =>
-          // Right click: big bullet fired from toyPos toward mouse position.
-          new Bullet(new Vector2(toyPos), new Vector2(pos), Bullet.Big).spawn()
-        case 2 =>
-          // Middle click: laser bullet fired from toyPos toward mouse position.
-          new Bullet(new Vector2(toyPos), new Vector2(pos), Bullet.Laser).spawn()
-        case _ =>
-        // Other buttons: no action.
-      }
-    }
+    currentScene.handleMouseInput(pos, button)
   }
 }

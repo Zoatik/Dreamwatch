@@ -1,9 +1,8 @@
 package scripts.World.Actors.Base
 
-import scripts.Managers.ScenesManager
-
 /**
  * Base class for all entities in the game world.
+ *
  * @param lifeTime Optional remaining lifetime in seconds. If defined, the entity will be destroyed
  *                 once this value reaches zero or below during update.
  */

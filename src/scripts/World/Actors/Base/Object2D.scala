@@ -1,7 +1,7 @@
 package scripts.World.Actors.Base
 
 import com.badlogic.gdx.math.Vector2
-import scripts.Managers.ScenesManager
+import scripts.Managers.GameManager
 
 /**
  * Base class for any object in the 2D world.
@@ -16,7 +16,7 @@ abstract class Object2D(
 ) extends Entity(lifeTime) {
 
   override def instantiate(): Entity = {
-    ScenesManager.addToCurrentScene(this)
+    GameManager.currentScene.add(this)
     this
   }
 

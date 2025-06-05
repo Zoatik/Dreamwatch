@@ -19,6 +19,7 @@ trait Graphics2D {
 
 
 
+
   /**
    * Draws the sprite on screen using the provided GdxGraphics context.
    * Positions, rotates, and scales the image based on the sprite's properties.

@@ -30,7 +30,7 @@ trait Manager[T] {
    * Perform any necessary setup when the manager is first created.
    * Called once at application start.
    */
-  def init(ctx: T): Unit
+  def init(initPar: T): Unit
 
   /**
    * Update method called each frame with the elapsed time and a context object.
@@ -39,7 +39,7 @@ trait Manager[T] {
    * @param deltaT Time elapsed since last frame (in seconds).
    * @param ctx    Context object providing additional data needed for update.
    */
-  def update(deltaT: Float, ctx: T): Unit = {
+  def update(deltaT: Float): Unit = {
     if(_isPaused) return
   }
 
@@ -53,36 +53,3 @@ trait Manager[T] {
    */
   def resume(): Unit = if (_isPaused) _isPaused = false
 }
-
-/**
- * Context passed to collision-related managers or systems.
- *
- * @param cLayer The collision layer containing Collider2D objects to process.
- */
-case class CollisionContext(cLayer: Layer[Collider2D])
-
-/**
- * Context passed to movement-related managers or systems.
- *
- * @param movableObjects Buffer of Movement2D instances to update each frame.
- * @param deltaScale     Scalar multiplier for delta time (e.g., for slow-motion effects).
- */
-case class MovementContext(movableObjects: ArrayBuffer[Movement2D], deltaScale: Float)
-
-/**
- * Context passed to rendering-related managers or systems.
- *
- * @param gLayer The render layer containing Graphics2D objects to draw.
- * @param g      The GdxGraphics instance used for drawing on screen.
- */
-case class RenderingContext(gLayer: Layer[Graphics2D], g: GdxGraphics)
-
-// The following contexts could be used for more complex scene or game-level updates:
-// case class SceneContext(renderingCtx: RenderingContext)
-// case class GameContext(sceneContext: SceneContext)
-
-case class WaveContext(g: GdxGraphics)
-
-case class GameContext(g: GdxGraphics)
-
-case class UiContext(uiLayer: Layer[UiElement])

@@ -10,4 +10,10 @@ class Toy(pos: Vector2, sprite: Sprite, graphicLayerZ: Int)
 
   override var speed: Float = 0
   override var target: Vector2 = null
+
+  /**
+   * Remove this entity from the current scene via the ScenesManager.
+   * Called when the entity should no longer exist (e.g., lifetime expired or explicit destroy).
+   */
+  override def destroy(): Unit = ???
 }
