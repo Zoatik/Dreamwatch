@@ -20,7 +20,8 @@ object Area2D{
  */
 trait Area2D {
 
-  var pos: Vector2
+  def pos: Vector2
+  def pos_=(newPos: Vector2): Unit
   var areaType: Area2D.Type
 
   var areaWidth: Float
@@ -109,7 +110,9 @@ trait Area2D {
   def containsPoint(p: Vector2): Boolean = {
     areaType match {
       case Area2D.Circle =>
-        p.sub(pos).len() <= areaWidth
+        p.cpy().sub(pos).len() <= areaWidth
+
+
       case Area2D.Box =>
         val halfW = areaWidth  / 2f
         val halfH = areaHeight / 2f
@@ -135,6 +138,7 @@ trait Area2D {
    */
   def mouseMoved(mousePos: Vector2): Unit = {
     val mouseState = isMouseOver(mousePos)
+    //println("mouse state: " + mouseState + ", pos: " + pos)
     if (mouseState != _isMouseOver) {
       _isMouseOver = mouseState
       if (_isMouseOver)

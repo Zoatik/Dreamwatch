@@ -2,11 +2,12 @@ package scripts.Managers
 
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import ch.hevs.gdx2d.lib.GdxGraphics
+import com.badlogic.gdx.{Gdx, Input}
 import com.badlogic.gdx.math.Vector2
 import scripts.GUI.UiElement
 import scripts.Globals
-import scripts.World.Actors.Base.Scene2D
-import scripts.World.Actors.TopLevel.GameScene2D
+import scripts.World.Actors.Base.Scene
+import scripts.World.Actors.TopLevel.GameScene
 import scripts.World.Physics.Area2D
 
 import scala.collection.mutable.ArrayBuffer
@@ -15,25 +16,29 @@ import scala.collection.mutable.ArrayBuffer
  * GameManager handles high-level game logic: input-driven bullet spawning and random enemy spawning.
  * It implements Manager[GdxGraphics] to receive update calls each frame with rendering context.
  */
-object GameManager extends Manager[GdxGraphics] {
+object GameManager{
+
+  private var _isPaused: Boolean = false
+  def isPaused: Boolean = _isPaused
 
   /**
    * Central toy position from which bullets originate (middle of screen horizontally, bottom).
    */
   val toyPos: Vector2 = new Vector2(Globals.WINDOW_WIDTH / 2f, 0)
 
+
   var g: GdxGraphics = _
 
-  val scenes: ArrayBuffer[Scene2D] = ArrayBuffer()
-  var currentScene: Scene2D = _
+  val scenes: ArrayBuffer[Scene] = ArrayBuffer()
+  var currentScene: Scene = _
 
-
+  def mousePos: Vector2 = new Vector2(Gdx.input.getX, Gdx.graphics.getHeight - Gdx.input.getY)
 
   /**
    * Initialization logic for GameManager. Called once at startup.
    * Registers an input listener to spawn bullets based on mouse button clicks.
    */
-  override def init(gdxGraphics: GdxGraphics): Unit = {
+  def init(gdxGraphics: GdxGraphics): Unit = {
     g = gdxGraphics
 
     // Register a mouse-pressed listener: depending on button, spawn different bullet types.
@@ -41,11 +46,20 @@ object GameManager extends Manager[GdxGraphics] {
       handleMouseInput(pos, button)
     })
 
-    currentScene = new GameScene2D
+    // DEBUG
+    InputManager.onKeyPressed(button => {
+      if(button == Input.Keys.ESCAPE) _isPaused = !_isPaused
+    })
+
+    currentScene = new GameScene
     scenes += currentScene
 
     val im = ArrayBuffer(new BitmapImage("res/sprites/soccer.png"))
-    new UiElement(new Vector2(100,100), im, 0, Area2D.Circle).instantiate()
+    val test: UiElement = new UiElement(new Vector2(100,100), im, 0, Area2D.Circle).instantiate().asInstanceOf[UiElement]
+
+    //test.onMouseEntered(_ => println(test.isMouseOver(mousePos)))
+    //test.onMouseLeft(_ => println(test.isMouseOver(mousePos)))
+
 
     println("GameManager ready")
   }
@@ -56,13 +70,17 @@ object GameManager extends Manager[GdxGraphics] {
    * @param deltaT Time elapsed since last frame (in seconds).
    * @param g      GdxGraphics used for rendering (passed to ScenesManager).
    */
-  override def update(deltaT: Float): Unit = {
+  def update(deltaT: Float): Unit = {
     // First, update all scene-related managers (rendering, collisions, etc.)
     require(g != null, "GameManager must be initialized with gdxGraphics !")
 
     currentScene.update(deltaT)
 
   }
+
+  def pause(): Unit = _isPaused = true
+
+  def resume(): Unit = _isPaused = false
 
   def handleMouseInput(pos: Vector2, button: Int): Unit = {
     currentScene.handleMouseInput(pos, button)

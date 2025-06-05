@@ -1,6 +1,7 @@
 package scripts.World.Actors.Base
 
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
+import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.math.Vector2
 import scripts.Managers.GameManager
 import scripts.World.Physics.Area2D
@@ -12,11 +13,10 @@ import scala.collection.mutable.ArrayBuffer
  * Represents a sprite composed of one or more BitmapImage frames, with position, rotation, and scale.
  * Supports cycling through frames, resizing by width, and disposing resources when no longer needed.
  *
- * @param pos    Current position of the sprite in world coordinates.
- * @param images Collection of BitmapImage frames (must be nonEmpty).
- * @param angle  Rotation angle in degrees (default 0.0f).
- * @param spriteScale  Uniform scale factor applied to all images (default 1.0f).
- * @param lifeTime Time before destruction (default None)
+ * @param images      Collection of BitmapImage frames (must be nonEmpty).
+ * @param angle       Rotation angle in degrees (default 0.0f).
+ * @param spriteScale Uniform scale factor applied to all images (default 1.0f).
+ * @param lifeTime    Time before destruction (default None)
  */
 class Sprite2D(pos: Vector2,
                val images: ArrayBuffer[BitmapImage],
@@ -35,7 +35,7 @@ class Sprite2D(pos: Vector2,
   var isVisible: Boolean = true
 
 
-  override var image: BitmapImage = current()
+  override var image: BitmapImage = images(0)
 
   override protected var _scale: Float = spriteScale
   override protected var _width: Float = baseWidth * scale
@@ -93,7 +93,8 @@ class Sprite2D(pos: Vector2,
    * Dispose of all BitmapImage resources held by this sprite.
    * Should be called when the sprite is no longer needed to free memory.
    */
-  def destroy(): Unit = {
+  override def destroy(): Unit = {
+    super.destroy()
     images.foreach(_.dispose())
   }
 
@@ -106,11 +107,12 @@ class Sprite2D(pos: Vector2,
     super.instantiate()
   }
 
-  override def update(deltaT: Float): Unit = {
-    super.update(deltaT)
-    if(isVisible)
-      draw(GameManager.g)
+
+  override def draw(g: GdxGraphics): Unit = {
+    if (isVisible)
+      super.draw(g)
   }
+
 
 
 }

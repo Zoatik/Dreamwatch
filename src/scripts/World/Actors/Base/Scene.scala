@@ -1,12 +1,10 @@
 package scripts.World.Actors.Base
 
-import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.math.Vector2
 import scripts.GUI.UiElement
 import scripts.Managers._
 import scripts.World.Physics.{Collider2D, Movement2D}
-import scripts.World.graphics.Graphics2D
-import scripts.{Globals, Layer, Layers}
+import scripts.{Globals, Layers}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -14,7 +12,7 @@ import scala.collection.mutable.ArrayBuffer
  * Represents a top-level 2D scene. Manages all entities in the scene,
  * including their rendering, collision detection, and movement updates.
  */
-abstract class Scene2D extends Entity {
+abstract class Scene extends Entity {
 
   /**
    * Layers for rendering: a collection of Graphics2D instances grouped by Z-index.
@@ -43,15 +41,21 @@ abstract class Scene2D extends Entity {
    */
   var deltaScale: Float = 1.0f
 
+  private var _isMouseOnUi: Boolean = false
+
+  def isMouseOnUi: Boolean = _isMouseOnUi
+
+
   /**
    * Add a generic Entity to the scene. Depending on which traits the entity implements,
    * it will be registered for rendering, collisions, and/or movement.
    *
-   * @param entity The Entity to add.
+   * @param object2D The Object2D to add.
    */
   def add(object2D: Object2D): Unit = {
     // Track entity in the master list
     objects += object2D
+    //println(s"element : $object2D added to scene")
 
     // If the entity supports rendering (Sprite2D), add it to the appropriate render layer
     object2D match {
@@ -88,12 +92,12 @@ abstract class Scene2D extends Entity {
    * Remove an Entity from the scene. Unregisters it from rendering, collisions, and movement
    * as applicable. Also disposes of any sprite images to free resources.
    *
-   * @param entity The Entity to remove.
+   * @param object2D The Object2D to remove.
    */
   def remove(object2D: Object2D): Unit = {
     // Remove from master list
     objects -= object2D
-
+    //println(s"element : $object2D removed from scene")
     // If the entity supports rendering, remove from all render layers and dispose its images
     object2D match {
       case g: Sprite2D =>
@@ -116,10 +120,6 @@ abstract class Scene2D extends Entity {
         movableObjects -= m
       case _ =>
     }
-  }
-
-  def remove(uiElement: UiElement): Unit = {
-    uiLayers.remove(uiElement)
   }
 
 
@@ -180,7 +180,7 @@ abstract class Scene2D extends Entity {
     objects.toArray.foreach(_.update(deltaT))
   }
 
-  private def updateUiLocic(deltaT: Float): Unit = {
+  private def updateUiLogic(deltaT: Float): Unit = {
     for (layer <- uiLayers.get()){
       layer.elements.toArray.foreach(_.update(deltaT))
     }
@@ -189,17 +189,28 @@ abstract class Scene2D extends Entity {
   override def update(deltaT: Float): Unit = {
     super.update(deltaT)
     updateGraphics(deltaT)
+    checkMouse()
     if (!GameManager.isPaused) {
       updateMovement(deltaT)
       updateCollisions(deltaT)
       updateObjectsLogic(deltaT)
-      updateUiLocic(deltaT)
+      updateUiLogic(deltaT)
     }
   }
 
 
 
-
+  private def checkMouse(): Unit = {
+    for (layer <- uiLayers.get()){
+      for (el <- layer.elements){
+        if (el.containsPoint(GameManager.mousePos)){
+          _isMouseOnUi = true
+          return
+        }
+      }
+    }
+    _isMouseOnUi = false
+  }
 
   def handleMouseInput(pos: Vector2, button: Int): Unit
 

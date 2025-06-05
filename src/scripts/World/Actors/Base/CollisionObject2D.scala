@@ -26,7 +26,6 @@ class CollisionObject2D(
   lifeTime: Option[Float] = None
 ) extends Object2D(pos, lifeTime) with Collider2D {
 
-
   /**
    * Override spawn to run a collision check immediately upon creation.
    * This ensures that if the object spawns overlapping another, the collision
@@ -54,7 +53,7 @@ class CollisionObject2D(
    * Remove this entity from the current scene via the ScenesManager.
    * Called when the entity should no longer exist (e.g., lifetime expired or explicit destroy).
    */
-  override def destroy(): Unit = {}
+
 
 
 }

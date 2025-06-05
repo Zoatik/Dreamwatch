@@ -7,8 +7,10 @@ import scripts.World.Actors.Base.Object2D
  * Trait that adds movement behavior to any Object2D in the world.
  * Provides speed, target tracking, and different trajectory styles.
  */
-trait Movement2D { self: Object2D =>
+trait Movement2D {
 
+  def pos: Vector2
+  def pos_=(newPos: Vector2): Unit
   /** Speed scalar in units per second. */
   var speed: Float
 

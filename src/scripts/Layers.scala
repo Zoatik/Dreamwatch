@@ -50,7 +50,7 @@ class Layers[T](private var depth: Int) {
    *
    * @param z The Z-index of the layer to remove.
    */
-  def remove(z: Int): Unit = layers -= get(z).getOrElse(return)
+  def remove(z: Int): Unit = layers -= this.get(z).getOrElse(return)
 
   /**
    * Move an existing layer to a new Z-index position.
@@ -90,6 +90,12 @@ class Layers[T](private var depth: Int) {
    * @return Internal buffer of layers.
    */
   def get(): ArrayBuffer[Layer[T]] = layers
+
+  def nbOfElements(): Int = {
+    var nb: Int = 0
+    layers.foreach(layer => nb += layer.elements.size)
+    nb
+  }
 }
 
 

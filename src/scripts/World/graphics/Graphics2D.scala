@@ -10,7 +10,8 @@ import com.badlogic.gdx.math.Vector2
  */
 trait Graphics2D {
 
-  var pos: Vector2
+  def pos: Vector2
+  def pos_=(newPos: Vector2): Unit
   var angle: Float
   protected var _scale: Float
   protected var _width: Float
@@ -37,6 +38,8 @@ trait Graphics2D {
         image
       )
     }
+    else
+      println("image is null")
   }
 }
 

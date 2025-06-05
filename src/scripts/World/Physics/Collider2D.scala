@@ -9,7 +9,7 @@ import scala.collection.mutable.ArrayBuffer
  * Trait for any object that has a collision area and participates in collision detection.
  * Classes mixing in Collider2D must be Entities and provide a collision shape and layer.
  */
-trait Collider2D extends Area2D { self: Entity =>
+trait Collider2D extends Area2D {
 
   /**
    * Index of the collision layer this Collider2D belongs to.
@@ -42,7 +42,7 @@ trait Collider2D extends Area2D { self: Entity =>
    *
    * @param other The other Collider2D involved in the collision.
    */
-  def collided(other: Collider2D): Unit = {
+  private def collided(other: Collider2D): Unit = {
     collisionEventListeners.foreach(_(other))
   }
 

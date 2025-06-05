@@ -34,7 +34,7 @@ class Bullet(pos: Vector2,
   var damage: Float = 1.0f
   var explosionRadius: Float = baseExplosionRadius(bulletType)
   var explosionDamage: Float = 1.0f
-  private val explosionCollider = new CollisionObject2D(pos, Area2D.Circle, explosionRadius, 0, cLayerZ) with Component {
+  private val explosionCollider = new CollisionObject2D(pos, Area2D.Circle, explosionRadius, 0, cLayerZ, lifeTime = Some(0.1f)) with Component {
     override val parent: Object2D = this
   }
 

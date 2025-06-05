@@ -16,12 +16,13 @@ class CollisionSprite2D(pos: Vector2,
                         lifeTime: Option[Float] = None)
   extends Sprite2D(pos, images, gLayerZ, area2DType, angle, spriteScale, lifeTime) with Collider2D{
 
-
   /**
    * Callback invoked when this object collides with another Collider2D.
    * Subclasses implement this to respond to collision events.
    *
    * @param other The other Collider2D involved in the collision.
    */
-  override protected def onCollision(other: Collider2D): Unit = ???
+  override protected def onCollision(other: Collider2D): Unit = {
+  }
+
 }
