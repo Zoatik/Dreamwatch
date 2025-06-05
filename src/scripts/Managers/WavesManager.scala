@@ -24,7 +24,7 @@ object WavesManager extends Manager[GdxGraphics]{
   private val rnd = new Random()
 
   // Has to be called and modified somewhere else:
-  var cardsSelectionDone: Boolean = false
+  var cardsSelectionDone: Boolean = true
   var bossDefeated: Boolean = false
   var isAlive: Boolean = true
 
@@ -41,7 +41,6 @@ object WavesManager extends Manager[GdxGraphics]{
 
     // Test
     InputManager.onMousePressed((_,_) => bossDefeated = true)
-    InputManager.onMousePressed((_,_) => cardsSelectionDone = true)
 
     if(!isAlive){
       // Game is lost !
@@ -52,9 +51,6 @@ object WavesManager extends Manager[GdxGraphics]{
         if (waveTimer < Globals.WAVE_LENGTH) {
           // Do stuff here during the normal wave
         }
-//        else if (waveCounter%Globals.NBR_WAVES_BEFORE_BOSS == 0){
-//
-//        }
         else {
           // End of the wave. Do this:
           // Stop spawning nightmares
@@ -74,7 +70,6 @@ object WavesManager extends Manager[GdxGraphics]{
           if(bossCounter == Globals.NBR_OF_BOSSES){
             // Game is won !
             println("Game is won !")
-            println(s"${bossCounter} bosses were defeated.")
           }
           else{
             // Next boss
@@ -86,16 +81,13 @@ object WavesManager extends Manager[GdxGraphics]{
 
 
       case "idle" =>
-        println("Entered idle phase.. choose your cards.")
         // Show cards (will most likely handle the cards showing that will access this object and modify the cardsSelectionDone)
         // What happens once you've chosen you're upgrade card
         if (cardsSelectionDone) {
           if (waveCounter % Globals.NBR_WAVES_BEFORE_BOSS == 0) {
-            cardsSelectionDone = false
             startNewBossWave()
           }
           else {
-            cardsSelectionDone = false
             startNewWave()
           }
         }
@@ -135,12 +127,23 @@ object WavesManager extends Manager[GdxGraphics]{
 
   // Basically handles all the spawning
   def updateWave(deltaT: Float, g: GdxGraphics): Unit = {
-      if (rnd.nextFloat() < deltaT * spawnRate) {
-      val startX = rnd.nextFloat() * g.getScreenWidth
-      val startY = g.getScreenHeight
-      val targetX = rnd.nextFloat() * g.getScreenWidth
-      val targetY = 0f
-      new Nightmare(new Vector2(startX, startY), new Vector2(targetX, targetY), Nightmare.Small).spawn()
-      }
+    waveStatus match {
+        case "normal" =>
+        if (rnd.nextFloat() < deltaT * spawnRate) {
+        val startX = rnd.nextFloat() * g.getScreenWidth
+        val startY = g.getScreenHeight
+        val targetX = rnd.nextFloat() * g.getScreenWidth
+        val targetY = 0f
+        new Nightmare(new Vector2(startX, startY), new Vector2(targetX, targetY), Nightmare.Small).spawn()
+        }
+
+
+      case "boss" =>
+        //new Boss(new Vector2(990, 510), Boss.UneAraignee).spawn()
+
+
+
+      case _ =>
+    }
   }
 }

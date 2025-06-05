@@ -20,10 +20,10 @@ object Globals {
   val NIGHTMARE_C_LAYER = 0
   val BOSS_C_LAYER = 0
 
-  val WAVE_LENGTH: Float = 2          // Should be 60
+  val WAVE_LENGTH: Float = 1          // Should be 60
   val DEFAULT_SPAWN_RATE: Float = 0.5f
 
-  val NBR_WAVES_BEFORE_BOSS: Int = 2  // Should be 5
-  val NBR_OF_BOSSES: Int = 3          // Should be 4
+  val NBR_WAVES_BEFORE_BOSS: Int = 1  // Should be 5
+  val NBR_OF_BOSSES: Int = 4
 
 }
