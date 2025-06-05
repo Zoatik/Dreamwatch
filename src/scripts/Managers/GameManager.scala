@@ -15,19 +15,23 @@ import scala.util.Random
  * GameManager handles high-level game logic: input-driven bullet spawning and random enemy spawning.
  * It implements Manager[GdxGraphics] to receive update calls each frame with rendering context.
  */
-object GameManager extends Manager[GameContext] {
+object GameManager extends Manager[GdxGraphics] {
 
   /**
    * Central toy position from which bullets originate (middle of screen horizontally, bottom).
    */
   val toyPos: Vector2 = new Vector2(Globals.WINDOW_WIDTH / 2f, 0)
 
+  var g: GdxGraphics = _
+
+
 
   /**
    * Initialization logic for GameManager. Called once at startup.
    * Registers an input listener to spawn bullets based on mouse button clicks.
    */
-  override def init(): Unit = {
+  override def init(gdxGraphics: GdxGraphics): Unit = {
+    g = gdxGraphics
     println("GameManager ready")
     // Initialize scene management (layers, etc.) before spawning anything.
     ScenesManager.init()
@@ -49,6 +53,7 @@ object GameManager extends Manager[GameContext] {
    */
   override def update(deltaT: Float, ctx: GameContext): Unit = {
     // First, update all scene-related managers (rendering, collisions, etc.)
+    require(g != null, "GameManager must be initialized with gdxGraphics !")
     ScenesManager.update(deltaT, ctx.g)
     WavesManager.update(deltaT, ctx.g)
 

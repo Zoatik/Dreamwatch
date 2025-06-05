@@ -13,18 +13,13 @@ abstract class Entity(var lifeTime: Option[Float] = None) {
    * Remove this entity from the current scene via the ScenesManager.
    * Called when the entity should no longer exist (e.g., lifetime expired or explicit destroy).
    */
-  def destroy(): Unit = {
-    ScenesManager.removeFromCurrentScene(this)
-  }
+  def destroy(): Unit
 
   /**
    * Add (spawn) this entity into the current scene via the ScenesManager.
    * Returns `this` to allow method chaining if desired.
    */
-  def spawn(): Entity = {
-    ScenesManager.addToCurrentScene(this)
-    this
-  }
+  def instantiate(): Entity
 
   /**
    * Update the entity each frame. Decrements `lifeTime` if defined.

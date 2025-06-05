@@ -3,8 +3,7 @@ package scripts.Managers
 import ch.hevs.gdx2d.lib.GdxGraphics
 import scripts.GUI.UiElement
 import scripts.Globals
-import scripts.World.Actors.Base.Entity
-import scripts.World.Actors.TopLevel.Scene2D
+import scripts.World.Actors.Base.{Entity, Object2D, Scene2D}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -69,9 +68,9 @@ object ScenesManager extends Manager[GdxGraphics] {
    *
    * @param entity The Entity to add to the active scene.
    */
-  def addToCurrentScene(entity: Entity): Unit = {
+  def addToCurrentScene(object2D: Object2D): Unit = {
     if (currentScene != null)
-      currentScene.add(entity)
+      currentScene.add(object2D)
 
   }
 

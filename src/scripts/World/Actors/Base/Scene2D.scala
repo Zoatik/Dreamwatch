@@ -1,10 +1,8 @@
-package scripts.World.Actors.TopLevel
+package scripts.World.Actors.Base
 
 import ch.hevs.gdx2d.lib.GdxGraphics
-import com.badlogic.gdx.Input
 import scripts.GUI.UiElement
 import scripts.Managers._
-import scripts.World.Actors.Base.Entity
 import scripts.World.Physics.{Collider2D, Movement2D}
 import scripts.World.graphics.Graphics2D
 import scripts.{Globals, Layer, Layers}
@@ -15,7 +13,7 @@ import scala.collection.mutable.ArrayBuffer
  * Represents a top-level 2D scene. Manages all entities in the scene,
  * including their rendering, collision detection, and movement updates.
  */
-class Scene2D {
+abstract class Scene2D extends Entity {
 
   /**
    * Layers for rendering: a collection of Graphics2D instances grouped by Z-index.
@@ -35,9 +33,9 @@ class Scene2D {
   private val movableObjects: ArrayBuffer[Movement2D] = ArrayBuffer()
 
   /**
-   * Buffer of all entities present in the scene, regardless of their capabilities.
+   * Buffer of all objects present in the scene, regardless of their capabilities.
    */
-  private val entities: ArrayBuffer[Entity] = ArrayBuffer()
+  private val objects: ArrayBuffer[Entity] = ArrayBuffer()
 
   /**
    * Scale factor applied to movement deltas (e.g., for slow-motion or speed-up effects).
@@ -50,12 +48,12 @@ class Scene2D {
    *
    * @param entity The Entity to add.
    */
-  def add(entity: Entity): Unit = {
+  def add(object2D: Object2D): Unit = {
     // Track entity in the master list
-    entities += entity
+    objects += object2D
 
     // If the entity supports rendering (Graphics2D), add it to the appropriate render layer
-    entity match {
+    object2D match {
       case g: Graphics2D =>
         val z: Int = g.graphicLayerZ
         if (z >= 0 && z < Globals.G_LAYERS_SIZE)
@@ -64,7 +62,7 @@ class Scene2D {
     }
 
     // If the entity supports collisions (Collider2D), add it to the appropriate collision layer
-    entity match {
+    object2D match {
       case c: Collider2D =>
         val z: Int = c.collisionLayerZ
         if (z >= 0 && z < Globals.C_LAYERS_SIZE)
@@ -73,7 +71,7 @@ class Scene2D {
     }
 
     // If the entity supports movement (Movement2D), add it to the movableObjects buffer
-    entity match {
+    object2D match {
       case m: Movement2D =>
         movableObjects += m
       case _ =>
@@ -92,12 +90,12 @@ class Scene2D {
    *
    * @param entity The Entity to remove.
    */
-  def remove(entity: Entity): Unit = {
+  def remove(object2D: Object2D): Unit = {
     // Remove from master list
-    entities -= entity
+    objects -= object2D
 
     // If the entity supports rendering, remove from all render layers and dispose its images
-    entity match {
+    object2D match {
       case g: Graphics2D =>
         gLayers.remove(g)
         // Manually dispose bitmap resources to prevent memory leaks or crashes
@@ -106,14 +104,14 @@ class Scene2D {
     }
 
     // If the entity supports collisions, remove from all collision layers
-    entity match {
+    object2D match {
       case c: Collider2D =>
         cLayers.remove(c)
       case _ =>
     }
 
     // If the entity supports movement, remove it from the movableObjects buffer
-    entity match {
+    object2D match {
       case m: Movement2D =>
         movableObjects -= m
       case _ =>
@@ -150,7 +148,7 @@ class Scene2D {
    *
    * @return Buffer of Entity instances.
    */
-  def getEntities: ArrayBuffer[Entity] = entities
+  def getObjects: ArrayBuffer[Entity] = objects
 
   /**
    * Perform collision detection across every collision layer.
@@ -209,9 +207,20 @@ class Scene2D {
    *
    * @param deltaT Time elapsed since last frame (in seconds).
    */
-  def updateEntities(deltaT: Float): Unit = {
+  def updateObjects(deltaT: Float): Unit = {
     // Convert to array to avoid concurrent modification if entities are added/removed during update
-    entities.toArray.foreach(_.update(deltaT))
+    objects.toArray.foreach(_.update(deltaT))
   }
 
+  /**
+   * Remove this entity from the current scene via the ScenesManager.
+   * Called when the entity should no longer exist (e.g., lifetime expired or explicit destroy).
+   */
+  override def destroy(): Unit = ???
+
+  /**
+   * Add (spawn) this entity into the current scene via the ScenesManager.
+   * Returns `this` to allow method chaining if desired.
+   */
+  override def instantiate(): Entity = ???
 }

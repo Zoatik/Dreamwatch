@@ -30,7 +30,7 @@ trait Manager[T] {
    * Perform any necessary setup when the manager is first created.
    * Called once at application start.
    */
-  def init(): Unit
+  def init(ctx: T): Unit
 
   /**
    * Update method called each frame with the elapsed time and a context object.
