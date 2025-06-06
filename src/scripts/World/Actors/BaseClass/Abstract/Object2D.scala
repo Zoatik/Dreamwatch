@@ -19,7 +19,7 @@ abstract class Object2D(
     GameManager.currentScene.remove(this)
   }
 
-  override def instantiate(): Entity = {
+  override def instantiate(): Object2D = {
     GameManager.currentScene.add(this)
     this
   }

@@ -70,6 +70,7 @@ class Sprite2D(pos: Vector2,
    */
   private var currImageIdx: Int = 0
 
+
   /**
    * Advance to the next frame and return it.
    * Increments the internal index and wraps around automatically.
@@ -103,8 +104,9 @@ class Sprite2D(pos: Vector2,
    * Add (spawn) this entity into the current scene via the ScenesManager.
    * Returns `this` to allow method chaining if desired.
    */
-  override def instantiate(): Entity = {
+  override def instantiate(): Sprite2D = {
     super.instantiate()
+    this
   }
 
 

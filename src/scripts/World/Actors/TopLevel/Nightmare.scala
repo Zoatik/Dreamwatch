@@ -29,6 +29,11 @@ class Nightmare (pos: Vector2,
   override var speed: Float = baseNightmareSpeed(nightmareType)
   override var target: Vector2 = targetPos.cpy
 
+  override def instantiate(): Nightmare = {
+    super.instantiate()
+    this
+  }
+
   override protected def onCollision(other: Collider2D): Unit = other match{
     case _: Bullet => this.destroy()
     case _: CollisionObject2D with Component[Bullet] => this.destroy()

@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2
 import scripts.World.Actors.BaseClass.Abstract.Object2D
 import scripts.World.Physics.Movement2D
 
-class Toy(pos: Vector2, graphicLayerZ: Int)
+class Toy(pos: Vector2)
   extends Object2D(pos, None) with Movement2D {
 
   override var speed: Float = 0

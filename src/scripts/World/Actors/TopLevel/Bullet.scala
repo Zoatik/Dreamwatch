@@ -39,6 +39,11 @@ class Bullet(pos: Vector2,
     override val parent: Bullet = Bullet.this
   }
 
+  override def instantiate(): Bullet = {
+    super.instantiate()
+    this
+  }
+
   override protected def onCollision(other: Collider2D): Unit = other match {
     case _: Nightmare =>
       this.explode()

@@ -8,6 +8,7 @@ package scripts.World.Actors.BaseClass.Abstract
  */
 abstract class Entity(var lifeTime: Option[Float] = None) {
 
+  protected var timeFromCreation: Float = 0
   /**
    * Remove this entity from the current scene via the ScenesManager.
    * Called when the entity should no longer exist (e.g., lifetime expired or explicit destroy).
@@ -26,6 +27,7 @@ abstract class Entity(var lifeTime: Option[Float] = None) {
    * @param deltaT Time elapsed since last frame (in seconds).
    */
   def update(deltaT: Float): Unit = {
+    timeFromCreation += deltaT
     // Only proceed if a lifetime is specified
     if (lifeTime.isDefined) {
       // Decrement the remaining lifetime

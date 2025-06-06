@@ -34,7 +34,7 @@ class CollisionObject2D(
    *
    * @return This entity, for chaining if needed.
    */
-  override def instantiate(): Entity = {
+  override def instantiate(): CollisionObject2D = {
     super.instantiate()
     // Perform an immediate collision check with all colliders in the same layer
     val cLayer: Layer[Collider2D] = GameManager.currentScene.cLayers.get(cLayerZ).get

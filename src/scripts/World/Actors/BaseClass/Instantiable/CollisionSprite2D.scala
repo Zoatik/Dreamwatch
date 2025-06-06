@@ -2,6 +2,7 @@ package scripts.World.Actors.BaseClass.Instantiable
 
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
+import scripts.World.Actors.BaseClass.Abstract.Entity
 import scripts.World.Physics.{Area2D, Collider2D}
 
 import scala.collection.mutable.ArrayBuffer
@@ -16,6 +17,10 @@ class CollisionSprite2D(pos: Vector2,
                         lifeTime: Option[Float] = None)
   extends Sprite2D(pos, images, gLayerZ, area2DType, angle, spriteScale, lifeTime) with Collider2D{
 
+  override def instantiate(): CollisionSprite2D = {
+    super.instantiate()
+    this
+  }
   /**
    * Callback invoked when this object collides with another Collider2D.
    * Subclasses implement this to respond to collision events.
