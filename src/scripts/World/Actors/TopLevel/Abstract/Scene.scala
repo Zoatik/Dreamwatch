@@ -1,7 +1,8 @@
-package scripts.World.Actors.BaseClass.Abstract
+package scripts.World.Actors.TopLevel.Abstract
 
 import com.badlogic.gdx.math.Vector2
 import scripts.Managers._
+import scripts.World.Actors.BaseClass.Abstract.{Entity, Object2D}
 import scripts.World.Actors.BaseClass.Instantiable.{Sprite2D, UiElement}
 import scripts.World.Physics.{Collider2D, Movement2D}
 import scripts.utils.{Globals, Layers}
@@ -12,8 +13,9 @@ import scala.collection.mutable.ArrayBuffer
  * Represents a top-level 2D scene. Manages all entities in the scene,
  * including their rendering, collision detection, and movement updates.
  */
-abstract class Scene extends Entity {
+abstract class Scene extends Entity with Controller {
 
+  val player: Player
   /**
    * Layers for rendering: a collection of Graphics2D instances grouped by Z-index.
    */
@@ -214,10 +216,6 @@ abstract class Scene extends Entity {
     _isMouseOnUi = false
   }
 
-  def handleMouseInput(pos: Vector2, button: Int): Unit
-
-  def handleKeyInput(button: Int): Unit
-
   /**
    * Remove this entity from the current scene via the ScenesManager.
    * Called when the entity should no longer exist (e.g., lifetime expired or explicit destroy).
@@ -229,5 +227,13 @@ abstract class Scene extends Entity {
    * Returns `this` to allow method chaining if desired.
    */
   override def instantiate(): Scene = this
+
+}
+
+object Scene{
+  sealed trait Type
+  case object MainMenu extends Type
+  case object Game extends Type
+
 
 }

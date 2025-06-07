@@ -3,13 +3,15 @@ package scripts.World.Actors.TopLevel
 import com.badlogic.gdx.math.Vector2
 import scripts.Managers.{GameManager, InputManager}
 import scripts.Managers.GameManager.toyPos
-import scripts.World.Actors.BaseClass.Abstract.{Entity, Scene}
+import scripts.World.Actors.BaseClass.Abstract.Entity
+import scripts.World.Actors.TopLevel.Abstract.{Player, Scene}
 import scripts.utils.Globals
 
 import scala.util.Random
 
 class GameScene extends Scene{
 
+  override val player: Player = new GamePlayer()
   private var waveCounter: Int = 1
   private var waveTimer: Float = 0
   private var waveStatus: String = "normal"

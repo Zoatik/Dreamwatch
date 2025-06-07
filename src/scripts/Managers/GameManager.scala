@@ -4,9 +4,9 @@ import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.{Gdx, Input}
 import com.badlogic.gdx.math.Vector2
-import scripts.World.Actors.BaseClass.Abstract.Scene
 import scripts.World.Actors.BaseClass.Instantiable.UiElement
-import scripts.World.Actors.TopLevel.GameScene
+import scripts.World.Actors.TopLevel.Abstract.Scene
+import scripts.World.Actors.TopLevel.{GameScene, MainMenuScene}
 import scripts.World.Physics.Area2D
 import scripts.utils.Globals
 
@@ -85,4 +85,13 @@ object GameManager{
   def handleMouseInput(pos: Vector2, button: Int): Unit = {
     currentScene.handleMouseInput(pos, button)
   }
+
+  def loadScene(sceneType: Scene.Type): Unit = {
+    currentScene.destroy()
+    currentScene = sceneType match {
+      case Scene.MainMenu => new MainMenuScene().instantiate()
+      case Scene.Game => new GameScene().instantiate()
+    }
+  }
+
 }
