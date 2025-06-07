@@ -9,17 +9,20 @@ import scripts.World.Physics.{Area2D, Movement2D}
 import scala.collection.mutable.ArrayBuffer
 
 abstract class Weapon(pos: Vector2, images: ArrayBuffer[BitmapImage], gLayerZ: Int)
-  extends Sprite2D(pos, images, gLayerZ, Area2D.Box) with Movement2D{
+  extends Sprite2D(pos, images, gLayerZ, Area2D.Box) with Movement2D {
+  // abstract attributes on bullet specs
+  protected val bulletType: Bullet.Type
   protected val baseBulletSpeed: Float
   protected val baseBulletCooldown: Float
   protected val baseBulletSize: Float
   protected val baseBulletExplosionSize: Float
   protected val baseBulletDamage: Float
 
-  protected val bulletType: Bullet.Type
-
+  // shoot ability variables
   protected var canShoot: Boolean = true
   protected var lastShot: Float = 0.0f
+
+  // Upgrades + Evolutions
   var weaponUpgrades: ArrayBuffer[Weapon.Upgrade] = ArrayBuffer.empty
   var weaponEvolution: Weapon.Evolution = Weapon.Phase0
 
@@ -38,13 +41,47 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[BitmapImage], gLayerZ: I
     canShoot = false
   }
 
-  def modifiedBulletCooldown: Float = {
+  // modified bullet values getter
+  protected def modifiedBulletSpeed: Float = {
+    val cooldownModifiers = 1 + weaponUpgrades.count(upgrade => {
+      upgrade.equals(Weapon.Speed)                 // TODO: Controler que equals fonctionne correctement
+    }) * Weapon.Cooldown.reduction
+
+    baseBulletSpeed * cooldownModifiers
+  }
+
+  protected def modifiedBulletCooldown: Float = {
     val cooldownModifiers = 1 + weaponUpgrades.count(upgrade => {
       upgrade.equals(Weapon.Cooldown)                 // TODO: Controler que equals fonctionne correctement
     }) * Weapon.Cooldown.reduction
 
     baseBulletCooldown * cooldownModifiers
   }
+
+  protected def modifiedBulletSize: Float = {
+    val cooldownModifiers = 1 + weaponUpgrades.count(upgrade => {
+      upgrade.equals(Weapon.BulletSize)                 // TODO: Controler que equals fonctionne correctement
+    }) * Weapon.Cooldown.reduction
+
+    baseBulletSize * cooldownModifiers
+  }
+
+  protected def modifiedBulletExplosionSize: Float = {
+    val cooldownModifiers = 1 + weaponUpgrades.count(upgrade => {
+      upgrade.equals(Weapon.ExplosionSize)                 // TODO: Controler que equals fonctionne correctement
+    }) * Weapon.Cooldown.reduction
+
+    baseBulletExplosionSize * cooldownModifiers
+  }
+
+  protected def modifiedBulletDamage: Float = {
+    val cooldownModifiers = 1 + weaponUpgrades.count(upgrade => {
+      upgrade.equals(Weapon.BossDamage)                 // TODO: Controler que equals fonctionne correctement
+    }) * Weapon.Cooldown.reduction
+
+    baseBulletDamage * cooldownModifiers
+  }
+
 
 }
 
