@@ -7,7 +7,7 @@ import scala.collection.mutable.ArrayBuffer
  *
  * @param depth Initial number of layers to create (indexed from 0 to depth-1).
  */
-class Layers[T](private var depth: Int) {
+class Layers[T](var depth: Int) {
   /** Internal buffer storing each layer. */
   private val layers: ArrayBuffer[Layer[T]] = ArrayBuffer.tabulate(depth)(i => new Layer(i))
 

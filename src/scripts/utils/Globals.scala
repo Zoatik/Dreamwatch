@@ -5,10 +5,11 @@ import com.badlogic.gdx.math.Vector2
 object Globals {
   val WINDOW_WIDTH = 1920
   val WINDOW_HEIGHT = 1080
+  val BOTTOM_UI_HEIGHT = 200
 
   val G_LAYERS_SIZE = 3
   val C_LAYERS_SIZE = 3
-  val UI_LAYERS_SIZE = 1
+  val UI_LAYERS_SIZE = 3
 
   val NB_OF_SCENES = 3
 

@@ -3,9 +3,8 @@ package scripts
 import ch.hevs.gdx2d.desktop.{Game2D, PortableApplication}
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
-import scripts.utils.Globals.{WINDOW_HEIGHT, WINDOW_WIDTH}
 import scripts.Managers.{GameManager, InputManager}
+import scripts.utils.Globals.{WINDOW_HEIGHT, WINDOW_WIDTH}
 
 
 class DreamWatch extends PortableApplication(WINDOW_WIDTH, WINDOW_HEIGHT){
@@ -17,7 +16,6 @@ class DreamWatch extends PortableApplication(WINDOW_WIDTH, WINDOW_HEIGHT){
   }
 
   override def onGraphicRender(g: GdxGraphics): Unit = {
-    g.clear()
     GameManager.update(Gdx.graphics.getDeltaTime)
 
     g.drawFPS()

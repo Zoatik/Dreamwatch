@@ -1,9 +1,10 @@
 package scripts.World.Actors.TopLevel
 
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
+import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.math.Vector2
 import scripts.World.Actors.BaseClass.Abstract.{Component, Object2D}
-import scripts.World.Actors.BaseClass.Instantiable.{CollisionObject2D, CollisionSprite2D, Sprite2D}
+import scripts.World.Actors.BaseClass.Instantiable.{CollisionObject2D, CollisionSprite2D, Particle2D, Sprite2D}
 import scripts.World.Actors.TopLevel.Bullet.{baseBulletSpeed, baseExplosionRadius, bulletTrajectory}
 import scripts.World.Physics.{Area2D, Collider2D, Movement2D}
 import scripts.utils.Globals
@@ -59,6 +60,18 @@ class Bullet(pos: Vector2,
 
   private def explode(): Unit = {
     explosionCollider.instantiate()
+    val exploParticle = new Particle2D(
+      "res/shaders/explosion.fp",
+      pos,
+      (explosionRadius * 2).toInt,
+      (explosionRadius * 2).toInt,
+      Some(2.0f))
+
+    exploParticle.setUniform("u_resolution", new Vector2(Globals.WINDOW_WIDTH, Globals.WINDOW_HEIGHT))
+    exploParticle.setUniform("u_center", new Vector2(pos.x, pos.y))
+    exploParticle.setUniform("u_radius", explosionRadius)
+    exploParticle.setUniform("u_duration", 0.2f)
+    exploParticle.instantiate()
   }
 
 

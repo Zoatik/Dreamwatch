@@ -55,7 +55,12 @@ object GameManager{
     scenes += currentScene
 
     val im = ArrayBuffer(new BitmapImage("res/sprites/soccer.png"))
-    val test: UiElement = new UiElement(new Vector2(100,100), im, 0, Area2D.Circle).instantiate().asInstanceOf[UiElement]
+    val im2 = ArrayBuffer(new BitmapImage("res/sprites/cloud.png"))
+    val test: UiElement = new UiElement(new Vector2(100,100), im, 0, Area2D.Circle).instantiate()
+    val test2: UiElement = new UiElement(new Vector2(1000,1000), im2, 1, Area2D.Circle).instantiate()
+
+
+
 
     //test.onMouseEntered(_ => println(test.isMouseOver(mousePos)))
     //test.onMouseLeft(_ => println(test.isMouseOver(mousePos)))

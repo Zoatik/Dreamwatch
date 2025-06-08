@@ -17,6 +17,8 @@ trait Collider2D extends Area2D {
    */
   var cLayerZ: Int
 
+  private val otherColliders: ArrayBuffer[Collider2D] = ArrayBuffer()
+
   private val collisionEventListeners: ArrayBuffer[Collider2D => Unit] =
     ArrayBuffer(other => onCollision(other))
 
@@ -43,7 +45,10 @@ trait Collider2D extends Area2D {
    * @param other The other Collider2D involved in the collision.
    */
   private def collided(other: Collider2D): Unit = {
-    collisionEventListeners.foreach(_(other))
+    if (!otherColliders.contains(other)) {
+      otherColliders.addOne(other)
+      collisionEventListeners.foreach(_(other))
+    }
   }
 
   /**

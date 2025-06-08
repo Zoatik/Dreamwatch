@@ -24,21 +24,4 @@ abstract class Object2D(
     this
   }
 
-  /**
-   * Retrieve the current position of this Object2D.
-   * @return A Vector2 representing the object's position.
-   */
-  //def pos: Vector2 = _pos
-
-  /**
-   * Update the position of this Object2D.
-   * Also synchronizes the internal sprite's position to match.
-   *
-   * @param newPos The new position to assign to this object.
-   */
-  /*def pos_=(newPos: Vector2): Unit = {
-    _pos = newPos
-    //sprite.pos = newPos
-  }*/
-
 }

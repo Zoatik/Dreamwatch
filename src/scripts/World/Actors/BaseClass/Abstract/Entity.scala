@@ -37,6 +37,7 @@ abstract class Entity(var lifeTime: Option[Float] = None) {
 
       // If lifetime has expired, destroy this entity and stop further execution
       if (lifeTime.get <= 0) {
+        println("DESTROY BECAUSE TIME PASSED")
         destroy()
         return
       }

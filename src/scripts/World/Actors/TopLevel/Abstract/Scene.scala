@@ -3,7 +3,7 @@ package scripts.World.Actors.TopLevel.Abstract
 import com.badlogic.gdx.math.Vector2
 import scripts.Managers._
 import scripts.World.Actors.BaseClass.Abstract.{Entity, Object2D}
-import scripts.World.Actors.BaseClass.Instantiable.{Sprite2D, UiElement}
+import scripts.World.Actors.BaseClass.Instantiable.{Particle2D, Sprite2D, UiElement}
 import scripts.World.Physics.{Collider2D, Movement2D}
 import scripts.utils.{Globals, Layers}
 
@@ -37,6 +37,8 @@ abstract class Scene extends Entity with Controller {
    * Buffer of all objects present in the scene, regardless of their capabilities.
    */
   val objects: ArrayBuffer[Object2D] = ArrayBuffer()
+
+  val particles: ArrayBuffer[Particle2D] = ArrayBuffer()
 
   /**
    * Scale factor applied to movement deltas (e.g., for slow-motion or speed-up effects).
@@ -88,6 +90,12 @@ abstract class Scene extends Entity with Controller {
       case _ =>
     }
 
+    object2D match {
+      case p: Particle2D =>
+        particles += p
+      case _ =>
+    }
+
   }
 
   /**
@@ -120,6 +128,12 @@ abstract class Scene extends Entity with Controller {
     object2D match {
       case m: Movement2D =>
         movableObjects -= m
+      case _ =>
+    }
+
+    object2D match {
+      case p: Particle2D =>
+        particles -= p
       case _ =>
     }
   }
@@ -158,18 +172,30 @@ abstract class Scene extends Entity with Controller {
    * @param g      GdxGraphics instance used to draw on-screen.
    */
   private def updateGraphics(deltaT: Float): Unit = {
-    // Iterate through each existing render layer
-    for (layer <- gLayers.get()) {
-      // Delegate drawing to the RenderingManager, passing the layer and graphics context
-      layer.elements.foreach(gElement => gElement.draw(GameManager.g))
-      //RenderingManager.update(deltaT, RenderingContext(layer, g))
+    GameManager.g.clear()
+
+    // renders particles
+    for (particle <- particles){
+      particle.render()
     }
 
-    // Placeholder for future UI rendering logic
-    for (layer <- uiLayers.get()){
-      //RenderingManager.update(deltaT, RenderingContext(layer.asInstanceOf[Layer[Graphics2D]], g))
+    // renders graphical elements (except UI)
+    for (layer <- gLayers.get()) {
       layer.elements.foreach(gElement => gElement.draw(GameManager.g))
     }
+
+    // renders UI
+    for (layer <- uiLayers.get()){
+      layer.elements.foreach(gElement => gElement.draw(GameManager.g))
+    }
+
+    // Rough solution to avoid last image being drawn and erased too quickly
+    // redraws the ui layer a 2nd time
+    for (layer <- uiLayers.get()){
+      layer.elements.foreach(gElement => gElement.draw(GameManager.g))
+    }
+
+
   }
 
   /**
@@ -177,15 +203,9 @@ abstract class Scene extends Entity with Controller {
    *
    * @param deltaT Time elapsed since last frame (in seconds).
    */
-  private def updateObjectsLogic(deltaT: Float): Unit = {
+  private def updateLogic(deltaT: Float): Unit = {
     // Convert to array to avoid concurrent modification if entities are added/removed during update
     objects.toArray.foreach(_.update(deltaT))
-  }
-
-  private def updateUiLogic(deltaT: Float): Unit = {
-    for (layer <- uiLayers.get()){
-      layer.elements.toArray.foreach(_.update(deltaT))
-    }
   }
 
 
@@ -197,8 +217,7 @@ abstract class Scene extends Entity with Controller {
     if (!GameManager.isPaused) {
       updateMovement(deltaT)
       updateCollisions(deltaT)
-      updateObjectsLogic(deltaT)
-      updateUiLogic(deltaT)
+      updateLogic(deltaT)
     }
   }
 
