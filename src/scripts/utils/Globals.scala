@@ -2,6 +2,8 @@ package scripts.utils
 
 import com.badlogic.gdx.math.Vector2
 
+import scala.collection.mutable.ArrayBuffer
+
 object Globals {
   val WINDOW_WIDTH = 1920
   val WINDOW_HEIGHT = 1080
@@ -16,12 +18,20 @@ object Globals {
   val BULLET_G_LAYER = 1
   val NIGHTMARE_G_LAYER = 0
   val BOSS_G_LAYER = 2
+  val TOY_G_LAYER = 0
 
   val BULLET_C_LAYER = 0
-  val NIGHTMARE_C_LAYER = 0
-  val BOSS_C_LAYER = 0
+  val NIGHTMARE_C_LAYER = 1
+  val BOSS_C_LAYER = 2
+  val TOY_C_LAYER = 3
 
-  val WAVE_LENGTH: Float = 1          // Should be 60
+  val BULLET_C_LAYERMASK = ArrayBuffer(NIGHTMARE_C_LAYER, BOSS_C_LAYER)
+  val NIGHTMARE_C_LAYERMASK = ArrayBuffer(BULLET_C_LAYER)
+  val BOSS_C_LAYERMASK = ArrayBuffer(BULLET_C_LAYER)
+  val TOY_C_LAYERMASK = ArrayBuffer(NIGHTMARE_C_LAYER)
+
+
+  val WAVE_LENGTH: Float = 60          // Should be 60
   val DEFAULT_SPAWN_RATE: Float = 0.5f
 
   val NBR_WAVES_BEFORE_BOSS: Int = 2 // Should be 5

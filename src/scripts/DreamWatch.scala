@@ -3,7 +3,8 @@ package scripts
 import ch.hevs.gdx2d.desktop.{Game2D, PortableApplication}
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.Gdx
-import scripts.Managers.{GameManager, InputManager}
+import scripts.dreamwatch_engine.inputs.InputManager
+import scripts.game.GameManager
 import scripts.utils.Globals.{WINDOW_HEIGHT, WINDOW_WIDTH}
 
 
