@@ -178,26 +178,33 @@ abstract class Scene extends Entity with Controller {
   private def updateGraphics(deltaT: Float): Unit = {
     GameManager.g.clear()
 
-    // renders particles
-    for (particle <- particles){
-      particle.render()
-    }
+
 
     // renders graphical elements (except UI)
     for (layer <- gLayers.get()) {
       layer.elements.foreach(gElement => gElement.draw(GameManager.g))
     }
 
+    // renders particles
+    for (particle <- particles){
+      particle.render()
+    }
+
+    GameManager.g.setShaderRenderer(null)
+
     // renders UI
     for (layer <- uiLayers.get()){
       layer.elements.foreach(gElement => gElement.draw(GameManager.g))
     }
+
 
     // Rough solution to avoid last image being drawn and erased too quickly
     // redraws the ui layer a 2nd time
     for (layer <- uiLayers.get()){
       layer.elements.foreach(gElement => gElement.draw(GameManager.g))
     }
+
+
 
 
   }

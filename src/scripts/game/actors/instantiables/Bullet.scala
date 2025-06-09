@@ -5,7 +5,8 @@ import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.actors.abstracts.Component
 import scripts.dreamwatch_engine.actors.instantiables.{CollisionObject2D, CollisionSprite2D, Particle2D}
 import scripts.dreamwatch_engine.physics.{Area2D, Collider2D, Movement2D}
-import scripts.game.actors.instantiables.Bullet.{baseBulletSpeed, baseExplosionRadius, bulletTrajectory}
+import scripts.game.actors.abstracts.Nightmare
+import scripts.game.actors.instantiables.Bullet.{baseBulletRadius, baseBulletSpeed, baseExplosionRadius, bulletTrajectory}
 import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
@@ -31,6 +32,8 @@ class Bullet(pos: Vector2,
 
   initMovement(bulletTrajectory(bulletType))
 
+  width = baseBulletRadius(bulletType)
+
   var damage: Float = 1.0f
   var explosionRadius: Float = baseExplosionRadius(bulletType)
   var explosionDamage: Float = 1.0f
@@ -38,8 +41,15 @@ class Bullet(pos: Vector2,
     override val parent: Bullet = Bullet.this
   }
 
+  val bulletParticle = new Particle2D("res/shaders/electrical_ball.fp", pos)
+  bulletParticle.setUniform("u_radius", baseBulletRadius(bulletType))
+  bulletParticle.setUniform("u_center", pos)
+
   override def instantiate(): Bullet = {
     super.instantiate()
+    //val partTest = new Particle2D("res/shaders/electrical_ball.fp", pos)
+
+    bulletParticle.instantiate()
     this
   }
 
@@ -64,15 +74,17 @@ class Bullet(pos: Vector2,
     val exploParticle = new Particle2D(
       "res/shaders/explosion.fp",
       pos,
-      (explosionRadius * 2).toInt,
-      (explosionRadius * 2).toInt,
       Some(2.0f))
 
-    exploParticle.setUniform("u_resolution", new Vector2(Globals.WINDOW_WIDTH, Globals.WINDOW_HEIGHT))
     exploParticle.setUniform("u_center", new Vector2(pos.x, pos.y))
     exploParticle.setUniform("u_radius", explosionRadius)
     exploParticle.setUniform("u_duration", 0.2f)
     exploParticle.instantiate()
+  }
+
+  override def destroy(): Unit = {
+    super.destroy()
+    bulletParticle.destroy()
   }
 
 

@@ -6,8 +6,11 @@ uniform float u_duration;
 
 
 void main( void ) {
-       // Coordonnées du fragment
-       vec2 fragPos = gl_FragCoord.xy;
+       float dist = distance(gl_FragCoord.xy, u_center);
+
+       if(dist > u_radius) {
+              discard;
+       }
 
        // Progression normalisée de l’explosion [0..1]
        float prog = clamp(time / u_duration, 0.0, 1.0);
@@ -15,9 +18,9 @@ void main( void ) {
        // Rayon courant = du plus petit (0) au plus grand (u_radius)
        float currR = u_radius * prog;
 
-       // Distance normalisée [0..∞] du pixel au centre
-       float d = length(fragPos - u_center);
-       float t = d / currR;
+
+
+       float t = dist / currR;
 
        // Anneau de bord : on veut un ring fin autour de t≈1.0
        // smoothstep pour lisser l’intérieur et l’extérieur du ring

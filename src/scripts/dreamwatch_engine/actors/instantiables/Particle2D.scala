@@ -3,17 +3,18 @@ package scripts.dreamwatch_engine.actors.instantiables
 import ch.hevs.gdx2d.lib.renderers.ShaderRenderer
 import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.actors.abstracts.Object2D
+import scripts.game.GameManager
+import scripts.utils.Globals
 
 import scala.collection.mutable
 
-class Particle2D(shaderPath: String, pos: Vector2, var width: Int, var height: Int, lifeTime: Option[Float] = None)
+class Particle2D(shaderPath: String, pos: Vector2, lifeTime: Option[Float] = None)
   extends Object2D(pos, lifeTime){
 
-  var shaderRenderer: ShaderRenderer = _
+  var shaderRenderer: ShaderRenderer = new ShaderRenderer(shaderPath, Globals.WINDOW_WIDTH, Globals.WINDOW_HEIGHT)
   private val uniforms: mutable.HashMap[String, Any] = mutable.HashMap()
 
   override def instantiate(): Particle2D = {
-    shaderRenderer = new ShaderRenderer(shaderPath, width, height)
     super.instantiate()
     this
   }
@@ -23,7 +24,7 @@ class Particle2D(shaderPath: String, pos: Vector2, var width: Int, var height: I
   }
 
   def render(): Unit = {
-    shaderRenderer.render(pos.x.toInt, pos.y.toInt, timeFromCreation) // pos not working
+
     uniforms.foreach(u => u._2 match {
       case boolean: Boolean => shaderRenderer.setUniform(u._1, boolean)
       case int: Int => shaderRenderer.setUniform(u._1, int)
@@ -33,6 +34,10 @@ class Particle2D(shaderPath: String, pos: Vector2, var width: Int, var height: I
       case floatArray: Array[Float] => shaderRenderer.setUniform(u._1, floatArray)
       case _ => throw new Exception("Wrong type given for shader uniform !")
     })
+
+    GameManager.g.setShaderRenderer(shaderRenderer)
+    GameManager.g.drawShader(timeFromCreation)
+    //shaderRenderer.render(pos.x.toInt, pos.y.toInt, timeFromCreation) // pos not working
 
   }
 

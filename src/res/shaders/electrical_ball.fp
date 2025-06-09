@@ -4,7 +4,7 @@ in vec4 vColor;
 in vec2 vTexCoord;
 
 // Texture de la balle
-uniform sampler2D texture0;
+//uniform sampler2D texture0;
 
 // Uniforms de ton effet électrique
 uniform float time;       // temps en secondes
@@ -17,37 +17,35 @@ float noise(float x) {
 }
 
 void main(void) {
+
+    float dist = distance(gl_FragCoord.xy, u_center);
+
+    if(dist > u_radius) {
+        discard;
+    }
+
     // 1) Récupérer la couleur de base de la balle
     vec4 base = vec4(vColor);
 
-    // Si la balle est transparente ici, on reste en base
-    if (base.a < 0.01) {
-        gl_FragColor = base;
-        return;
-    }
 
     // 2) Calculer la position et la distance normalisée
-    vec2 fragPos = gl_FragCoord.xy;
-    vec2 uv      = (fragPos - u_center) / u_radius;
-    float dist   = length(uv);
+    vec2 uv      = (gl_FragCoord.xy - u_center) / u_radius;
+    //float dist   = length(uv);
 
     // 3) Générer un bruit animé en fonction de l’angle et du temps
     float ang = atan(uv.y, uv.x);
     float n   = noise(ang * 8.0 + time * 5.0);
 
     // 4) Créer l’anneau de « foudre » et le remplissage intérieur
-    float edge = smoothstep(1.0, 0.9, dist + n * 0.2);
-    float fill = 1.0 - smoothstep(0.0, 1.0, dist);
+    float edge = 1.5 *smoothstep(u_radius, u_radius*0.94, dist);
+    float fill = smoothstep(u_radius, 0.0, dist * 0.01);
 
     // 5) Intensité finale : on combine les deux
     float intensity = max(fill * 0.5, edge);
 
-    // 6) Si on est en dehors du cercle normalisé (dist > 1), on affiche la base
-    if (dist > 1.0) {
-        gl_FragColor = base;
-    } else {
-        // 7) Sinon on dessine la foudre en bleu‐clair
-        vec3 stormColor = vec3(0.6, 0.8, 1.0) * (0.7 + 0.3 * n);
-        gl_FragColor = vec4(stormColor * intensity, intensity);
-    }
+
+    // 7) Sinon on dessine la foudre en bleu‐clair
+    vec3 stormColor = vec3(0.6, 0.8, 1.0) * (0.7 + 0.3 * n);
+    gl_FragColor = vec4(stormColor * intensity, intensity);
+
 }
