@@ -8,7 +8,8 @@ import scripts.dreamwatch_engine.physics.{Collider2D, Movement2D}
 import scripts.dreamwatch_engine.utils.Layers
 import scripts.game.GameManager
 import scripts.game.GameManager.toyPos
-import scripts.game.actors.abstracts.Player
+import scripts.game.actors.abstracts.{Nightmare, Player}
+import scripts.game.actors.instantiables.nightmares.Ghost
 import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
@@ -52,12 +53,16 @@ class GameScene extends Scene{
         case _ =>
       }
     })
+
     startNewWave()
     this
   }
 
   override def update(deltaT: Float): Unit = {
     super.update(deltaT)
+
+    if (GameManager.isPaused)
+      return
 
     currentTime += deltaT
     waveTimer += deltaT
@@ -170,7 +175,7 @@ class GameScene extends Scene{
           val startY = GameManager.g.getScreenHeight
           val targetX = rnd.nextFloat() * GameManager.g.getScreenWidth
           val targetY = 0f
-          new Nightmare(new Vector2(startX, startY), new Vector2(targetX, targetY), Nightmare.Small).instantiate()
+          new Ghost(new Vector2(startX, startY), new Vector2(targetX, targetY)).instantiate()
         }
       case "idle" =>
       //println("Do nothing")
@@ -181,14 +186,14 @@ class GameScene extends Scene{
         if(rnd.nextFloat() < deltaT * spawnRate) {
           val bossPos: Vector2 = new Vector2(GameManager.g.getScreenWidth/2, GameManager.g.getScreenHeight)
           val bossTarget: Vector2 = new Vector2(rnd.nextFloat()*GameManager.g.getScreenWidth, 0)
-          new Nightmare(bossPos, bossTarget, Nightmare.Small).instantiate()
+          new Ghost(bossPos, bossTarget).instantiate()
         }
       case _ =>
     }
   }
 
   override def handleMouseInput(pos: Vector2, button: Int): Unit = {
-    if(!isMouseOnUi){
+    if(!isMouseOnUi && !GameManager.isPaused){
       button match {
         case 0 =>
           new Bullet(new Vector2(toyPos), new Vector2(pos), Bullet.Small).instantiate()

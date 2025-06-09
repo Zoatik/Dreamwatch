@@ -1,6 +1,5 @@
 
 uniform float time;
-uniform vec2 resolution;
 uniform vec2 u_center;
 uniform float u_radius;
 uniform float u_duration;

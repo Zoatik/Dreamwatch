@@ -50,3 +50,4 @@ build/
 .idea/.name
 .idea/misc.xml
 .idea/misc.xml
+*.log

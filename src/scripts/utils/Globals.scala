@@ -1,5 +1,6 @@
 package scripts.utils
 
+import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
 
 import scala.collection.mutable.ArrayBuffer
@@ -25,10 +26,10 @@ object Globals {
   val BOSS_C_LAYER = 2
   val TOY_C_LAYER = 3
 
-  val BULLET_C_LAYERMASK = ArrayBuffer(NIGHTMARE_C_LAYER, BOSS_C_LAYER)
-  val NIGHTMARE_C_LAYERMASK = ArrayBuffer(BULLET_C_LAYER)
-  val BOSS_C_LAYERMASK = ArrayBuffer(BULLET_C_LAYER)
-  val TOY_C_LAYERMASK = ArrayBuffer(NIGHTMARE_C_LAYER)
+  val BULLET_C_LAYERMASK: ArrayBuffer[Int] = ArrayBuffer(NIGHTMARE_C_LAYER, BOSS_C_LAYER)
+  val NIGHTMARE_C_LAYERMASK: ArrayBuffer[Int] = ArrayBuffer(BULLET_C_LAYER)
+  val BOSS_C_LAYERMASK: ArrayBuffer[Int] = ArrayBuffer(BULLET_C_LAYER)
+  val TOY_C_LAYERMASK: ArrayBuffer[Int] = ArrayBuffer(NIGHTMARE_C_LAYER)
 
 
   val WAVE_LENGTH: Float = 60          // Should be 60
@@ -38,5 +39,8 @@ object Globals {
   val NBR_OF_BOSSES: Int = 3          // Should be 4
   val DEFAULT_BOSS_POS: Vector2 = new Vector2(WINDOW_WIDTH/2, WINDOW_HEIGHT)
   val DEFAULT_BOSS_HP: Float = 20
+
+
+
 
 }

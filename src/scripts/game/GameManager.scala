@@ -1,10 +1,13 @@
 package scripts.game
 
+import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.{Gdx, Input}
 import scripts.dreamwatch_engine.actors.abstracts.Scene
+import scripts.dreamwatch_engine.actors.instantiables.UiElement
 import scripts.dreamwatch_engine.inputs.InputManager
+import scripts.dreamwatch_engine.physics.Area2D
 import scripts.game.actors.instantiables.{GameScene, MainMenuScene}
 import scripts.utils.Globals
 
@@ -51,6 +54,12 @@ object GameManager{
 
     currentScene = new GameScene().instantiate()
     //scenes += currentScene
+
+    // TESTS
+    val im = ArrayBuffer(new BitmapImage("res/sprites/soccer.png"))
+    val im2 = ArrayBuffer(new BitmapImage("res/sprites/cloud.png"))
+    val test: UiElement = new UiElement(new Vector2(100,100), im, 0, Area2D.Circle).instantiate()
+    val test2: UiElement = new UiElement(new Vector2(1000,1000), im2, 1, Area2D.Circle).instantiate()
 
     println("GameManager ready")
   }

@@ -22,6 +22,7 @@ class Sprite2D(pos: Vector2,
                val images: ArrayBuffer[BitmapImage],
                var gLayerZ: Int,
                area2DType: Area2D.Type,
+               var animDuration: Float = 0.0f,
                var angle: Float = 0,
                spriteScale: Float = 1f,
                lifeTime: Option[Float] = None) extends Object2D(pos, lifeTime) with Graphics2D with Area2D{
@@ -31,6 +32,9 @@ class Sprite2D(pos: Vector2,
 
   private val baseWidth: Float = images(0).getImage.getWidth
   private val baseHeight: Float = images(0).getImage.getHeight
+
+  private var currImageIdx: Int = 0
+  private var dt: Float = 0
 
   var isVisible: Boolean = true
 
@@ -64,12 +68,6 @@ class Sprite2D(pos: Vector2,
     scale = scale * (newWidth / _width)
   }
 
-  /**
-   * Index of the current image frame in the `images` buffer.
-   * Starts at 0.
-   */
-  private var currImageIdx: Int = 0
-
 
   /**
    * Advance to the next frame and return it.
@@ -78,9 +76,9 @@ class Sprite2D(pos: Vector2,
    */
   def next(): BitmapImage = {
     currImageIdx = (currImageIdx + 1) % images.length
-    image.dispose()
+    //image.dispose()
     image = images(currImageIdx)
-    current()
+    image
   }
 
   /**
@@ -90,6 +88,16 @@ class Sprite2D(pos: Vector2,
   def current(): BitmapImage = image
 
 
+  override def update(deltaT: Float): Unit = {
+    super.update(deltaT)
+    if (animDuration > 0.0 && images.length > 1) {
+      dt += deltaT
+      if (dt > animDuration/images.length) {
+        dt = 0
+        next()
+      }
+    }
+  }
   /**
    * Dispose of all BitmapImage resources held by this sprite.
    * Should be called when the sprite is no longer needed to free memory.
