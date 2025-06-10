@@ -20,6 +20,7 @@ object Globals {
   val NIGHTMARE_G_LAYER = 0
   val BOSS_G_LAYER = 2
   val TOY_G_LAYER = 0
+  val WEAPON_G_LAYER = 2
 
   val BULLET_C_LAYER = 0
   val NIGHTMARE_C_LAYER = 1

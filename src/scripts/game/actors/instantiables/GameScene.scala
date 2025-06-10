@@ -196,11 +196,11 @@ class GameScene extends Scene{
     if(!isMouseOnUi && !GameManager.isPaused){
       button match {
         case 0 =>
-          new Bullet(new Vector2(toyPos), new Vector2(pos), Bullet.Small).instantiate()
+          new Bullet(new Vector2(toyPos), new Vector2(pos), Bullet.Piercing).instantiate()
         case 1 =>
-          new Bullet(new Vector2(toyPos), new Vector2(pos), Bullet.Big).instantiate()
+          new Bullet(new Vector2(toyPos), new Vector2(pos), Bullet.Explosive).instantiate()
         case 2 =>
-          new Bullet(new Vector2(toyPos), new Vector2(pos), Bullet.Laser).instantiate()
+          new Bullet(new Vector2(toyPos), new Vector2(pos), Bullet.Bomb).instantiate()
         case _ =>
       }
     }

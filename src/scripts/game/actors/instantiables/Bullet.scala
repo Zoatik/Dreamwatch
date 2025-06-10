@@ -6,7 +6,6 @@ import scripts.dreamwatch_engine.actors.abstracts.Component
 import scripts.dreamwatch_engine.actors.instantiables.{CollisionObject2D, CollisionSprite2D, Particle2D}
 import scripts.dreamwatch_engine.physics.{Area2D, Collider2D, Movement2D}
 import scripts.game.actors.abstracts.Nightmare
-import scripts.game.actors.instantiables.Bullet.{baseBulletRadius, baseBulletSpeed, baseExplosionRadius, bulletTrajectory}
 import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
@@ -19,7 +18,7 @@ class Bullet(pos: Vector2,
             )
   extends CollisionSprite2D(
     pos,
-    Bullet.loadImagesFor(bulletType),
+    bulletType.images,
     Globals.BULLET_G_LAYER,
     Globals.BULLET_C_LAYER,
     Globals.BULLET_C_LAYERMASK,
@@ -27,22 +26,22 @@ class Bullet(pos: Vector2,
     lifeTime = lifeTime
   ) with Movement2D {
 
-  override var speed: Float = baseBulletSpeed(bulletType)
+  override var speed: Float = bulletType.baseBulletSpeed
   override var target: Vector2 = targetPos.cpy()
 
-  initMovement(bulletTrajectory(bulletType))
+  initMovement(bulletType.bulletTrajectory)
 
-  width = baseBulletRadius(bulletType)
+  width = bulletType.baseBulletSize
 
   var damage: Float = 1.0f
-  var explosionRadius: Float = baseExplosionRadius(bulletType)
-  var explosionDamage: Float = 1.0f
+  var explosionRadius: Float = bulletType.baseBulletExplosionSize
+  var explosionDamage: Float = bulletType.baseBulletDamage * 0.5f
   private val explosionCollider = new CollisionObject2D(pos, Area2D.Circle, explosionRadius, 0, cLayerZ, cLayerMask, lifeTime = Some(0.1f)) with Component[Bullet] {
     override val parent: Bullet = Bullet.this
   }
 
   val bulletParticle = new Particle2D("res/shaders/electrical_ball.fp", pos)
-  bulletParticle.setUniform("u_radius", baseBulletRadius(bulletType))
+  bulletParticle.setUniform("u_radius", bulletType.baseBulletSize)
   bulletParticle.setUniform("u_center", pos)
 
   override def instantiate(): Bullet = {
@@ -94,51 +93,47 @@ class Bullet(pos: Vector2,
 /** Sealed trait pour les types de projectiles */
 object Bullet {
 
-  /** Charge le sprite correspondant à chaque type de bullet */
-  private def loadImagesFor(bulletType: Type): ArrayBuffer[BitmapImage] = bulletType match {
-    case Small => ArrayBuffer.fill(1)(new BitmapImage("res/sprites/soccer.png"))
-    case Big => ArrayBuffer.fill(1)(new BitmapImage("res/sprites/soccer.png"))
-    case Laser => ArrayBuffer.fill(1)(new BitmapImage("res/sprites/soccer.png"))
-    case _ => ArrayBuffer.fill(1)(new BitmapImage("res/sprites/soccer.png"))
 
-  }
-
-  private def baseExplosionRadius(bulletType: Type): Float = bulletType match {
-    case Small => 300.0f
-    case Big => 400.0f
-    case Laser => 500.0f
-    case _ => 300.0f
-  }
-
-  private def baseBulletRadius(bulletType: Type): Float = bulletType match {
-    case Small => 8.0f
-    case Big => 12.0f
-    case Laser => 15.0f
-    case _ => 8.0f
-  }
-
-  private def baseBulletSpeed(bulletType: Type): Float = bulletType match {
-    case Small => 300.0f
-    case Big => 400.0f
-    case Laser => 400.0f
-    case _ => 300.0f
-  }
-
-  private def bulletTrajectory(bulletType: Type): Movement2D.Trajectory = bulletType match {
-    case Small => Movement2D.Linear
-    case Big => Movement2D.Sinus
-    case Laser => Movement2D.Spiral
-    case _ => Movement2D.Linear
+  sealed trait Type{
+    val images: ArrayBuffer[BitmapImage]
+    val baseBulletSpeed: Float
+    val baseBulletCooldown: Float
+    val baseBulletSize: Float
+    val baseBulletExplosionSize: Float
+    val baseBulletDamage: Float
+    val bulletTrajectory: Movement2D.Trajectory
   }
 
 
-  sealed trait Type
+  case object Piercing extends Type{
+    override val images: ArrayBuffer[BitmapImage] = ArrayBuffer(new BitmapImage("res/sprites/soccer.png"))
+    override val baseBulletSpeed: Float = 400.0f
+    override val baseBulletCooldown: Float = 1.0f
+    override val baseBulletSize: Float = 8.0f
+    override val baseBulletExplosionSize: Float = 8.0f
+    override val baseBulletDamage: Float = 10.0f
+    override val bulletTrajectory: Movement2D.Trajectory = Movement2D.Linear
+  }
 
-  case object Small extends Type
+  case object Explosive extends Type {
+    override val images: ArrayBuffer[BitmapImage] = ArrayBuffer(new BitmapImage("res/sprites/soccer.png"))
+    override val baseBulletSpeed: Float = 150.0f
+    override val baseBulletCooldown: Float = 0.1f
+    override val baseBulletSize: Float = 10.0f
+    override val baseBulletExplosionSize: Float = 100.0f
+    override val baseBulletDamage: Float = 1.0f
+    override val bulletTrajectory: Movement2D.Trajectory = Movement2D.Sinus
+  }
 
-  case object Big extends Type
-
-  case object Laser extends Type
+  case object Bomb extends Type {
+    override val images: ArrayBuffer[BitmapImage] = ArrayBuffer(new BitmapImage("res/sprites/soccer.png"))
+    override val baseBulletSpeed: Float = ???
+    override val baseBulletCooldown: Float = 2.0f
+    override val baseBulletSize: Float = ???
+    override val baseBulletExplosionSize: Float = ???
+    override val baseBulletDamage: Float = ???
+    override val bulletTrajectory: Movement2D.Trajectory = Movement2D.Spiral
+  }
 }
 
 

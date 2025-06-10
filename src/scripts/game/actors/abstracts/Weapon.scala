@@ -5,18 +5,14 @@ import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.actors.instantiables.Sprite2D
 import scripts.dreamwatch_engine.physics.{Area2D, Movement2D}
 import scripts.game.actors.instantiables.Bullet
+import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
 
-abstract class Weapon(pos: Vector2, images: ArrayBuffer[BitmapImage], gLayerZ: Int)
-  extends Sprite2D(pos, images, gLayerZ, Area2D.Box) with Movement2D {
+abstract class Weapon(pos: Vector2, images: ArrayBuffer[BitmapImage])
+  extends Sprite2D(pos, images, Globals.WEAPON_G_LAYER, Area2D.Box) with Movement2D {
   // abstract attributes on bullet specs
   protected val bulletType: Bullet.Type
-  protected val baseBulletSpeed: Float
-  protected val baseBulletCooldown: Float
-  protected val baseBulletSize: Float
-  protected val baseBulletExplosionSize: Float
-  protected val baseBulletDamage: Float
 
   // shoot ability variables
   protected var canShoot: Boolean = true
@@ -47,7 +43,7 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[BitmapImage], gLayerZ: I
       upgrade.equals(Weapon.Speed)                 // TODO: Controler que equals fonctionne correctement
     }) * Weapon.Cooldown.reduction
 
-    baseBulletSpeed * cooldownModifiers
+    bulletType.baseBulletSpeed * cooldownModifiers
   }
 
   protected def modifiedBulletCooldown: Float = {
@@ -55,7 +51,7 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[BitmapImage], gLayerZ: I
       upgrade.equals(Weapon.Cooldown)                 // TODO: Controler que equals fonctionne correctement
     }) * Weapon.Cooldown.reduction
 
-    baseBulletCooldown * cooldownModifiers
+    bulletType.baseBulletCooldown * cooldownModifiers
   }
 
   protected def modifiedBulletSize: Float = {
@@ -63,7 +59,7 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[BitmapImage], gLayerZ: I
       upgrade.equals(Weapon.BulletSize)                 // TODO: Controler que equals fonctionne correctement
     }) * Weapon.Cooldown.reduction
 
-    baseBulletSize * cooldownModifiers
+    bulletType.baseBulletSize * cooldownModifiers
   }
 
   protected def modifiedBulletExplosionSize: Float = {
@@ -71,7 +67,7 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[BitmapImage], gLayerZ: I
       upgrade.equals(Weapon.ExplosionSize)                 // TODO: Controler que equals fonctionne correctement
     }) * Weapon.Cooldown.reduction
 
-    baseBulletExplosionSize * cooldownModifiers
+    bulletType.baseBulletExplosionSize * cooldownModifiers
   }
 
   protected def modifiedBulletDamage: Float = {
@@ -79,7 +75,7 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[BitmapImage], gLayerZ: I
       upgrade.equals(Weapon.BossDamage)                 // TODO: Controler que equals fonctionne correctement
     }) * Weapon.Cooldown.reduction
 
-    baseBulletDamage * cooldownModifiers
+    bulletType.baseBulletDamage * cooldownModifiers
   }
 
 

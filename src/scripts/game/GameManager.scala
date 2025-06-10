@@ -2,10 +2,10 @@ package scripts.game
 
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import ch.hevs.gdx2d.lib.GdxGraphics
-import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.{Vector2, Vector3}
 import com.badlogic.gdx.{Gdx, Input}
 import scripts.dreamwatch_engine.actors.abstracts.Scene
-import scripts.dreamwatch_engine.actors.instantiables.UiElement
+import scripts.dreamwatch_engine.actors.instantiables.{Particle2D, Sprite2D, UiElement}
 import scripts.dreamwatch_engine.inputs.InputManager
 import scripts.dreamwatch_engine.physics.Area2D
 import scripts.game.actors.instantiables.{GameScene, MainMenuScene}
@@ -60,6 +60,15 @@ object GameManager{
     val im2 = ArrayBuffer(new BitmapImage("res/sprites/cloud.png"))
     val test2: UiElement = new UiElement(new Vector2(1000,1000), im2, 1, Area2D.Circle).instantiate()
     val test: UiElement = new UiElement(new Vector2(100,100), im, 0, Area2D.Circle).instantiate()
+
+    val part1: Particle2D = new Particle2D("res/shaders/fire_ball_2.fp", new Vector2(0,0))
+    part1.shaderRenderer.setUniform("pos", new Vector3(100,100, 100))
+    part1.instantiate()
+
+    val im3 = ArrayBuffer(new BitmapImage("res/sprites/checkerBoard.png"))
+    val test3: Sprite2D = new Sprite2D(new Vector2(1000, 500), im3, 1, Area2D.Box).instantiate()
+
+
 
     println("GameManager ready")
   }
