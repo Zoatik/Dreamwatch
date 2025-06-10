@@ -32,7 +32,7 @@ object Globals {
   val TOY_C_LAYERMASK: ArrayBuffer[Int] = ArrayBuffer(NIGHTMARE_C_LAYER)
 
 
-  val WAVE_LENGTH: Float = 60          // Should be 60
+  val WAVE_LENGTH: Float = 2         // Should be 60
   val DEFAULT_SPAWN_RATE: Float = 0.5f
 
   val NBR_WAVES_BEFORE_BOSS: Int = 2 // Should be 5

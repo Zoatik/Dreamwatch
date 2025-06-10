@@ -1,6 +1,6 @@
 
 // Entrées depuis le vertex‐shader / Gdx2d
-in vec4 vColor;
+in vec4 v_color;
 in vec2 vTexCoord;
 
 // Texture de la balle
@@ -25,7 +25,7 @@ void main(void) {
     }
 
     // 1) Récupérer la couleur de base de la balle
-    vec4 base = vec4(vColor);
+    vec4 base = vec4(v_color);
 
 
     // 2) Calculer la position et la distance normalisée

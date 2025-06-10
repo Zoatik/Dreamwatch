@@ -60,10 +60,10 @@ object Boss{
 
   }
   private def baseBossRadius(bossType: Type): Float = bossType match {
-    case UneAraignee => 500.0f
-    case Ghost => 500.0f
-    case TheGrimReaper => 500.0f
-    case _ => 500.0f
+    case UneAraignee => 50.0f
+    case Ghost => 50.0f
+    case TheGrimReaper => 50.0f
+    case _ => 50.0f
   }
 
   private def bossHp(bossType: Type): Float = bossType match {
