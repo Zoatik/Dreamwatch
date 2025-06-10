@@ -111,6 +111,8 @@ abstract class Scene extends Entity with Controller {
     //println(s"element : $object2D removed from scene")
     // If the entity supports rendering, remove from all render layers and dispose its images
     object2D match {
+      case u: UiElement =>
+        uiLayers.remove(u)
       case g: Sprite2D =>
         gLayers.remove(g)
         // Manually dispose bitmap resources to prevent memory leaks or crashes

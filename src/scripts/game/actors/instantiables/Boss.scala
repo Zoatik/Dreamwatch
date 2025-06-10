@@ -37,7 +37,6 @@ class Boss(pos: Vector2,
     case e: CollisionObject2D with Component[Bullet] =>
       takeDamage(e.parent.explosionDamage)
     case _ =>
-      println("collision but no cigar")
   }
 
   protected def takeDamage(amount: Float): Unit = {

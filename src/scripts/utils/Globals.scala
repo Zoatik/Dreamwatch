@@ -2,6 +2,7 @@ package scripts.utils
 
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
+import scripts.dreamwatch_engine.physics.Area2D
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -41,7 +42,8 @@ object Globals {
   val DEFAULT_BOSS_POS: Vector2 = new Vector2(WINDOW_WIDTH/2, WINDOW_HEIGHT)
   val DEFAULT_BOSS_HP: Float = 20
 
-
-
+  val CARDS_DEFAULT_POS: Array[Vector2] = Array(new Vector2(200, 500), new Vector2(1000, 500), new Vector2(1800, 500))
+  val CARD_GLAYERZ: Int = 0
+  val CARD_AREA2D: Area2D.type = Area2D
 
 }
