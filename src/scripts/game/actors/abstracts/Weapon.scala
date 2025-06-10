@@ -112,5 +112,4 @@ object Weapon {
     val amplification: Float = 0.1f
   }
 
-
 }

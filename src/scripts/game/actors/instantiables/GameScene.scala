@@ -45,14 +45,14 @@ class GameScene extends Scene{
 
   override def instantiate(): GameScene = {
     super.instantiate()
-    InputManager.onKeyPressed(_ => { // TODO: SHOULD BE HERE
+    /*InputManager.onKeyPressed(_ => { // TODO: SHOULD BE HERE
       println("key pressed from GameScene")
       waveStatus match {
         case "boss" => bossDefeated = true
-        case "idle" => cardsSelectionDone = true
+        //case "cards" => cardsSelectionDone = true
         case _ =>
       }
-    })
+    })*/
 
     startNewWave()
     this
@@ -84,10 +84,11 @@ class GameScene extends Scene{
           spawnRate = 0
           if(!GameManager.currentScene.objects.exists(e => e.isInstanceOf[Nightmare])) {
             waveCounter += 1
-            waveStatus = "idle"
+            initCards()
+            waveStatus = "cards"
           }
           else{
-            println("Wait..")
+            //println("Wait..")
           }
         }
 
@@ -111,7 +112,8 @@ class GameScene extends Scene{
             else {
               // Next boss
               waveCounter += 1
-              waveStatus = "idle"
+              initCards()
+              waveStatus = "cards"
               cardsSelectionDone = false // I HAVE NO CLUE WHY BUT cardsSelectionDone IS TRUE HERE
               bossCounter += 1
             }
@@ -119,7 +121,7 @@ class GameScene extends Scene{
         }
 
 
-      case "idle" =>
+      case "cards" =>
         //InputManager.onKeyPressed(_ => cardsSelectionDone = true) // TODO: SHOULD NOT BE HERE
         // Show cards (will most likely handle the cards showing that will access this object and modify the cardsSelectionDone)
         // What happens once you've chosen you're upgrade card
@@ -133,14 +135,18 @@ class GameScene extends Scene{
             startNewWave()
           }
         }
-        // While cards haven't been selected yet but still in idle
+        // While cards haven't been selected yet but still in cards
         else {
-          println("Entered idle phase.. choose your cards.")
+          //println("Entered cards phase.. choose your cards.")
         }
 
       // Final default case
       case _ => // Probably sends info that the game is done
     }
+  }
+
+  def initCards(): Unit = {
+    Card.create3Cards()
   }
 
   // Wave functions
@@ -177,7 +183,7 @@ class GameScene extends Scene{
           val targetY = 0f
           new Ghost(new Vector2(startX, startY), new Vector2(targetX, targetY)).instantiate()
         }
-      case "idle" =>
+      case "cards" =>
       //println("Do nothing")
 
       case "boss" =>

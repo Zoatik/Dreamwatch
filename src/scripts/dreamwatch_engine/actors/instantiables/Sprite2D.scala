@@ -104,7 +104,7 @@ class Sprite2D(pos: Vector2,
    */
   override def destroy(): Unit = {
     super.destroy()
-    images.foreach(_.dispose())
+    //images.foreach(_.dispose())
   }
 
 
