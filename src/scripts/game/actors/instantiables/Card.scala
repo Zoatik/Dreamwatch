@@ -30,6 +30,7 @@ class Card(pos: Vector2 = Globals.CARDS_DEFAULT_POS(1),
 
   override protected def mouseReleased(mousePos: Vector2, mouseButton: Int): Unit = {
     super.mouseReleased(mousePos, mouseButton)
+    println(s"card clicked : ${isMouseOver(mousePos)}")
     this.cardType match {
       case Card.CardLeft => println("Clicked on left card")
       case Card.CardMiddle => println("Clicked on middle card")
@@ -42,13 +43,13 @@ class Card(pos: Vector2 = Globals.CARDS_DEFAULT_POS(1),
   override protected def mouseEntered(mousePos: Vector2): Unit = {
     super.mouseEntered(mousePos)
     counter += 1
-    println(s"YOuu have entered the primitive card's territory. Now it's the $counter")
+    println(s"YOuu have entered the primitive card's territory. Now it's the ${this.cardType}")
   }
 
 }
 
 object Card {
-  val cards: Array[Card] = Array.ofDim(3)
+  var cards: Array[Card] = Array.ofDim(3)
 
   def create3Cards(): Unit = {
     cards(0) = new Card(Globals.CARDS_DEFAULT_POS(0), CardLeft).instantiate()
@@ -59,6 +60,8 @@ object Card {
     cards(0).destroy()
     cards(1).destroy()
     cards(2).destroy()
+
+    //cards = Array.empty
   }
   /*def cardClicked(cardType: Card.Type): Unit = {
     cardType match {

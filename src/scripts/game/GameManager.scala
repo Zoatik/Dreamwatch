@@ -65,9 +65,6 @@ object GameManager{
     part1.shaderRenderer.setUniform("pos", new Vector3(100,100, 100))
     part1.instantiate()
 
-    val im3 = ArrayBuffer(new BitmapImage("res/sprites/checkerBoard.png"))
-    val test3: Sprite2D = new Sprite2D(new Vector2(1000, 500), im3, 1, Area2D.Box).instantiate()
-
 
 
     println("GameManager ready")

@@ -212,8 +212,10 @@ trait Area2D {
    * @param mouseButton The button code that was released.
    */
   protected def mouseReleased(mousePos: Vector2, mouseButton: Int): Unit = {
-    if (isMouseOver(mousePos))
+    if (isMouseOver(mousePos)) {
+      println("mouse is over")
       mouseReleasedListeners.toArray.foreach(_(mousePos, mouseButton))
+    }
   }
 }
 
