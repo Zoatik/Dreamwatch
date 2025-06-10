@@ -58,8 +58,8 @@ object GameManager{
     // TESTS
     val im = ArrayBuffer(new BitmapImage("res/sprites/soccer.png"))
     val im2 = ArrayBuffer(new BitmapImage("res/sprites/cloud.png"))
-    val test: UiElement = new UiElement(new Vector2(100,100), im, 0, Area2D.Circle).instantiate()
     val test2: UiElement = new UiElement(new Vector2(1000,1000), im2, 1, Area2D.Circle).instantiate()
+    val test: UiElement = new UiElement(new Vector2(100,100), im, 0, Area2D.Circle).instantiate()
 
     println("GameManager ready")
   }

@@ -7,6 +7,7 @@ import scripts.dreamwatch_engine.utils.Layers
 import scripts.game.GameManager
 import scripts.game.actors.abstracts.Player
 
+import scala.collection.immutable.ListSet
 import scala.collection.mutable.ArrayBuffer
 
 /**
@@ -190,23 +191,10 @@ abstract class Scene extends Entity with Controller {
       particle.render()
     }
 
-    GameManager.g.setShaderRenderer(null)
-
     // renders UI
     for (layer <- uiLayers.get()){
       layer.elements.foreach(gElement => gElement.draw(GameManager.g))
     }
-
-
-    // Rough solution to avoid last image being drawn and erased too quickly
-    // redraws the ui layer a 2nd time
-    for (layer <- uiLayers.get()){
-      layer.elements.foreach(gElement => gElement.draw(GameManager.g))
-    }
-
-
-
-
   }
 
   /**
@@ -223,16 +211,17 @@ abstract class Scene extends Entity with Controller {
 
   override def update(deltaT: Float): Unit = {
     super.update(deltaT)
-    updateGraphics(deltaT)
+
     checkMouse()
+
     if (!GameManager.isPaused) {
       updateMovement(deltaT)
       updateCollisions(deltaT)
       updateLogic(deltaT)
     }
+
+    updateGraphics(deltaT)
   }
-
-
 
   private def checkMouse(): Unit = {
     for (layer <- uiLayers.get()){
