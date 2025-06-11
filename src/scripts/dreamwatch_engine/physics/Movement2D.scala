@@ -1,6 +1,6 @@
 package scripts.dreamwatch_engine.physics
 
-import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.{MathUtils, Vector2}
 
 /**
  * Trait that adds movement behavior to any Object2D in the world.
@@ -10,6 +10,10 @@ trait Movement2D {
 
   def pos: Vector2
   def pos_=(newPos: Vector2): Unit
+
+  def angle: Float
+  def angle_=(newAngle: Float): Unit
+  var canRotate: Boolean = false
   /** Speed scalar in units per second. */
   var speed: Float
 
@@ -51,7 +55,7 @@ trait Movement2D {
   def move(deltaT: Float): Unit = {
     elapsedTime += deltaT
 
-    if (target == null) return
+    if (target == null || speed <= 0) return
     if (stopAtTarget && targetReached()) return
 
     val toTarget = target.cpy().sub(pos)
@@ -95,6 +99,15 @@ trait Movement2D {
       _targetReached = false
     }
   }
+
+  def faceTarget(): Unit = {
+    if (canRotate && target != null) {
+      val dir = target.cpy().sub(pos).nor()
+      val angleRad = Math.atan2(dir.x.toDouble, dir.y.toDouble).toFloat
+      angle = angleRad * MathUtils.radiansToDegrees
+    }
+  }
+
 
   /**
    * Check whether the object has reached its target within a tolerance.

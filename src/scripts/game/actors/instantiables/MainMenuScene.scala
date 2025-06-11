@@ -18,11 +18,11 @@ class MainMenuScene extends Scene {
   override val movableObjects: ArrayBuffer[Movement2D] = ArrayBuffer()
   override val objects: ArrayBuffer[Object2D] = ArrayBuffer()
   override val particles: ArrayBuffer[Particle2D] = ArrayBuffer()
-  override val player: Player = new GamePlayer()
+  override val player: Player = new MainMenuPlayer()
 
-  override def handleMouseInput(pos: Vector2, button: Int): Unit = ???
+  override def handleMouseInput(pos: Vector2, button: Int): Boolean = ???
 
-  override def handleKeyInput(button: Int): Unit = ???
+  override def handleKeyInput(button: Int): Boolean = ???
 
 }
 

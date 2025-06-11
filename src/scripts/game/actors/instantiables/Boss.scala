@@ -17,6 +17,7 @@ class Boss(pos: Vector2,
           )
   extends CollisionSprite2D(
     pos,
+    0,
     Boss.loadImagesFor(bossType),
     Globals.BOSS_G_LAYER,
     Globals.BOSS_C_LAYER,

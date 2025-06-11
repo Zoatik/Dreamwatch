@@ -10,6 +10,7 @@ in vec2 vTexCoord;
 uniform float time;       // temps en secondes
 uniform float u_radius;   // rayon (0.5 = moitié de la sprite)
 uniform vec2  u_center;   // centre de l’effet (en pixels)
+uniform vec2 resolution;
 
 /** Bruit 1D simple à base de sin(). */
 float noise(float x) {
@@ -18,9 +19,9 @@ float noise(float x) {
 
 void main(void) {
 
-    float dist = distance(gl_FragCoord.xy, u_center);
+    float dist = distance(gl_FragCoord.xy, u_center / resolution);
 
-    if(dist > u_radius) {
+    if(dist > u_radius ) {
         discard;
     }
 

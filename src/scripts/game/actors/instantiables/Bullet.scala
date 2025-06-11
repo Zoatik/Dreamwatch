@@ -14,10 +14,15 @@ import scala.collection.mutable.ArrayBuffer
 class Bullet(pos: Vector2,
              targetPos: Vector2,
              bulletType: Bullet.Type,
+             var speed: Float = 400.0f,
+             var bulletSize: Float = 8.0f,
+             var explosionSize: Float = 8.0f,
+             var bulletDamage: Float = 10.0f,
              lifeTime: Option[Float] = None
             )
   extends CollisionSprite2D(
     pos,
+    0,
     bulletType.images,
     Globals.BULLET_G_LAYER,
     Globals.BULLET_C_LAYER,
@@ -26,22 +31,20 @@ class Bullet(pos: Vector2,
     lifeTime = lifeTime
   ) with Movement2D {
 
-  override var speed: Float = bulletType.baseBulletSpeed
   override var target: Vector2 = targetPos.cpy()
 
   initMovement(bulletType.bulletTrajectory)
 
-  width = bulletType.baseBulletSize
+  width = bulletSize
 
   var damage: Float = 1.0f
-  var explosionRadius: Float = bulletType.baseBulletExplosionSize
-  var explosionDamage: Float = bulletType.baseBulletDamage * 0.5f
-  private val explosionCollider = new CollisionObject2D(pos, Area2D.Circle, explosionRadius, 0, cLayerZ, cLayerMask, lifeTime = Some(0.1f)) with Component[Bullet] {
+  var explosionDamage: Float = bulletDamage * 0.5f
+  private val explosionCollider = new CollisionObject2D(pos, 0, Area2D.Circle, explosionSize, 0, cLayerZ, cLayerMask, lifeTime = Some(0.1f)) with Component[Bullet] {
     override val parent: Bullet = Bullet.this
   }
 
-  val bulletParticle = new Particle2D("res/shaders/electrical_ball.fp", pos)
-  bulletParticle.setUniform("u_radius", bulletType.baseBulletSize)
+  val bulletParticle = new Particle2D("res/shaders/electrical_ball.fp", pos, 0)
+  bulletParticle.setUniform("u_radius", bulletSize)
   bulletParticle.setUniform("u_center", pos)
 
   override def instantiate(): Bullet = {
@@ -73,10 +76,11 @@ class Bullet(pos: Vector2,
     val exploParticle = new Particle2D(
       "res/shaders/explosion.fp",
       pos,
+      0,
       Some(2.0f))
 
     exploParticle.setUniform("u_center", new Vector2(pos.x, pos.y))
-    exploParticle.setUniform("u_radius", explosionRadius)
+    exploParticle.setUniform("u_radius", explosionSize)
     exploParticle.setUniform("u_duration", 0.2f)
     exploParticle.instantiate()
   }

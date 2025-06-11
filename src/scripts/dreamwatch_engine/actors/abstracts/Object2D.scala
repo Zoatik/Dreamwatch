@@ -13,6 +13,7 @@ import scripts.game.GameManager
  */
 abstract class Object2D(
   var pos: Vector2,
+  var angle: Float = 0.0f,
   lifeTime: Option[Float] = None
 ) extends Entity(lifeTime) {
 

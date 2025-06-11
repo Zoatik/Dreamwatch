@@ -19,6 +19,7 @@ abstract class Nightmare (pos: Vector2,
                           )
   extends CollisionSprite2D(
     pos,
+    0,
     images,
     Globals.NIGHTMARE_G_LAYER,
     Globals.NIGHTMARE_C_LAYER,

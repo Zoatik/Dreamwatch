@@ -2,6 +2,7 @@ package scripts.game.actors.instantiables.weapons
 
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
+import scripts.dreamwatch_engine.actors.instantiables.Sprite2D
 import scripts.game.actors.abstracts.Weapon
 import scripts.game.actors.instantiables.Bullet
 
@@ -11,15 +12,15 @@ class Sniper(pos: Vector2)
   extends Weapon(
     pos,
     ArrayBuffer(
-    new BitmapImage(""),
-    new BitmapImage(""),
-    new BitmapImage("")
+    new BitmapImage("res/sprites/soccer.png"),
   )) {
 
+  override def instantiate(): Sniper = {
+    super.instantiate()
+    this
+  }
 
-  /** Speed scalar in units per second. */
-  override var speed: Float = ???
-  /** Target position toward which the object moves. */
-  override var target: Vector2 = ???
-  override protected val bulletType: Bullet.Type = ???
+
+  override protected val bulletType: Bullet.Type = Bullet.Piercing
+
 }

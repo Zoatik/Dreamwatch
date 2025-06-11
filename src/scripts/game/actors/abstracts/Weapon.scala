@@ -4,19 +4,25 @@ import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.actors.instantiables.Sprite2D
 import scripts.dreamwatch_engine.physics.{Area2D, Movement2D}
+import scripts.game.GameManager
 import scripts.game.actors.instantiables.Bullet
 import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
+import scala.reflect.internal.Mode
 
 abstract class Weapon(pos: Vector2, images: ArrayBuffer[BitmapImage])
-  extends Sprite2D(pos, images, Globals.WEAPON_G_LAYER, Area2D.Box) with Movement2D {
+  extends Sprite2D(pos, 0, images, Globals.WEAPON_G_LAYER, Area2D.Box) with Movement2D {
+  canRotate = true
+  override var speed = 0.0f
+  override var target: Vector2 = GameManager.mousePos
   // abstract attributes on bullet specs
   protected val bulletType: Bullet.Type
 
   // shoot ability variables
   protected var canShoot: Boolean = true
   protected var lastShot: Float = 0.0f
+
 
   // Upgrades + Evolutions
   var weaponUpgrades: ArrayBuffer[Weapon.Upgrade] = ArrayBuffer.empty
@@ -25,16 +31,15 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[BitmapImage])
 
   override def update(deltaT: Float): Unit = {
     super.update(deltaT)
-
-    if (lastShot > timeFromCreation + modifiedBulletCooldown)
-      canShoot = true
   }
 
 
-  def shoot(target: Vector2): Unit = {
-    new Bullet(pos, target, bulletType).instantiate() // TODO: Add modifiers
-    lastShot = timeFromCreation
-    canShoot = false
+  def shoot(target: Vector2, mode: Weapon.Mode): Unit = {
+    if(timeFromCreation > lastShot + modifiedBulletCooldown && canShoot) {
+      println("shoot")
+      new Bullet(pos.cpy(), target, bulletType).instantiate() // TODO: Add modifiers
+      lastShot = timeFromCreation
+    }
   }
 
   // modified bullet values getter
@@ -83,6 +88,10 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[BitmapImage])
 
 
 object Weapon {
+
+  sealed trait Mode
+  case object Primary extends Mode
+  case object Secondary extends Mode
 
   sealed trait Evolution
   case object Phase0 extends Evolution

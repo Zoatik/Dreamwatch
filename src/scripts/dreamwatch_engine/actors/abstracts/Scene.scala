@@ -167,7 +167,10 @@ abstract class Scene extends Entity with Controller {
    * @param deltaT Time elapsed since last frame (in seconds).
    */
   private def updateMovement(deltaT: Float): Unit = {
-    movableObjects.toArray.foreach(_.move(deltaT))
+    movableObjects.toArray.foreach(m => {
+      m.move(deltaT)
+      m.faceTarget()
+    })
   }
 
   /**
@@ -188,10 +191,10 @@ abstract class Scene extends Entity with Controller {
       layer.elements.foreach(gElement => gElement.draw(GameManager.g))
     }
 
-    // renders particles
+    /*// renders particles
     for (particle <- particles){
       particle.render()
-    }
+    }*/
 
     // renders UI
     for (layer <- uiLayers.get()){

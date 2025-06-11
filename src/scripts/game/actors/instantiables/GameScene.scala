@@ -8,14 +8,14 @@ import scripts.dreamwatch_engine.physics.{Collider2D, Movement2D}
 import scripts.dreamwatch_engine.utils.Layers
 import scripts.game.GameManager
 import scripts.game.GameManager.toyPos
-import scripts.game.actors.abstracts.{Nightmare, Player}
+import scripts.game.actors.abstracts.{Nightmare, Player, Weapon}
 import scripts.game.actors.instantiables.nightmares.Ghost
 import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Random
 
-class GameScene extends Scene{
+class GameScene(gamePlayer: GamePlayer) extends Scene{
 
   override val gLayers: Layers[Sprite2D] = new Layers[Sprite2D](Globals.G_LAYERS_SIZE)
   override val uiLayers: Layers[UiElement] = new Layers[UiElement](Globals.UI_LAYERS_SIZE)
@@ -23,7 +23,7 @@ class GameScene extends Scene{
   override val movableObjects: ArrayBuffer[Movement2D] = ArrayBuffer()
   override val objects: ArrayBuffer[Object2D] = ArrayBuffer()
   override val particles: ArrayBuffer[Particle2D] = ArrayBuffer()
-  override val player: Player = new GamePlayer()
+  override val player: Player = gamePlayer
 
   private var waveCounter: Int = 1
   private var waveTimer: Float = 0
@@ -198,22 +198,17 @@ class GameScene extends Scene{
     }
   }
 
-  override def handleMouseInput(pos: Vector2, button: Int): Unit = {
-    if(!isMouseOnUi && !GameManager.isPaused){
-      button match {
-        case 0 =>
-          new Bullet(new Vector2(toyPos), new Vector2(pos), Bullet.Piercing).instantiate()
-        case 1 =>
-          new Bullet(new Vector2(toyPos), new Vector2(pos), Bullet.Explosive).instantiate()
-        case 2 =>
-          new Bullet(new Vector2(toyPos), new Vector2(pos), Bullet.Bomb).instantiate()
-        case _ =>
-      }
+  override def handleMouseInput(pos: Vector2, button: Int): Boolean = {
+    var handled: Boolean = false
+    if(!GameManager.isPaused){
+      println("handled scene")
+      handled = player.handleMouseInput(pos, button)
     }
+    handled
   }
 
-  override def handleKeyInput(button: Int): Unit = {
-
+  override def handleKeyInput(button: Int): Boolean = {
+    true
   }
 
 

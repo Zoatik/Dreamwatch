@@ -16,7 +16,9 @@ class Card(pos: Vector2 = Globals.CARDS_DEFAULT_POS(1),
            image: ArrayBuffer[BitmapImage] = ArrayBuffer(new BitmapImage("src/res/sprites/card.png")),
            gLayerZ: Int = Globals.CARD_GLAYERZ,
            area2D: Area2D.type = Globals.CARD_AREA2D)
-  extends UiElement(pos,
+  extends UiElement(
+    pos,
+    0,
     image,
     gLayerZ,
     area2D.Box){

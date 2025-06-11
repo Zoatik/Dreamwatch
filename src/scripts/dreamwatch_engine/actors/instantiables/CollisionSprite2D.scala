@@ -7,16 +7,16 @@ import scripts.dreamwatch_engine.physics.{Area2D, Collider2D}
 import scala.collection.mutable.ArrayBuffer
 
 class CollisionSprite2D(pos: Vector2,
+                        angle: Float,
                         images: ArrayBuffer[BitmapImage],
                         gLayerZ: Int,
                         override var cLayerZ: Int,
                         override var cLayerMask: ArrayBuffer[Int],
                         area2DType: Area2D.Type,
                         animDuration: Float = 0f,
-                        angle: Float = 0f,
                         spriteScale: Float = 1f,
                         lifeTime: Option[Float] = None)
-  extends Sprite2D(pos, images, gLayerZ, area2DType, animDuration, angle, spriteScale, lifeTime) with Collider2D{
+  extends Sprite2D(pos, angle, images, gLayerZ, area2DType, animDuration, spriteScale, lifeTime) with Collider2D{
 
   override def instantiate(): CollisionSprite2D = {
     super.instantiate()

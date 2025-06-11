@@ -8,8 +8,8 @@ import scripts.utils.Globals
 
 import scala.collection.mutable
 
-class Particle2D(shaderPath: String, pos: Vector2, lifeTime: Option[Float] = None)
-  extends Object2D(pos, lifeTime){
+class Particle2D(shaderPath: String, pos: Vector2, angle: Float, lifeTime: Option[Float] = None)
+  extends Object2D(pos, angle, lifeTime){
 
   var shaderRenderer: ShaderRenderer = new ShaderRenderer(shaderPath, Globals.WINDOW_WIDTH, Globals.WINDOW_HEIGHT)
   private val uniforms: mutable.HashMap[String, Any] = mutable.HashMap()
@@ -43,6 +43,5 @@ class Particle2D(shaderPath: String, pos: Vector2, lifeTime: Option[Float] = Non
 
   override def destroy(): Unit = {
     super.destroy()
-    println("Particle destroyed")
   }
 }

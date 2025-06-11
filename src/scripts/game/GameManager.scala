@@ -8,7 +8,9 @@ import scripts.dreamwatch_engine.actors.abstracts.Scene
 import scripts.dreamwatch_engine.actors.instantiables.{Particle2D, Sprite2D, UiElement}
 import scripts.dreamwatch_engine.inputs.InputManager
 import scripts.dreamwatch_engine.physics.Area2D
-import scripts.game.actors.instantiables.{GameScene, MainMenuScene}
+import scripts.game.actors.abstracts.Weapon
+import scripts.game.actors.instantiables.weapons.Sniper
+import scripts.game.actors.instantiables.{GamePlayer, GameScene, MainMenuScene}
 import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
@@ -52,18 +54,21 @@ object GameManager{
       if(button == Input.Keys.ESCAPE) _isPaused = !_isPaused
     })
 
-    currentScene = new GameScene().instantiate()
+    val sniper: Sniper = new Sniper(new Vector2(Globals.WINDOW_WIDTH/2, 50))
+    val gamePlayer: GamePlayer = new GamePlayer(sniper)
+    currentScene = new GameScene(gamePlayer).instantiate()
+    gamePlayer.instantiate()
     //scenes += currentScene
 
     // TESTS
     val im = ArrayBuffer(new BitmapImage("res/sprites/soccer.png"))
     val im2 = ArrayBuffer(new BitmapImage("res/sprites/cloud.png"))
-    val test2: UiElement = new UiElement(new Vector2(1000,1000), im2, 1, Area2D.Circle).instantiate()
-    val test: UiElement = new UiElement(new Vector2(100,100), im, 0, Area2D.Circle).instantiate()
+    val test: Sprite2D = new Sprite2D(new Vector2(100,100), 0, im, 0, Area2D.Circle).instantiate()
+    val test2: Sprite2D = new Sprite2D(new Vector2(1000,1000), 0, im2, 2, Area2D.Circle).instantiate()
 
-    val part1: Particle2D = new Particle2D("res/shaders/fire_ball_2.fp", new Vector2(0,0))
+    /*val part1: Particle2D = new Particle2D("res/shaders/fire_ball_2.fp", new Vector2(0,0), 0)
     part1.shaderRenderer.setUniform("pos", new Vector3(100,100, 100))
-    part1.instantiate()
+    part1.instantiate()*/
 
 
 
@@ -89,6 +94,7 @@ object GameManager{
   def resume(): Unit = _isPaused = false
 
   def handleMouseInput(pos: Vector2, button: Int): Unit = {
+    println("handled game manager")
     currentScene.handleMouseInput(pos, button)
   }
 

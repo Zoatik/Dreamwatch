@@ -9,7 +9,7 @@ import scripts.utils.Globals
 import scala.collection.mutable.ArrayBuffer
 
 class Toy(pos: Vector2, images: ArrayBuffer[BitmapImage])
-  extends CollisionSprite2D(pos, images, Globals.TOY_G_LAYER, Globals.TOY_C_LAYER, Globals.NIGHTMARE_C_LAYERMASK, Area2D.Box) with Movement2D {
+  extends CollisionSprite2D(pos, 0, images, Globals.TOY_G_LAYER, Globals.TOY_C_LAYER, Globals.NIGHTMARE_C_LAYERMASK, Area2D.Box) with Movement2D {
 
   override var speed: Float = 0
   override var target: Vector2 = null

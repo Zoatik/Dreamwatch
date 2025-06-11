@@ -6,9 +6,9 @@ import scripts.game.actors.abstracts.Player
 
 class MainMenuPlayer extends Player{
 
-  override def handleMouseInput(pos: Vector2, button: Int): Unit = ???
+  override def handleMouseInput(pos: Vector2, button: Int): Boolean = ???
 
-  override def handleKeyInput(button: Int): Unit = ???
+  override def handleKeyInput(button: Int): Boolean = ???
 
   /**
    * Remove this entity from the current scene via the ScenesManager.

@@ -19,13 +19,13 @@ import scala.collection.mutable.ArrayBuffer
  * @param lifeTime    Time before destruction (default None)
  */
 class Sprite2D(pos: Vector2,
+               angle: Float,
                val images: ArrayBuffer[BitmapImage],
                var gLayerZ: Int,
                area2DType: Area2D.Type,
                var animDuration: Float = 0.0f,
-               var angle: Float = 0,
                spriteScale: Float = 1f,
-               lifeTime: Option[Float] = None) extends Object2D(pos, lifeTime) with Graphics2D with Area2D{
+               lifeTime: Option[Float] = None) extends Object2D(pos, angle, lifeTime) with Graphics2D with Area2D{
 
   // Ensure at least one image frame is provided
   require(images.nonEmpty, "Sprite must contain at least one BitmapImage")
