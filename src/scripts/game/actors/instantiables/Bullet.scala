@@ -45,7 +45,7 @@ class Bullet(pos: Vector2,
 
   override def update(deltaT: Float): Unit = {
     super.update(deltaT)
-    Particle2D.spawnParticles(pos, bulletSize/2, 1.0f, 500.0f, 1, "res/sprites/star.png", gLayerZ)
+    Particle2D.spawnParticles(pos, bulletSize/2, 0.3f, 500.0f, 1, "res/sprites/star.png", gLayerZ)
   }
 
   override def instantiate(): Bullet = {

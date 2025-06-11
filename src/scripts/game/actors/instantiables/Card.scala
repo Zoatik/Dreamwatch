@@ -6,14 +6,15 @@ import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.actors.instantiables.UiElement
 import scripts.dreamwatch_engine.physics.Area2D
 import scripts.game.GameManager
-import scripts.game.actors.abstracts.Weapon.Upgrade
+import scripts.game.actors.abstracts.Weapon
+import scripts.game.actors.abstracts.Weapon.{Holster, Upgrade}
 import scripts.game.actors.instantiables.Card.destroy3Cards
 import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
 
 class Card(pos: Vector2 = Globals.CARDS_POS(1),
-           cardUpgrade: Upgrade,
+           var cardHolster: Holster,
            image: ArrayBuffer[String] = ArrayBuffer("src/res/sprites/basicCard.png"),
            gLayerZ: Int = Globals.CARD_GLAYERZ,
            area2D: Area2D.type = Globals.CARD_AREA2D)
@@ -30,7 +31,14 @@ class Card(pos: Vector2 = Globals.CARDS_POS(1),
   }
   override protected def onMouseReleased(mousePos: Vector2, mouseButton: Int): Unit = {
     super.onMouseReleased(mousePos, mouseButton)
-    this.cardUpgrade.upgrade()
+    val weapon = GameManager.currentScene.asInstanceOf[GameScene].player.weapon
+
+    if(cardHolster.isInstanceOf[Weapon.Upgrade])
+      weapon.weaponUpgrades += this.cardHolster.asInstanceOf[Weapon.Upgrade]
+
+    else
+      weapon.weaponEvolution = this.cardHolster.asInstanceOf[Weapon.Evolution]
+
     destroy3Cards()
   }
   override protected def onMouseEntered(mousePos: Vector2): Unit = {

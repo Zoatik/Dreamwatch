@@ -95,35 +95,33 @@ object Weapon {
   case object Primary extends Mode
   case object Secondary extends Mode
 
-  sealed trait Evolution
+  sealed trait Holster
+
+  sealed trait Evolution extends Holster
   case object Phase0 extends Evolution
   case object Phase1 extends Evolution
   case object Phase2 extends Evolution
   case object Phase3 extends Evolution
 
-  sealed trait Upgrade{
-    def upgrade(): Unit
-  }
+  sealed trait Upgrade extends Holster
   // all modifiers are summed and then multiplied to base-
   case object Speed extends Upgrade{
-    override def upgrade(): Unit = {println("upgraded1")}
     val amplification: Float = 0.1f
-    this.amplification
   }
   case object Cooldown extends Upgrade{
-    override def upgrade(): Unit = {println("upgraded2")}
+
     val reduction: Float = 0.1f
   }
   case object BulletSize extends Upgrade{
-    override def upgrade(): Unit = {println("upgraded3")}
+
     val amplification: Float = 0.1f
   }
   case object ExplosionSize extends Upgrade{
-    override def upgrade(): Unit = {println("upgraded4")}
+
     val amplification: Float = 0.1f
   }
   case object BossDamage extends Upgrade{
-    override def upgrade(): Unit = {println("upgraded5")}
+
     val amplification: Float = 0.1f
   }
 
