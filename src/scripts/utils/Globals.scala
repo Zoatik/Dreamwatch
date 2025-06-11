@@ -34,7 +34,7 @@ object Globals {
   val TOY_C_LAYERMASK: ArrayBuffer[Int] = ArrayBuffer(NIGHTMARE_C_LAYER)
 
 
-  val WAVE_LENGTH: Float = 2         // Should be 60
+  val WAVE_LENGTH: Float = 0.1f         // Should be 60
   val DEFAULT_SPAWN_RATE: Float = 0.5f
 
   val NBR_WAVES_BEFORE_BOSS: Int = 2 // Should be 5
@@ -42,7 +42,7 @@ object Globals {
   val DEFAULT_BOSS_POS: Vector2 = new Vector2(WINDOW_WIDTH/2, WINDOW_HEIGHT)
   val DEFAULT_BOSS_HP: Float = 20
 
-  val CARDS_DEFAULT_POS: Array[Vector2] = Array(new Vector2(200, 500), new Vector2(1000, 500), new Vector2(1800, 500))
+  val CARDS_POS: Array[Vector2] = Array(new Vector2(460, 500), new Vector2(960, 500), new Vector2(1460, 500))
   val CARD_GLAYERZ: Int = 0
   val CARD_AREA2D: Area2D.type = Area2D
 

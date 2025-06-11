@@ -2,18 +2,21 @@ package scripts.game.actors.instantiables
 
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import ch.hevs.gdx2d.lib.GdxGraphics
+import com.badlogic.gdx.math.MathUtils.random
 import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.actors.instantiables.UiElement
 import scripts.dreamwatch_engine.physics.Area2D
 import scripts.game.GameManager
-import scripts.game.actors.instantiables.Card.{CardLeft, CardMiddle, CardRight, destroy3Cards}
+import scripts.game.actors.abstracts.Weapon
+import scripts.game.actors.instantiables.Card.{CardLeft, CardMiddle, CardRight, cardAction, destroy3Cards}
 import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
 
-class Card(pos: Vector2 = Globals.CARDS_DEFAULT_POS(1),
+class Card(pos: Vector2 = Globals.CARDS_POS(1),
            cardType: Card.Type,
-           image: ArrayBuffer[BitmapImage] = ArrayBuffer(new BitmapImage("src/res/sprites/card.png")),
+           cardUpgarde: String,
+           image: ArrayBuffer[BitmapImage] = ArrayBuffer(new BitmapImage("src/res/sprites/basicCard.png")),
            gLayerZ: Int = Globals.CARD_GLAYERZ,
            area2D: Area2D.type = Globals.CARD_AREA2D)
   extends UiElement(
@@ -32,13 +35,8 @@ class Card(pos: Vector2 = Globals.CARDS_DEFAULT_POS(1),
 
   override protected def onMouseReleased(mousePos: Vector2, mouseButton: Int): Unit = {
     super.onMouseReleased(mousePos, mouseButton)
-    println(s"card clicked : ${isMouseOver(mousePos)}")
-    this.cardType match {
-      case Card.CardLeft => println("Clicked on left card")
-      case Card.CardMiddle => println("Clicked on middle card")
-      case Card.CardRight => println("Clicked on right card")
-      case _ => println("All cards clicked")
-    }
+    //println(s"card clicked : ${isMouseOver(mousePos)}")
+    cardAction(this.cardType)
     destroy3Cards()
     GameManager.currentScene.asInstanceOf[GameScene].cardsSelectionDone = true
   }
@@ -51,12 +49,16 @@ class Card(pos: Vector2 = Globals.CARDS_DEFAULT_POS(1),
 }
 
 object Card {
-  var cards: Array[Card] = Array.ofDim(3)
+  val cards: Array[Card] = Array.ofDim(3)
 
   def create3Cards(): Unit = {
-    cards(0) = new Card(Globals.CARDS_DEFAULT_POS(0), CardLeft).instantiate()
-    cards(1) = new Card(Globals.CARDS_DEFAULT_POS(1), CardMiddle).instantiate()
-    cards(2) = new Card(Globals.CARDS_DEFAULT_POS(2), CardRight).instantiate()
+    val u: Array[String] = generate3Upgrades()
+    println(u(0))
+    println(u(1))
+    println(u(2))
+    cards(0) = new Card(Globals.CARDS_POS(0), CardLeft,u(0)).instantiate()
+    cards(1) = new Card(Globals.CARDS_POS(1), CardMiddle, u(1)).instantiate()
+    cards(2) = new Card(Globals.CARDS_POS(2), CardRight, u(2)).instantiate()
   }
   def destroy3Cards(): Unit = {
     cards(0).destroy()
@@ -65,23 +67,23 @@ object Card {
 
     //cards = Array.empty
   }
-  /*def cardClicked(cardType: Card.Type): Unit = {
+  def generate3Upgrades(): Array[String] = {
+    // Gonna need like a holster with the info of all the weapons
+    val holster: Array[String] = Array("up1", "up2", "up3", "up4", "up5", "up6")
+    val upgrades: Array[String] = Array.ofDim(3)
+    for(i <- upgrades.indices){
+      upgrades(i) = holster(random.nextInt(0, holster.length))
+    }
+    upgrades
+  }
+  def cardAction(cardType: Card.Type): Unit = {
     cardType match {
       case CardLeft => println("Clicked on left card")
       case CardMiddle => println("Clicked on middle card")
       case CardRight => println("Clicked on right card")
       case _ =>
     }
-  }*/
-  // Could directly do the action in the cardClicked function..
-  /*def cardAction(cardTpye: Card.Type): Unit = {
-    cardTpye match {
-      case CardLeft =>
-      case CardMiddle =>
-      case CardRight =>
-      case _ =>
-    }
-  }*/
+  }
 
 
   sealed trait Type
