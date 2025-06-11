@@ -1,5 +1,6 @@
 package scripts.dreamwatch_engine.actors.abstracts
 
+import com.badlogic.gdx.math.Vector3
 import scripts.dreamwatch_engine.actors.instantiables.{Particle2D, Sprite2D, UiElement}
 import scripts.dreamwatch_engine.inputs.Controller
 import scripts.dreamwatch_engine.physics.{Collider2D, Movement2D}
@@ -50,6 +51,8 @@ abstract class Scene extends Entity with Controller {
   private var _isMouseOnUi: Boolean = false
 
   def isMouseOnUi: Boolean = _isMouseOnUi
+
+  GameManager.g.setShader("res/shaders/background2.fp")
 
 
   /**
@@ -184,6 +187,11 @@ abstract class Scene extends Entity with Controller {
 
     GameManager.g.clear()
 
+    // renders background shader
+    //GameManager.g.getShaderRenderer.setUniform("mouse", new Vector3(GameManager.mousePos ,1))
+    //GameManager.g.getShaderRenderer.addEmptyTexture(Globals.WINDOW_WIDTH, Globals.WINDOW_HEIGHT, "texture0")
+    GameManager.g.drawShader(timeFromCreation)
+
 
 
     // renders graphical elements (except UI)
@@ -192,10 +200,7 @@ abstract class Scene extends Entity with Controller {
     }
     //println("size: " + gLayers.get(Globals.BULLET_G_LAYER).get.size)
 
-    /*// renders particles
-    for (particle <- particles){
-      particle.render()
-    }*/
+
 
     // renders UI
     for (layer <- uiLayers.get()){

@@ -1,8 +1,7 @@
 
 uniform float time;
 uniform vec2 resolution;
-uniform vec3 pos;
-uniform sampler2D backbuffer;
+uniform vec3 mouse;
 uniform sampler2D texture0;
 
 const int ZERO = 0;
@@ -90,9 +89,9 @@ void main(void){
   vec2 R = resolution;
   vec2 uv = (gl_FragCoord.xy*2.-R) / R.y;
   gl_FragColor.rgb *= 0.;
-  gl_FragColor.a = 1.0;
+  gl_FragColor.a = 0.1;
 
-  vec2 m = (pos.xy*2.-R)/R.y;
+  vec2 m = (mouse.xy*2.-R)/R.y;
 
   float d = 0.;
   float d_acc = 0.;
@@ -103,9 +102,9 @@ void main(void){
   for(float i=0.;i<=50.;i++){
     p = ro + rd * z;
 
-    if(pos.z>0.){
+    if(mouse.z>0.){
       p.xz *= rotate(m.x);
-      p.yz *= rotate(m.y);
+      p.yz *= rotate(-m.y);
     }
 
     d = map(p);
@@ -117,7 +116,7 @@ void main(void){
     if(z>1e2)break;
   }
   vec2 position = (gl_FragCoord.xy / resolution.xy);
-  vec4 me = texture2D(backbuffer, position);
+  vec4 me = texture2D(texture0, position);
 
   d_acc = pow(d_acc, 2.);
   vec3 c = sin(vec3(10,6,2)+time+p.z*0.1)*0.5+0.5;
