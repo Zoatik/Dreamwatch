@@ -34,6 +34,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
   private var spawnRate: Float = 0
 
   private var bossCounter: Int = 1
+  private var currentBoss: Option[Boss] = None
 
   // Random number generator for spawn timing and positions.
   private val rnd = new Random()
@@ -112,7 +113,10 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
             }
             else {
               // Next boss
-              Boss.destroyBoss()
+              if(currentBoss.isDefined){
+                currentBoss.get.destroy()
+                currentBoss = None
+              }
               waveCounter += 1
               initCards()
               waveStatus = "cards"
@@ -162,7 +166,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
   def startNewBossWave(): Unit = {
     waveStatus = "boss"
     spawnRate = (Globals.DEFAULT_SPAWN_RATE + waveCounter)*40
-    Boss.spawnBoss(bossCounter)
+    currentBoss = Some(Boss.spawnBoss(bossCounter))
   }
 
   // Basically handles all the spawning

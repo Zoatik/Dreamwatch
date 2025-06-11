@@ -31,6 +31,10 @@ class Boss(pos: Vector2,
 
   var hp: Float = bossHp(bossType)
 
+  override def instantiate(): Boss = {
+    super.instantiate()
+    this
+  }
 
   override protected def onCollision(other: Collider2D): Unit = other match{
     case b: Bullet =>
@@ -77,7 +81,7 @@ object Boss{
     case ZeMudry => Globals.DEFAULT_BOSS_HP
   }
 
-  def spawnBoss(bossCounter: Int): Unit = {
+  def spawnBoss(bossCounter: Int): Boss = {
     bossCounter match {
       case 1 =>
         new Boss(Globals.DEFAULT_BOSS_POS, Boss.UneAraignee).instantiate()
@@ -91,9 +95,6 @@ object Boss{
 
   }
 
-  def destroyBoss(): Unit = {
-    GameManager.currentScene.
-  }
 
   sealed trait Type
 
