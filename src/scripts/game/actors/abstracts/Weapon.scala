@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.actors.instantiables.Sprite2D
 import scripts.dreamwatch_engine.physics.{Area2D, Movement2D}
 import scripts.game.GameManager
+import scripts.game.actors.abstracts.Weapon.{BossDamage, BulletSize, Cooldown, ExplosionSize, Speed, Upgrade}
 import scripts.game.actors.instantiables.Bullet
 import scripts.utils.Globals
 
@@ -27,6 +28,7 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[String])
   // Upgrades + Evolutions
   var weaponUpgrades: ArrayBuffer[Weapon.Upgrade] = ArrayBuffer.empty
   var weaponEvolution: Weapon.Evolution = Weapon.Phase0
+  var upgradePossibilites: Array[Upgrade] = Array(Speed, Cooldown, BulletSize, ExplosionSize, BossDamage)
 
 
   override def update(deltaT: Float): Unit = {
@@ -99,21 +101,29 @@ object Weapon {
   case object Phase2 extends Evolution
   case object Phase3 extends Evolution
 
-  sealed trait Upgrade
+  sealed trait Upgrade{
+    def upgrade(): Unit
+  }
   // all modifiers are summed and then multiplied to base-
   case object Speed extends Upgrade{
+    override def upgrade(): Unit = {println("upgraded1")}
     val amplification: Float = 0.1f
+    this.amplification
   }
   case object Cooldown extends Upgrade{
+    override def upgrade(): Unit = {println("upgraded2")}
     val reduction: Float = 0.1f
   }
   case object BulletSize extends Upgrade{
+    override def upgrade(): Unit = {println("upgraded3")}
     val amplification: Float = 0.1f
   }
   case object ExplosionSize extends Upgrade{
+    override def upgrade(): Unit = {println("upgraded4")}
     val amplification: Float = 0.1f
   }
   case object BossDamage extends Upgrade{
+    override def upgrade(): Unit = {println("upgraded5")}
     val amplification: Float = 0.1f
   }
 
