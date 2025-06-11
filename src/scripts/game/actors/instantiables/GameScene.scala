@@ -23,7 +23,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
   override val movableObjects: ArrayBuffer[Movement2D] = ArrayBuffer()
   override val objects: ArrayBuffer[Object2D] = ArrayBuffer()
   override val particles: ArrayBuffer[Particle2D] = ArrayBuffer()
-  override val player: Player = gamePlayer
+  override val player: GamePlayer = gamePlayer
 
   private var waveCounter: Int = 1
   private var waveTimer: Float = 0

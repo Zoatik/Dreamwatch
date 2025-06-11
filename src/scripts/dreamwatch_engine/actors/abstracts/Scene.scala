@@ -6,6 +6,7 @@ import scripts.dreamwatch_engine.physics.{Collider2D, Movement2D}
 import scripts.dreamwatch_engine.utils.Layers
 import scripts.game.GameManager
 import scripts.game.actors.abstracts.Player
+import scripts.utils.Globals
 
 import scala.collection.immutable.ListSet
 import scala.collection.mutable.ArrayBuffer
@@ -190,6 +191,7 @@ abstract class Scene extends Entity with Controller {
     for (layer <- gLayers.get()) {
       layer.elements.foreach(gElement => gElement.draw(GameManager.g))
     }
+    println("size: " + gLayers.get(Globals.BULLET_G_LAYER).get.size)
 
     /*// renders particles
     for (particle <- particles){
