@@ -15,7 +15,7 @@ import scala.collection.mutable.ArrayBuffer
 
 class Card(pos: Vector2 = Globals.CARDS_POS(1),
            var cardHolster: Holster,
-           image: ArrayBuffer[String] = ArrayBuffer("src/res/sprites/basicCard.png"),
+           image: ArrayBuffer[String] = ArrayBuffer("src/res/sprites/card.png"),
            gLayerZ: Int = Globals.CARD_GLAYERZ,
            area2D: Area2D.type = Globals.CARD_AREA2D)
   extends UiElement(
@@ -25,6 +25,7 @@ class Card(pos: Vector2 = Globals.CARDS_POS(1),
     gLayerZ,
     area2D.Box){
 
+  width = 400.0f
   val cardHighlight: UiElement = new UiElement(pos, 0, ArrayBuffer("src/res/sprites/cardHighlight.png"), 2, Area2D.Box)
 
   override def instantiate(): Card = {
