@@ -8,18 +8,18 @@ import scripts.game.actors.instantiables.Bullet
 
 import scala.collection.mutable.ArrayBuffer
 
-class Sniper(pos: Vector2)
+class Mortar(pos: Vector2)
   extends Weapon(
     pos,
-    ArrayBuffer("res/sprites/soccer.png")
+    ArrayBuffer("res/sprites/card.png")
   ){
 
-  override def instantiate(): Sniper = {
+  override def instantiate(): Mortar = {
     super.instantiate()
     this
   }
 
 
-  override protected val bulletType: Bullet.Type = Bullet.Piercing
+  override protected val bulletType: Bullet.Type = Bullet.Bomb
 
 }

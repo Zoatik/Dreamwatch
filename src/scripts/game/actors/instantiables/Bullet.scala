@@ -100,11 +100,11 @@ object Bullet {
 
 
   case object Piercing extends Type{
-    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/soccer.png")
-    override val baseBulletSpeed: Float = 1000.0f
-    override val baseBulletCooldown: Float = 0.1f
-    override val baseBulletSize: Float = 8.0f
-    override val baseBulletExplosionSize: Float = 8.0f
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/card.png")
+    override val baseBulletSpeed: Float = 5000.0f
+    override val baseBulletCooldown: Float = 0.5f
+    override val baseBulletSize: Float = 4.0f
+    override val baseBulletExplosionSize: Float = 0.0f
     override val baseBulletDamage: Float = 1000.0f
     override val bulletTrajectory: Movement2D.Trajectory = Movement2D.Linear
   }
@@ -114,7 +114,7 @@ object Bullet {
     override val baseBulletSpeed: Float = 150.0f
     override val baseBulletCooldown: Float = 0.1f
     override val baseBulletSize: Float = 10.0f
-    override val baseBulletExplosionSize: Float = 100.0f
+    override val baseBulletExplosionSize: Float = 1000.0f
     override val baseBulletDamage: Float = 1.0f
     override val bulletTrajectory: Movement2D.Trajectory = Movement2D.Sinus
   }

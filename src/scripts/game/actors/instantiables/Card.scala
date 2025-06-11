@@ -46,12 +46,12 @@ class Card(pos: Vector2 = Globals.CARDS_POS(1),
   }
   override protected def onMouseEntered(mousePos: Vector2): Unit = {
     super.onMouseEntered(mousePos)
-    cardHighlight.instantiate()
+    //cardHighlight.instantiate()
   }
 
   override protected def onMouseLeft(mousePos: Vector2): Unit = {
     super.onMouseLeft(mousePos)
-    cardHighlight.destroy()
+    //cardHighlight.destroy()
   }
 }
 
