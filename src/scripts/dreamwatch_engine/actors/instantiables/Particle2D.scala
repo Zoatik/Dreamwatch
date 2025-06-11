@@ -43,6 +43,6 @@ class Particle2D(shaderPath: String, pos: Vector2, lifeTime: Option[Float] = Non
 
   override def destroy(): Unit = {
     super.destroy()
-    println("Particle destroyed")
+    //println("Particle destroyed")
   }
 }
