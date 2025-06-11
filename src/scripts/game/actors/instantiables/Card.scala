@@ -28,8 +28,8 @@ class Card(pos: Vector2 = Globals.CARDS_DEFAULT_POS(1),
     this
   }
 
-  override protected def mouseReleased(mousePos: Vector2, mouseButton: Int): Unit = {
-    super.mouseReleased(mousePos, mouseButton)
+  override protected def onMouseReleased(mousePos: Vector2, mouseButton: Int): Unit = {
+    super.onMouseReleased(mousePos, mouseButton)
     println(s"card clicked : ${isMouseOver(mousePos)}")
     this.cardType match {
       case Card.CardLeft => println("Clicked on left card")
@@ -40,8 +40,8 @@ class Card(pos: Vector2 = Globals.CARDS_DEFAULT_POS(1),
     destroy3Cards()
     GameManager.currentScene.asInstanceOf[GameScene].cardsSelectionDone = true
   }
-  override protected def mouseEntered(mousePos: Vector2): Unit = {
-    super.mouseEntered(mousePos)
+  override protected def onMouseEntered(mousePos: Vector2): Unit = {
+    super.onMouseEntered(mousePos)
     counter += 1
     println(s"YOuu have entered the primitive card's territory. Now it's the ${this.cardType}")
   }

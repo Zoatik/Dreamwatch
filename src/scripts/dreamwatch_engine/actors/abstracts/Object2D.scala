@@ -1,6 +1,7 @@
 package scripts.dreamwatch_engine.actors.abstracts
 
 import com.badlogic.gdx.math.Vector2
+import scripts.dreamwatch_engine.physics.Area2D
 import scripts.game.GameManager
 
 /**

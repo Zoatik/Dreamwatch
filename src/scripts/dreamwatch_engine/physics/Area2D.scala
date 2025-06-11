@@ -1,6 +1,7 @@
 package scripts.dreamwatch_engine.physics
 
 import com.badlogic.gdx.math.Vector2
+import scripts.dreamwatch_engine.actors.abstracts.Object2D
 import scripts.dreamwatch_engine.inputs.InputManager
 
 import scala.collection.mutable.ArrayBuffer
@@ -48,9 +49,13 @@ trait Area2D {
 
   // Register with the global InputManager to receive raw mouse events,
   // then delegate to local handlers (mouseMoved, mousePressed, mouseReleased).
-  InputManager.onMouseMoved(mousePos => mouseMoved(mousePos))
-  InputManager.onMousePressed((mousePos, mouseButton) => mousePressed(mousePos, mouseButton))
-  InputManager.onMouseReleased((mousePos, mouseButton) => mouseReleased(mousePos, mouseButton))
+  private val _mouseMovedRef: Vector2 => Unit = mouseMoved
+  private val _mousePressedRef: (Vector2, Int) => Unit = mousePressed
+  private val _mouseReleasedRef: (Vector2, Int) => Unit = mouseReleased
+
+  InputManager.bindMouseMoved(_mouseMovedRef)
+  InputManager.bindMousePressed(_mousePressedRef)
+  InputManager.bindMouseReleased(_mouseReleasedRef)
 
   /** Tracks whether the mouse is currently over this area. */
   private var _isMouseOver: Boolean = false
@@ -136,7 +141,7 @@ trait Area2D {
    *
    * @param mousePos The current mouse position (screenX, screenY).
    */
-  def mouseMoved(mousePos: Vector2): Unit = {
+  protected def mouseMoved(mousePos: Vector2): Unit = {
     val mouseState = isMouseOver(mousePos)
     //println("mouse state: " + mouseState + ", pos: " + pos)
     if (mouseState != _isMouseOver) {
@@ -146,13 +151,15 @@ trait Area2D {
       else
         mouseLeft(mousePos)
     }
+    if (!_isMouseOver)
+      return
   }
 
   /** Register a listener to be notified when the mouse enters this area.
    *
    * @param listener A function that takes mousePos: Vector2 and returns Unit.
    */
-  def onMouseEntered(listener: Vector2 => Unit): Unit = {
+  def bindMouseEntered(listener: Vector2 => Unit): Unit = {
     mouseEnterListeners += listener
   }
 
@@ -160,7 +167,7 @@ trait Area2D {
    *
    * @param listener A function that takes mousePos: Vector2 and returns Unit.
    */
-  def onMouseLeft(listener: Vector2 => Unit): Unit = {
+  def bindMouseLeft(listener: Vector2 => Unit): Unit = {
     mouseLeaveListeners += listener
   }
 
@@ -168,7 +175,7 @@ trait Area2D {
    *
    * @param listener A function that takes (mousePos: Vector2, button: Int) and returns Unit.
    */
-  def onMousePressed(listener: (Vector2, Int) => Unit): Unit = {
+  def bindMousePressed(listener: (Vector2, Int) => Unit): Unit = {
     mousePressedListeners += listener
   }
 
@@ -176,7 +183,7 @@ trait Area2D {
    *
    * @param listener A function that takes (mousePos: Vector2, button: Int) and returns Unit.
    */
-  def onMouseReleased(listener: (Vector2, Int) => Unit): Unit = {
+  def bindMouseReleased(listener: (Vector2, Int) => Unit): Unit = {
     mouseReleasedListeners += listener
   }
 
@@ -184,7 +191,7 @@ trait Area2D {
    *
    * @param mousePos The position at which the mouse entered.
    */
-  protected def mouseEntered(mousePos: Vector2): Unit = {
+  protected def onMouseEntered(mousePos: Vector2): Unit = {
     mouseEnterListeners.toArray.foreach(_(mousePos))
   }
 
@@ -192,7 +199,7 @@ trait Area2D {
    *
    * @param mousePos The position at which the mouse left.
    */
-  protected def mouseLeft(mousePos: Vector2): Unit = {
+  protected def onMouseLeft(mousePos: Vector2): Unit = {
     mouseLeaveListeners.toArray.foreach(_(mousePos))
   }
 
@@ -201,9 +208,8 @@ trait Area2D {
    * @param mousePos   The click position.
    * @param mouseButton The button code that was pressed.
    */
-  protected def mousePressed(mousePos: Vector2, mouseButton: Int): Unit = {
-    if (isMouseOver(mousePos))
-      mousePressedListeners.toArray.foreach(_(mousePos, mouseButton))
+  protected def onMousePressed(mousePos: Vector2, mouseButton: Int): Unit = {
+    mousePressedListeners.toArray.foreach(_(mousePos, mouseButton))
   }
 
   /** Invoke all registered mouse-release callbacks if the mouse is currently over this area.
@@ -211,12 +217,57 @@ trait Area2D {
    * @param mousePos   The release position.
    * @param mouseButton The button code that was released.
    */
-  protected def mouseReleased(mousePos: Vector2, mouseButton: Int): Unit = {
-    if (isMouseOver(mousePos)) {
-      println("mouse is over")
-      mouseReleasedListeners.toArray.foreach(_(mousePos, mouseButton))
-    }
+  protected def onMouseReleased(mousePos: Vector2, mouseButton: Int): Unit = {
+    mouseReleasedListeners.toArray.foreach(_(mousePos, mouseButton))
   }
+
+  /** Invoke all registered mouse-enter callbacks with the given position.
+   *
+   * @param mousePos The position at which the mouse entered.
+   */
+  private def mouseEntered(mousePos: Vector2): Unit = {
+      onMouseEntered(mousePos)
+  }
+
+  /** Invoke all registered mouse-leave callbacks with the given position.
+   *
+   * @param mousePos The position at which the mouse left.
+   */
+  private def mouseLeft(mousePos: Vector2): Unit = {
+      onMouseLeft(mousePos)
+  }
+
+  /** Invoke all registered mouse-press callbacks if the mouse is currently over this area.
+   *
+   * @param mousePos   The click position.
+   * @param mouseButton The button code that was pressed.
+   */
+  private def mousePressed(mousePos: Vector2, mouseButton: Int): Unit = {
+    if (isMouseOver(mousePos))
+      onMousePressed(mousePos, mouseButton)
+  }
+
+  /** Invoke all registered mouse-release callbacks if the mouse is currently over this area.
+   *
+   * @param mousePos   The release position.
+   * @param mouseButton The button code that was released.
+   */
+  private def mouseReleased(mousePos: Vector2, mouseButton: Int): Unit = {
+    if (isMouseOver(mousePos))
+      onMouseReleased(mousePos, mouseButton)
+  }
+
+
+  protected def unbindEvents(): Unit = {
+    mouseEnterListeners.clear()
+    mouseLeaveListeners.clear()
+    mousePressedListeners.clear()
+    mouseReleasedListeners.clear()
+    InputManager.unbindMouseMoved(_mouseMovedRef)
+    InputManager.unbindMousePressed(_mousePressedRef)
+    InputManager.unbindMouseReleased(_mouseReleasedRef)
+  }
+
 }
 
 

@@ -43,12 +43,12 @@ object GameManager{
     g = gdxGraphics
 
     // Register a mouse-pressed listener: depending on button, spawn different bullet types.
-    InputManager.onMousePressed((pos, button) => {
+    InputManager.bindMousePressed((pos, button) => {
       handleMouseInput(pos, button)
     })
 
     // Pause button
-    InputManager.onKeyPressed(button => {
+    InputManager.bindKeyPressed(button => {
       if(button == Input.Keys.ESCAPE) _isPaused = !_isPaused
     })
 

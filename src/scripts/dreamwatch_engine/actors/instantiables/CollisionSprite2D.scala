@@ -28,7 +28,11 @@ class CollisionSprite2D(pos: Vector2,
    *
    * @param other The other Collider2D involved in the collision.
    */
-  override protected def onCollision(other: Collider2D): Unit = {
+  override protected def onCollision(other: Collider2D): Unit = {}
+
+  override def destroy(): Unit = {
+    super.destroy()
+    unbindEvents()
   }
 
 }

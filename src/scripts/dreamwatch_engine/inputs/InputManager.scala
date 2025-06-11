@@ -120,7 +120,7 @@ object InputManager extends InputAdapter {
    *
    * @param listener A function that takes a Vector2 (screenX, screenY) and returns Unit.
    */
-  def onMouseMoved(listener: Vector2 => Unit): Unit = {
+  def bindMouseMoved(listener: Vector2 => Unit): Unit = {
     mouseMotionListeners += listener
   }
 
@@ -129,7 +129,7 @@ object InputManager extends InputAdapter {
    *
    * @param listener A function that takes a Vector2 (screenX, screenY) and an Int (button code).
    */
-  def onMousePressed(listener: (Vector2, Int) => Unit): Unit = {
+  def bindMousePressed(listener: (Vector2, Int) => Unit): Unit = {
     mousePressedListeners += listener
   }
 
@@ -138,7 +138,7 @@ object InputManager extends InputAdapter {
    *
    * @param listener A function that takes a Vector2 (screenX, screenY) and an Int (button code).
    */
-  def onMouseReleased(listener: (Vector2, Int) => Unit): Unit = {
+  def bindMouseReleased(listener: (Vector2, Int) => Unit): Unit = {
     mouseReleasedListeners += listener
   }
 
@@ -147,7 +147,7 @@ object InputManager extends InputAdapter {
    *
    * @param listener A function that takes an Int (key code) and returns Unit.
    */
-  def onKeyPressed(listener: Int => Unit): Unit = {
+  def bindKeyPressed(listener: Int => Unit): Unit = {
     keyPressedListeners += listener
   }
 
@@ -156,7 +156,29 @@ object InputManager extends InputAdapter {
    *
    * @param listener A function that takes an Int (key code) and returns Unit.
    */
-  def onKeyReleased(listener: Int => Unit): Unit = {
+  def bindKeyReleased(listener: Int => Unit): Unit = {
     keyReleasedListeners += listener
+  }
+
+
+
+  def unbindMouseMoved(listener: Vector2 => Unit): Unit = {
+    mouseMotionListeners -= listener
+  }
+
+  def unbindMousePressed(listener: (Vector2, Int) => Unit): Unit = {
+    mousePressedListeners -= listener
+  }
+
+  def unbindMouseReleased(listener: (Vector2, Int) => Unit): Unit = {
+    mouseReleasedListeners -= listener
+  }
+
+  def unbindKeyPressed(listener: Int => Unit): Unit = {
+    keyPressedListeners -= listener
+  }
+
+  def unbindKeyReleased(listener: Int => Unit): Unit = {
+    keyReleasedListeners -= listener
   }
 }

@@ -57,6 +57,10 @@ class CollisionObject2D(
    * Called when the entity should no longer exist (e.g., lifetime expired or explicit destroy).
    */
 
+  override def destroy(): Unit = {
+    super.destroy()
+    unbindEvents()
+  }
 
 
 }

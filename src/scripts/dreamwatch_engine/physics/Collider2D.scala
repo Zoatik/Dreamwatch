@@ -1,5 +1,6 @@
 package scripts.dreamwatch_engine.physics
 
+import scripts.dreamwatch_engine.actors.abstracts.Object2D
 import scripts.dreamwatch_engine.utils.{Layer, Layers}
 
 import scala.collection.mutable.ArrayBuffer
