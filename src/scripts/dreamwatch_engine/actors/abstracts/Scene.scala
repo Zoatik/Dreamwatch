@@ -117,7 +117,7 @@ abstract class Scene extends Entity with Controller {
       case g: Sprite2D =>
         gLayers.remove(g)
         // Manually dispose bitmap resources to prevent memory leaks or crashes
-        g.images.foreach(_.dispose())
+        //g.images.foreach(_.dispose())
       case _ =>
     }
 
