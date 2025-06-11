@@ -21,14 +21,14 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[String])
   protected val bulletType: Bullet.Type
 
   // shoot ability variables
-  protected var canShoot: Boolean = true
+  var canShoot: Boolean = true
   protected var lastShot: Float = 0.0f
 
 
   // Upgrades + Evolutions
   var weaponUpgrades: ArrayBuffer[Weapon.Upgrade] = ArrayBuffer.empty
   var weaponEvolution: Weapon.Evolution = Weapon.Phase0
-  var upgradePossibilites: Array[Upgrade] = Array(Speed, Cooldown, BulletSize, ExplosionSize, BossDamage)
+  var upgradePossibilities: Array[Upgrade] = Array(Speed, Cooldown, BulletSize, ExplosionSize, BossDamage)
 
 
   override def update(deltaT: Float): Unit = {
@@ -109,19 +109,15 @@ object Weapon {
     val amplification: Float = 0.1f
   }
   case object Cooldown extends Upgrade{
-
     val reduction: Float = 0.1f
   }
   case object BulletSize extends Upgrade{
-
     val amplification: Float = 0.1f
   }
   case object ExplosionSize extends Upgrade{
-
     val amplification: Float = 0.1f
   }
   case object BossDamage extends Upgrade{
-
     val amplification: Float = 0.1f
   }
 

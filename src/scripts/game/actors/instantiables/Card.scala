@@ -25,6 +25,8 @@ class Card(pos: Vector2 = Globals.CARDS_POS(1),
     gLayerZ,
     area2D.Box){
 
+  val cardHighlight: UiElement = new UiElement(pos, 0, ArrayBuffer("src/res/sprites/cardHighlight.png"), 2, Area2D.Box)
+
   override def instantiate(): Card = {
     super.instantiate()
     this
@@ -43,7 +45,12 @@ class Card(pos: Vector2 = Globals.CARDS_POS(1),
   }
   override protected def onMouseEntered(mousePos: Vector2): Unit = {
     super.onMouseEntered(mousePos)
-    // Gonna highlight the card here
+    cardHighlight.instantiate()
+  }
+
+  override protected def onMouseLeft(mousePos: Vector2): Unit = {
+    super.onMouseLeft(mousePos)
+    cardHighlight.destroy()
   }
 }
 
@@ -63,7 +70,7 @@ object Card {
     GameManager.currentScene.asInstanceOf[GameScene].cardsSelectionDone = true
   }
   def generate3Upgrades(): Array[Upgrade] = {
-    val upPos: ArrayBuffer[Upgrade] = GameManager.currentScene.asInstanceOf[GameScene].player.weapon.upgradePossibilites.clone().to(ArrayBuffer)
+    val upPos: ArrayBuffer[Upgrade] = GameManager.currentScene.asInstanceOf[GameScene].player.weapon.upgradePossibilities.clone().to(ArrayBuffer)
     val cardUp: Array[Upgrade] = Array.ofDim(3)
     for(i <- cardUp.indices){
       cardUp(i) = upPos(random.nextInt(0, upPos.length))
