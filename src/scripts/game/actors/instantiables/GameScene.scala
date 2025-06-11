@@ -96,11 +96,8 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
 
       case "boss" =>
         // Boss wave loop
-        if(!bossDefeated){
-          //InputManager.onKeyPressed(_ => bossDefeated = true) // TODO: SHOULD NOT BE HERE
-        }
         // What happens when the boss is defeated
-        else{
+        if(bossDefeated){
           spawnRate = 0
           if(!GameManager.currentScene.objects.exists(e => e.isInstanceOf[Nightmare])) {
             bossDefeated = false
@@ -128,7 +125,6 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
 
 
       case "cards" =>
-        //InputManager.onKeyPressed(_ => cardsSelectionDone = true) // TODO: SHOULD NOT BE HERE
         // Show cards (will most likely handle the cards showing that will access this object and modify the cardsSelectionDone)
         // What happens once you've chosen you're upgrade card
         if (cardsSelectionDone) {

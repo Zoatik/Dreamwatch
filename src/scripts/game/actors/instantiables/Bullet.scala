@@ -42,15 +42,16 @@ class Bullet(pos: Vector2,
     override val parent: Bullet = Bullet.this
   }
 
-  val bulletParticle = new Particle2D("res/shaders/electrical_ball.fp", pos, 0)
-  bulletParticle.setUniform("u_radius", bulletSize)
-  bulletParticle.setUniform("u_center", pos.cpy())
+
+  override def update(deltaT: Float): Unit = {
+    super.update(deltaT)
+    Particle2D.spawnParticles(pos, bulletSize/2, 1.0f, 500.0f, 1, "res/sprites/star.png", gLayerZ)
+  }
 
   override def instantiate(): Bullet = {
     super.instantiate()
     //val partTest = new Particle2D("res/shaders/electrical_ball.fp", pos)
 
-    bulletParticle.instantiate()
     this
   }
 
@@ -72,21 +73,11 @@ class Bullet(pos: Vector2,
 
   private def explode(): Unit = {
     explosionCollider.instantiate()
-    val exploParticle = new Particle2D(
-      "res/shaders/explosion.fp",
-      pos,
-      0,
-      Some(2.0f))
-
-    exploParticle.setUniform("u_center", new Vector2(pos.x, pos.y))
-    exploParticle.setUniform("u_radius", explosionSize)
-    exploParticle.setUniform("u_duration", 0.2f)
-    exploParticle.instantiate()
+    Particle2D.spawnParticles(pos, explosionSize, 1.0f, 500.0f, 20, "res/sprites/texture.png", gLayerZ)
   }
 
   override def destroy(): Unit = {
     super.destroy()
-    //bulletParticle.destroy()
   }
 
 

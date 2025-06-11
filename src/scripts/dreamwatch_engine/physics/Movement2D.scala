@@ -1,6 +1,7 @@
 package scripts.dreamwatch_engine.physics
 
 import com.badlogic.gdx.math.{MathUtils, Vector2}
+import scripts.dreamwatch_engine.actors.instantiables.Particle2D
 
 /**
  * Trait that adds movement behavior to any Object2D in the world.
@@ -19,6 +20,8 @@ trait Movement2D {
 
   /** Target position toward which the object moves. */
   var target: Vector2
+
+  var direction: Vector2 = null
 
   /** If true, stops movement once the target is reached. */
   var stopAtTarget: Boolean = true
@@ -55,38 +58,44 @@ trait Movement2D {
   def move(deltaT: Float): Unit = {
     elapsedTime += deltaT
 
+
+
     if (target == null || speed <= 0) return
     if (stopAtTarget && targetReached()) return
 
+
     val toTarget = target.cpy().sub(pos)
     if (toTarget.isZero) return
-    val unitToTarget = toTarget.nor()
 
-    val direction: Vector2 = trajectory match {
-      case Movement2D.Linear =>
-        unitToTarget
-      case Movement2D.Sinus =>
-        val baseDir = unitToTarget.cpy()
-        val perp = new Vector2(-baseDir.y, baseDir.x)
-        val phase = elapsedTime * sineFrequency * (2 * Math.PI).toFloat
-        val offset = perp.scl((Math.sin(phase) * sineAmplitude).toFloat)
-        baseDir.add(offset).nor()
-      case Movement2D.Spiral =>
-        val radiusVec = pos.cpy().sub(target)
-        val radius = radiusVec.len()
-        if (radius == 0f) new Vector2(0, 0)
-        else {
-          val radialDir = radiusVec.cpy().nor()
-          val tangential = new Vector2(-radialDir.y, radialDir.x)
-          val angleDeg = spiralAngularSpeed * elapsedTime
-          val inwardDir = target.cpy().sub(pos).nor()
-          val spiraled = inwardDir.rotateDeg(angleDeg)
-          spiraled.cpy().add(radialDir).scl(-1).nor()
-        }
-      case _ => unitToTarget
+    val unitToTarget = toTarget.nor()
+    var dir: Vector2 = direction
+    if(dir == null) {
+        dir = trajectory match {
+        case Movement2D.Linear =>
+          unitToTarget
+        case Movement2D.Sinus =>
+          val baseDir = unitToTarget.cpy()
+          val perp = new Vector2(-baseDir.y, baseDir.x)
+          val phase = elapsedTime * sineFrequency * (2 * Math.PI).toFloat
+          val offset = perp.scl((Math.sin(phase) * sineAmplitude).toFloat)
+          baseDir.add(offset).nor()
+        case Movement2D.Spiral =>
+          val radiusVec = pos.cpy().sub(target)
+          val radius = radiusVec.len()
+          if (radius == 0f) new Vector2(0, 0)
+          else {
+            val radialDir = radiusVec.cpy().nor()
+            val tangential = new Vector2(-radialDir.y, radialDir.x)
+            val angleDeg = spiralAngularSpeed * elapsedTime
+            val inwardDir = target.cpy().sub(pos).nor()
+            val spiraled = inwardDir.rotateDeg(angleDeg)
+            spiraled.cpy().add(radialDir).scl(-1).nor()
+          }
+        case _ => unitToTarget
+      }
     }
 
-    val deltaXY = direction.scl(speed * deltaT)
+    val deltaXY = dir.cpy().scl(speed * deltaT)
     pos.x += deltaXY.x
     pos.y += deltaXY.y
 

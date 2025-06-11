@@ -81,6 +81,7 @@ object Boss{
     case ZeMudry => Globals.DEFAULT_BOSS_HP
   }
 
+
   def spawnBoss(bossCounter: Int): Boss = {
     bossCounter match {
       case 1 =>
