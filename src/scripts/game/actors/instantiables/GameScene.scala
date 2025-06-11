@@ -103,6 +103,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
           spawnRate = 0
           if(!GameManager.currentScene.objects.exists(e => e.isInstanceOf[Nightmare])) {
             bossDefeated = false
+
             if (bossCounter == Globals.NBR_OF_BOSSES) {
               // Game is won !
               println("Game is won !")
@@ -111,6 +112,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
             }
             else {
               // Next boss
+              Boss.destroyBoss()
               waveCounter += 1
               initCards()
               waveStatus = "cards"
@@ -160,16 +162,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
   def startNewBossWave(): Unit = {
     waveStatus = "boss"
     spawnRate = (Globals.DEFAULT_SPAWN_RATE + waveCounter)*40
-    bossCounter match {
-      case 1 =>
-        new Boss(Globals.DEFAULT_BOSS_POS, Boss.UneAraignee).instantiate()
-      case 2 =>
-        new Boss(Globals.DEFAULT_BOSS_POS, Boss.Ghost).instantiate()
-      case 3 =>
-        new Boss(Globals.DEFAULT_BOSS_POS, Boss.TheGrimReaper).instantiate()
-      case _ =>
-        new Boss(Globals.DEFAULT_BOSS_POS, Boss.ZeMudry).instantiate()
-    }
+    Boss.spawnBoss(bossCounter)
   }
 
   // Basically handles all the spawning
@@ -187,11 +180,10 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
       //println("Do nothing")
 
       case "boss" =>
-      // Boss spawns
-      case "yo mama" =>
+      // Boss spawns ghosts
         if(rnd.nextFloat() < deltaT * spawnRate) {
-          val bossPos: Vector2 = new Vector2(GameManager.g.getScreenWidth/2, GameManager.g.getScreenHeight)
-          val bossTarget: Vector2 = new Vector2(rnd.nextFloat()*GameManager.g.getScreenWidth, 0)
+          val bossPos: Vector2 = new Vector2(Globals.DEFAULT_BOSS_POS.x*rnd.nextFloat(), Globals.DEFAULT_BOSS_POS.y)
+          val bossTarget: Vector2 = new Vector2(GameManager.g.getScreenWidth/2, 0)
           new Ghost(bossPos, bossTarget).instantiate()
         }
       case _ =>
@@ -210,7 +202,5 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
   override def handleKeyInput(button: Int): Boolean = {
     true
   }
-
-
 
 }

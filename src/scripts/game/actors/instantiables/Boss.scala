@@ -40,6 +40,10 @@ class Boss(pos: Vector2,
     case _ =>
   }
 
+  override def destroy(): Unit = {
+    super.destroy()
+  }
+
   protected def takeDamage(amount: Float): Unit = {
     println("Boss has taken damage")
     hp -= amount
@@ -60,10 +64,10 @@ object Boss{
 
   }
   private def baseBossRadius(bossType: Type): Float = bossType match {
-    case UneAraignee => 50.0f
-    case Ghost => 50.0f
-    case TheGrimReaper => 50.0f
-    case _ => 50.0f
+    case UneAraignee => 500.0f
+    case Ghost => 500.0f
+    case TheGrimReaper => 500.0f
+    case _ => 500.0f
   }
 
   private def bossHp(bossType: Type): Float = bossType match {
@@ -73,7 +77,23 @@ object Boss{
     case ZeMudry => Globals.DEFAULT_BOSS_HP
   }
 
+  def spawnBoss(bossCounter: Int): Unit = {
+    bossCounter match {
+      case 1 =>
+        new Boss(Globals.DEFAULT_BOSS_POS, Boss.UneAraignee).instantiate()
+      case 2 =>
+        new Boss(Globals.DEFAULT_BOSS_POS, Boss.Ghost).instantiate()
+      case 3 =>
+        new Boss(Globals.DEFAULT_BOSS_POS, Boss.TheGrimReaper).instantiate()
+      case _ =>
+        new Boss(Globals.DEFAULT_BOSS_POS, Boss.ZeMudry).instantiate()
+    }
 
+  }
+
+  def destroyBoss(): Unit = {
+    GameManager.currentScene.
+  }
 
   sealed trait Type
 
