@@ -191,7 +191,7 @@ abstract class Scene extends Entity with Controller {
     for (layer <- gLayers.get()) {
       layer.elements.foreach(gElement => gElement.draw(GameManager.g))
     }
-    println("size: " + gLayers.get(Globals.BULLET_G_LAYER).get.size)
+    //println("size: " + gLayers.get(Globals.BULLET_G_LAYER).get.size)
 
     /*// renders particles
     for (particle <- particles){
