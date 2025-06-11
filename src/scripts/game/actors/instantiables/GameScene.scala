@@ -82,8 +82,8 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
         else {
           // End of the wave. Do this:
           // Stop spawning nightmares
-          spawnRate = 0
-          if(!GameManager.currentScene.objects.exists(e => e.isInstanceOf[Nightmare])) {
+          spawnRate = 0                                                               // Ajouté pour éviter d'avoir des balles encore vollantes lors du choix de cartes
+          if(!GameManager.currentScene.objects.exists(e => e.isInstanceOf[Nightmare]) && !GameManager.currentScene.objects.exists(f => f.isInstanceOf[Bullet])) {
             waveCounter += 1
             initCards()
             waveStatus = "cards"
@@ -94,11 +94,19 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
         }
 
 
-      case "boss" =>
+      case "boss" | "bossMinionsAttack" =>
         // Boss wave loop
+        if(!bossDefeated){
+          if(waveTimer%20 < 5){
+            waveStatus = "bossMinionsAttack"
+          }
+          else{
+            waveStatus = "boss"
+          }
+        }
         // What happens when the boss is defeated
-        if(bossDefeated){
-          spawnRate = 0
+        else{
+          spawnRate = 0 // Keep cause the boss died so would be bad if kept spawning out of nowhere
           if(!GameManager.currentScene.objects.exists(e => e.isInstanceOf[Nightmare])) {
             bossDefeated = false
 
@@ -129,6 +137,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
         // What happens once you've chosen you're upgrade card
         if (cardsSelectionDone) {
           println("Cards selection DONE")
+          GameManager.currentScene.asInstanceOf[GameScene].player.weapon.canShoot = true
           cardsSelectionDone = false
           if (waveCounter % (Globals.NBR_WAVES_BEFORE_BOSS+1) == 0) {
             startNewBossWave()
@@ -140,6 +149,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
         // While cards haven't been selected yet but still in cards
         else {
           //println("Entered cards phase.. choose your cards.")
+
         }
 
       // Final default case
@@ -148,6 +158,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
   }
 
   def initCards(): Unit = {
+    GameManager.currentScene.asInstanceOf[GameScene].player.weapon.canShoot = false
     Card.create3Cards()
   }
 
@@ -161,7 +172,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
   }
   def startNewBossWave(): Unit = {
     waveStatus = "boss"
-    spawnRate = (Globals.DEFAULT_SPAWN_RATE + waveCounter)*40
+    spawnRate = (Globals.DEFAULT_SPAWN_RATE + waveCounter)*10
     currentBoss = Some(Boss.spawnBoss(bossCounter))
   }
 
@@ -177,9 +188,12 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
           new Ghost(new Vector2(startX, startY), new Vector2(targetX, targetY)).instantiate()
         }
       case "cards" =>
-      //println("Do nothing")
+        //println("Do nothing")
 
       case "boss" =>
+        //nothing
+
+      case "bossMinionsAttack" =>
       // Boss spawns ghosts
         if(rnd.nextFloat() < deltaT * spawnRate) {
           val bossPos: Vector2 = new Vector2(Globals.DEFAULT_BOSS_POS.x*rnd.nextFloat(), Globals.DEFAULT_BOSS_POS.y)
