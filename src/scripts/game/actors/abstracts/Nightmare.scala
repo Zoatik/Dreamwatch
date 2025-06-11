@@ -12,7 +12,7 @@ import scala.collection.mutable.ArrayBuffer
 
 abstract class Nightmare (pos: Vector2,
                           targetPos: Vector2,
-                          images: ArrayBuffer[BitmapImage],
+                          images: ArrayBuffer[String],
                           animDuration: Float,
                           scale: Float,
                           lifeTime: Option[Float] = None,

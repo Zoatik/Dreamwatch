@@ -20,7 +20,7 @@ import scala.collection.mutable.ArrayBuffer
  */
 class Sprite2D(pos: Vector2,
                angle: Float,
-               val images: ArrayBuffer[BitmapImage],
+               val imagesPaths: ArrayBuffer[String],
                var gLayerZ: Int,
                area2DType: Area2D.Type,
                var animDuration: Float = 0.0f,
@@ -28,7 +28,9 @@ class Sprite2D(pos: Vector2,
                lifeTime: Option[Float] = None) extends Object2D(pos, angle, lifeTime) with Graphics2D with Area2D{
 
   // Ensure at least one image frame is provided
-  require(images.nonEmpty, "Sprite must contain at least one BitmapImage")
+  require(imagesPaths.nonEmpty, "Sprite must contain at least one BitmapImage")
+
+  val images: ArrayBuffer[BitmapImage] = imagesPaths.map(path => new BitmapImage(path))
 
   private val baseWidth: Float = images(0).getImage.getWidth
   private val baseHeight: Float = images(0).getImage.getHeight
@@ -105,6 +107,7 @@ class Sprite2D(pos: Vector2,
   override def destroy(): Unit = {
     super.destroy()
     unbindEvents()
+    images.foreach(_.dispose())
   }
 
 

@@ -11,7 +11,7 @@ import scripts.utils.Globals
 import scala.collection.mutable.ArrayBuffer
 import scala.reflect.internal.Mode
 
-abstract class Weapon(pos: Vector2, images: ArrayBuffer[BitmapImage])
+abstract class Weapon(pos: Vector2, images: ArrayBuffer[String])
   extends Sprite2D(pos, 0, images, Globals.WEAPON_G_LAYER, Area2D.Box) with Movement2D {
   canRotate = true
   override var speed = 0.0f

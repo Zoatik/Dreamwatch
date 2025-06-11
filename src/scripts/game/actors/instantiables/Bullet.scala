@@ -1,7 +1,7 @@
 package scripts.game.actors.instantiables
 
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
-import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.{Vector2, Vector3}
 import scripts.dreamwatch_engine.actors.abstracts.Component
 import scripts.dreamwatch_engine.actors.instantiables.{CollisionObject2D, CollisionSprite2D, Particle2D}
 import scripts.dreamwatch_engine.physics.{Area2D, Collider2D, Movement2D}
@@ -37,7 +37,6 @@ class Bullet(pos: Vector2,
 
   width = bulletSize
 
-  var damage: Float = 1.0f
   var explosionDamage: Float = bulletDamage * 0.5f
   private val explosionCollider = new CollisionObject2D(pos, 0, Area2D.Circle, explosionSize, 0, cLayerZ, cLayerMask, lifeTime = Some(0.1f)) with Component[Bullet] {
     override val parent: Bullet = Bullet.this
@@ -45,7 +44,7 @@ class Bullet(pos: Vector2,
 
   val bulletParticle = new Particle2D("res/shaders/electrical_ball.fp", pos, 0)
   bulletParticle.setUniform("u_radius", bulletSize)
-  bulletParticle.setUniform("u_center", pos)
+  bulletParticle.setUniform("u_center", pos.cpy())
 
   override def instantiate(): Bullet = {
     super.instantiate()
@@ -87,7 +86,7 @@ class Bullet(pos: Vector2,
 
   override def destroy(): Unit = {
     super.destroy()
-    bulletParticle.destroy()
+    //bulletParticle.destroy()
   }
 
 
@@ -99,7 +98,7 @@ object Bullet {
 
 
   sealed trait Type{
-    val images: ArrayBuffer[BitmapImage]
+    val images: ArrayBuffer[String]
     val baseBulletSpeed: Float
     val baseBulletCooldown: Float
     val baseBulletSize: Float
@@ -110,17 +109,17 @@ object Bullet {
 
 
   case object Piercing extends Type{
-    override val images: ArrayBuffer[BitmapImage] = ArrayBuffer(new BitmapImage("res/sprites/soccer.png"))
-    override val baseBulletSpeed: Float = 400.0f
-    override val baseBulletCooldown: Float = 1.0f
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/soccer.png")
+    override val baseBulletSpeed: Float = 1000.0f
+    override val baseBulletCooldown: Float = 0.1f
     override val baseBulletSize: Float = 8.0f
     override val baseBulletExplosionSize: Float = 8.0f
-    override val baseBulletDamage: Float = 10.0f
+    override val baseBulletDamage: Float = 1000.0f
     override val bulletTrajectory: Movement2D.Trajectory = Movement2D.Linear
   }
 
   case object Explosive extends Type {
-    override val images: ArrayBuffer[BitmapImage] = ArrayBuffer(new BitmapImage("res/sprites/soccer.png"))
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/soccer.png")
     override val baseBulletSpeed: Float = 150.0f
     override val baseBulletCooldown: Float = 0.1f
     override val baseBulletSize: Float = 10.0f
@@ -130,7 +129,7 @@ object Bullet {
   }
 
   case object Bomb extends Type {
-    override val images: ArrayBuffer[BitmapImage] = ArrayBuffer(new BitmapImage("res/sprites/soccer.png"))
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/soccer.png")
     override val baseBulletSpeed: Float = ???
     override val baseBulletCooldown: Float = 2.0f
     override val baseBulletSize: Float = ???

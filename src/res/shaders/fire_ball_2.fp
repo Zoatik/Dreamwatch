@@ -2,6 +2,8 @@
 uniform float time;
 uniform vec2 resolution;
 uniform vec3 pos;
+uniform sampler2D backbuffer;
+uniform sampler2D texture0;
 
 const int ZERO = 0;
 
@@ -88,7 +90,7 @@ void main(void){
   vec2 R = resolution;
   vec2 uv = (gl_FragCoord.xy*2.-R) / R.y;
   gl_FragColor.rgb *= 0.;
-  gl_FragColor.a = 0.5;
+  gl_FragColor.a = 1.0;
 
   vec2 m = (pos.xy*2.-R)/R.y;
 
@@ -114,8 +116,13 @@ void main(void){
 
     if(z>1e2)break;
   }
+  vec2 position = (gl_FragCoord.xy / resolution.xy);
+  vec4 me = texture2D(backbuffer, position);
+
   d_acc = pow(d_acc, 2.);
   vec3 c = sin(vec3(10,6,2)+time+p.z*0.1)*0.5+0.5;
   vec3 eVec = exp((c*d_acc/z/1e2)*-2.0);
-  gl_FragColor.rgb =  (1.0-eVec)/(1.0+eVec);
+  vec3 fragColor = (1.0-eVec)/(1.0+eVec);
+
+  gl_FragColor.rgb =  max(fragColor, me.rgb);
 }

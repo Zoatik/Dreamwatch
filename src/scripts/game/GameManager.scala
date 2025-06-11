@@ -61,10 +61,11 @@ object GameManager{
     //scenes += currentScene
 
     // TESTS
-    val im = ArrayBuffer(new BitmapImage("res/sprites/soccer.png"))
-    val im2 = ArrayBuffer(new BitmapImage("res/sprites/cloud.png"))
-    val test: Sprite2D = new Sprite2D(new Vector2(100,100), 0, im, 0, Area2D.Circle).instantiate()
-    val test2: Sprite2D = new Sprite2D(new Vector2(1000,1000), 0, im2, 2, Area2D.Circle).instantiate()
+    //val im = ArrayBuffer(new BitmapImage("res/sprites/soccer.png"))
+    //val im2 = ArrayBuffer(new BitmapImage("res/sprites/cloud.png"))
+    //val test: Sprite2D = new Sprite2D(new Vector2(100,100), 0, im, 0, Area2D.Circle).instantiate()
+    //val test2: Sprite2D = new Sprite2D(new Vector2(1000,1000), 0, im2, 2, Area2D.Circle).instantiate()
+
 
     /*val part1: Particle2D = new Particle2D("res/shaders/fire_ball_2.fp", new Vector2(0,0), 0)
     part1.shaderRenderer.setUniform("pos", new Vector3(100,100, 100))

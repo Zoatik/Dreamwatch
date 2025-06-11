@@ -12,7 +12,7 @@ class Sniper(pos: Vector2)
   extends Weapon(
     pos,
     ArrayBuffer(
-    new BitmapImage("res/sprites/soccer.png"),
+    "res/sprites/soccer.png",
   )) {
 
   override def instantiate(): Sniper = {

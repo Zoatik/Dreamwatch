@@ -34,7 +34,7 @@ class Boss(pos: Vector2,
 
   override protected def onCollision(other: Collider2D): Unit = other match{
     case b: Bullet =>
-      takeDamage(b.damage)
+      takeDamage(b.bulletDamage)
     case e: CollisionObject2D with Component[Bullet] =>
       takeDamage(e.parent.explosionDamage)
     case _ =>
@@ -52,11 +52,11 @@ class Boss(pos: Vector2,
 }
 
 object Boss{
-  private def loadImagesFor(bulletType: Type): ArrayBuffer[BitmapImage] = bulletType match {
-    case UneAraignee => ArrayBuffer.fill(1)(new BitmapImage("res/sprites/UneAraignee.png"))
-    case Ghost => ArrayBuffer.fill(1)(new BitmapImage("res/sprites/Ghost.png"))
-    case TheGrimReaper => ArrayBuffer.fill(1)(new BitmapImage("res/sprites/TheGrimReaper.png"))
-    case _ => ArrayBuffer.fill(1)(new BitmapImage("res/sprites/UneAraignee.png"))
+  private def loadImagesFor(bulletType: Type): ArrayBuffer[String] = bulletType match {
+    case UneAraignee => ArrayBuffer.fill(1)("res/sprites/UneAraignee.png")
+    case Ghost => ArrayBuffer.fill(1)("res/sprites/Ghost.png")
+    case TheGrimReaper => ArrayBuffer.fill(1)("res/sprites/TheGrimReaper.png")
+    case _ => ArrayBuffer.fill(1)("res/sprites/UneAraignee.png")
 
   }
   private def baseBossRadius(bossType: Type): Float = bossType match {

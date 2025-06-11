@@ -1,7 +1,7 @@
 package scripts.dreamwatch_engine.actors.instantiables
 
 import ch.hevs.gdx2d.lib.renderers.ShaderRenderer
-import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.{Vector2, Vector3}
 import scripts.dreamwatch_engine.actors.abstracts.Object2D
 import scripts.game.GameManager
 import scripts.utils.Globals
@@ -30,14 +30,13 @@ class Particle2D(shaderPath: String, pos: Vector2, angle: Float, lifeTime: Optio
       case int: Int => shaderRenderer.setUniform(u._1, int)
       case float: Float => shaderRenderer.setUniform(u._1, float)
       case vec2: Vector2 => shaderRenderer.setUniform(u._1, vec2)
-      case vec3: Float => shaderRenderer.setUniform(u._1, vec3)
+      case vec3: Vector3 => shaderRenderer.setUniform(u._1, vec3)
       case floatArray: Array[Float] => shaderRenderer.setUniform(u._1, floatArray)
       case _ => throw new Exception("Wrong type given for shader uniform !")
     })
 
     GameManager.g.setShaderRenderer(shaderRenderer)
     GameManager.g.drawShader(timeFromCreation)
-    //shaderRenderer.render(pos.x.toInt, pos.y.toInt, timeFromCreation) // pos not working
 
   }
 

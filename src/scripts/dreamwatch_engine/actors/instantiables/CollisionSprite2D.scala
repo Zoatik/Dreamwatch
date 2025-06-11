@@ -8,7 +8,7 @@ import scala.collection.mutable.ArrayBuffer
 
 class CollisionSprite2D(pos: Vector2,
                         angle: Float,
-                        images: ArrayBuffer[BitmapImage],
+                        images: ArrayBuffer[String],
                         gLayerZ: Int,
                         override var cLayerZ: Int,
                         override var cLayerMask: ArrayBuffer[Int],

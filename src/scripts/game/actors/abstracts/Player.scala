@@ -7,6 +7,5 @@ import scripts.game.actors.instantiables.Toy
 
 abstract class Player extends Entity with Controller{
   private var dreamGems: Int = 0
-  //private var weapon: Toy = new Toy(new Vector2(0,0))
 
 }

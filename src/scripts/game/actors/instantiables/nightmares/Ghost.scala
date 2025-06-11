@@ -12,12 +12,12 @@ class Ghost(pos: Vector2, targetPos: Vector2, animDuration: Float = 1.0f, scale:
     pos,
     targetPos,
     ArrayBuffer(
-    new BitmapImage("src/res/sprites/ghost_1.png"),
-    new BitmapImage("src/res/sprites/ghost_2.png"),
-    new BitmapImage("src/res/sprites/ghost_3.png"),
-    new BitmapImage("src/res/sprites/ghost_4.png"),
-    new BitmapImage("src/res/sprites/ghost_5.png"),
-    new BitmapImage("src/res/sprites/ghost_6.png")),
+    "src/res/sprites/ghost_1.png",
+    "src/res/sprites/ghost_2.png",
+    "src/res/sprites/ghost_3.png",
+    "src/res/sprites/ghost_4.png",
+    "src/res/sprites/ghost_5.png",
+    "src/res/sprites/ghost_6.png"),
     animDuration,
     scale) {
 

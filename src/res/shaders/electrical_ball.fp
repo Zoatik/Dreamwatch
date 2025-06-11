@@ -19,7 +19,7 @@ float noise(float x) {
 
 void main(void) {
 
-    float dist = distance(gl_FragCoord.xy, u_center / resolution);
+    float dist = distance(gl_FragCoord.xy, u_center);
 
     if(dist > u_radius ) {
         discard;

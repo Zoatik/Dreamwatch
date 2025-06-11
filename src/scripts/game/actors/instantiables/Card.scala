@@ -16,7 +16,7 @@ import scala.collection.mutable.ArrayBuffer
 class Card(pos: Vector2 = Globals.CARDS_POS(1),
            cardType: Card.Type,
            cardUpgarde: String,
-           image: ArrayBuffer[BitmapImage] = ArrayBuffer(new BitmapImage("src/res/sprites/basicCard.png")),
+           image: ArrayBuffer[String] = ArrayBuffer("src/res/sprites/basicCard.png"),
            gLayerZ: Int = Globals.CARD_GLAYERZ,
            area2D: Area2D.type = Globals.CARD_AREA2D)
   extends UiElement(

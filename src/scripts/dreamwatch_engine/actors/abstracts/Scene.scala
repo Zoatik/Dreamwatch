@@ -1,5 +1,8 @@
 package scripts.dreamwatch_engine.actors.abstracts
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Pixmap.Format
+import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import scripts.dreamwatch_engine.actors.instantiables.{Particle2D, Sprite2D, UiElement}
 import scripts.dreamwatch_engine.inputs.Controller
 import scripts.dreamwatch_engine.physics.{Collider2D, Movement2D}
@@ -50,6 +53,8 @@ abstract class Scene extends Entity with Controller {
   private var _isMouseOnUi: Boolean = false
 
   def isMouseOnUi: Boolean = _isMouseOnUi
+
+  val fbo = new FrameBuffer(Format.RGBA8888, Gdx.graphics.getWidth, Gdx.graphics.getHeight, false)
 
 
   /**
@@ -116,8 +121,6 @@ abstract class Scene extends Entity with Controller {
         uiLayers.remove(u)
       case g: Sprite2D =>
         gLayers.remove(g)
-        // Manually dispose bitmap resources to prevent memory leaks or crashes
-        //g.images.foreach(_.dispose())
       case _ =>
     }
 
@@ -183,25 +186,32 @@ abstract class Scene extends Entity with Controller {
    * @param g      GdxGraphics instance used to draw on-screen.
    */
   private def updateGraphics(deltaT: Float): Unit = {
+
     GameManager.g.clear()
 
-
-
+    //fbo.begin()
+    //GameManager.g.clear()
     // renders graphical elements (except UI)
     for (layer <- gLayers.get()) {
       layer.elements.foreach(gElement => gElement.draw(GameManager.g))
     }
-    println("size: " + gLayers.get(Globals.BULLET_G_LAYER).get.size)
 
-    /*// renders particles
-    for (particle <- particles){
+
+    //fbo.end()
+
+
+    // renders particles
+    /*for (particle <- particles){
+      particle.shaderRenderer.setTexture(fbo.getColorBufferTexture, 0)
       particle.render()
     }*/
+
 
     // renders UI
     for (layer <- uiLayers.get()){
       layer.elements.foreach(gElement => gElement.draw(GameManager.g))
     }
+
   }
 
   /**
