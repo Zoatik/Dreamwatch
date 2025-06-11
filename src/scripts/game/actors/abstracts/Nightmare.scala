@@ -3,9 +3,10 @@ package scripts.game.actors.abstracts
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.actors.abstracts.Component
-import scripts.dreamwatch_engine.actors.instantiables.{CollisionObject2D, CollisionSprite2D}
+import scripts.dreamwatch_engine.actors.instantiables.{CollisionObject2D, CollisionSprite2D, Particle2D}
 import scripts.dreamwatch_engine.physics.{Area2D, Collider2D, Movement2D}
-import scripts.game.actors.instantiables.Bullet
+import scripts.game.GameManager
+import scripts.game.actors.instantiables.{Bullet, GamePlayer}
 import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
@@ -38,6 +39,22 @@ abstract class Nightmare (pos: Vector2,
     case _: Bullet => this.destroy()
     case _: CollisionObject2D with Component[Bullet] => this.destroy()
     case _ =>
+  }
+
+  override def destroy(): Unit = {
+    super.destroy()
+    val particles = Particle2D.spawnParticles(pos, 100.0f, 10.0f, 50.0f, 10, "res/sprites/texture.png", gLayerZ)
+    particles.foreach(particle => particle.bindMouseEntered(_ => {
+      particle.speed = 500.0f
+      particle.direction = null
+      particle.target = new Vector2(Globals.WINDOW_WIDTH/2,0)
+      particle.stopAtTarget = true
+      particle.bindTargetReached(_ =>{
+        GameManager.currentScene.player.asInstanceOf[GamePlayer].dreamShards += 1
+        particle.unbindListeners()
+        particle.destroy()
+      })
+    }))
   }
 
 }

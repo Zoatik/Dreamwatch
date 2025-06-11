@@ -6,7 +6,7 @@ import scripts.game.actors.abstracts.{Player, Weapon}
 
 class GamePlayer(var weapon: Weapon) extends Player {
 
-  private var dreamShards: Int = 0
+  var dreamShards: Int = 0
 
   override def handleMouseInput(pos: Vector2, button: Int): Boolean = {
     println("handled player")

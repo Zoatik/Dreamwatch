@@ -50,7 +50,8 @@ object Particle2D {
                      nbOfParticles: Int,
                      imagePath: String,
                      gLayerz: Int,
-                     maxDist: Float = 0.0f): Unit = {
+                     maxDist: Float = 0.0f): Array[Particle2D] = {
+    val particles = new Array[Particle2D](nbOfParticles)
     for (i <- 0 until nbOfParticles){
       val target: Vector2 = new Vector2(rand.nextInt(0, Globals.WINDOW_WIDTH), rand.nextInt(0, Globals.WINDOW_HEIGHT))
       target.sub(pos)
@@ -78,6 +79,8 @@ object Particle2D {
 
       part.width = particleSize
       part.instantiate()
+      particles(i) = part
     }
+    particles
   }
 }

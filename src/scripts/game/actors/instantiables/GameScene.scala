@@ -1,5 +1,6 @@
 package scripts.game.actors.instantiables
 
+import com.badlogic.gdx.{Gdx, Input}
 import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.actors.abstracts.{Object2D, Scene}
 import scripts.dreamwatch_engine.actors.instantiables.{Particle2D, Sprite2D, UiElement}
@@ -46,6 +47,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
 
   override def instantiate(): GameScene = {
     super.instantiate()
+
     /*InputManager.onKeyPressed(_ => { // TODO: SHOULD BE HERE
       println("key pressed from GameScene")
       waveStatus match {

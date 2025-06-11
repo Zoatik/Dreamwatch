@@ -3,11 +3,15 @@ package scripts.dreamwatch_engine.physics
 import com.badlogic.gdx.math.{MathUtils, Vector2}
 import scripts.dreamwatch_engine.actors.instantiables.Particle2D
 
+import scala.collection.mutable.ArrayBuffer
+
 /**
  * Trait that adds movement behavior to any Object2D in the world.
  * Provides speed, target tracking, and different trajectory styles.
  */
 trait Movement2D {
+
+  private val targetReachedListeners: ArrayBuffer[Unit => Unit] = ArrayBuffer()
 
   def pos: Vector2
   def pos_=(newPos: Vector2): Unit
@@ -70,6 +74,7 @@ trait Movement2D {
     val unitToTarget = toTarget.nor()
     var dir: Vector2 = direction
     if(dir == null) {
+
         dir = trajectory match {
         case Movement2D.Linear =>
           unitToTarget
@@ -128,11 +133,21 @@ trait Movement2D {
     target.cpy().sub(pos).len() < eps
   }
 
+  def bindTargetReached(listener: Unit => Unit): Unit = {
+    targetReachedListeners += listener
+  }
+
+  def unbindListeners(): Unit = {
+    targetReachedListeners.clear()
+  }
+
   /**
    * Callback invoked once when the target is reached for the first time.
    * Can be overridden to perform custom logic.
    */
-  protected def onTargetReached(): Unit = {}
+  protected def onTargetReached(): Unit = {
+    targetReachedListeners.toArray.foreach(_())
+  }
 
   /**
    * Callback invoked once when the object moves away after having reached the target.
