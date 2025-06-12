@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.actors.instantiables.Sprite2D
 import scripts.dreamwatch_engine.physics.{Area2D, Movement2D}
 import scripts.game.GameManager
-import scripts.game.actors.abstracts.Weapon.{BossDamage, BulletSize, Cooldown, Evolution, ExplosionSize, Phase0, Phase1, Phase2, Phase3, Speed, UltimatePhase, Upgrade}
+import scripts.game.actors.abstracts.Weapon.{BossDamage, BulletSize, Cooldown, Evolution, ExplosionSize, Phase0, Phase1, Phase2, Phase3, Primary, Speed, UltimatePhase, Upgrade}
 import scripts.game.actors.instantiables.Bullet
 import scripts.utils.Globals
 
@@ -18,7 +18,8 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[String])
   override var speed = 0.0f
   override var target: Vector2 = GameManager.mousePos
   // abstract attributes on bullet specs
-  protected val bulletType: Bullet.Type
+  protected var bulletTypePrimary: Bullet.Type
+  protected var bulletTypeSecondary: Bullet.Type
 
   // shoot ability variables
   var canShoot: Boolean = true
@@ -37,21 +38,22 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[String])
 
 
   def shoot(target: Vector2, mode: Weapon.Mode): Unit = {
-    if(timeFromCreation > lastShot + modifiedBulletCooldown && canShoot) {
+    val bulletType = if (mode == Weapon.Primary) bulletTypePrimary else bulletTypeSecondary
+    if(timeFromCreation > lastShot + modifiedBulletCooldown(bulletType) && canShoot) {
       println("shoot")
       new Bullet(pos.cpy(),
         target,
         bulletType,
-        modifiedBulletSpeed,
-        modifiedBulletSize,
-        modifiedBulletExplosionSize,
-        modifiedBulletDamage).instantiate()
+        modifiedBulletSpeed(bulletType),
+        modifiedBulletSize(bulletType),
+        modifiedBulletExplosionSize(bulletType),
+        modifiedBulletDamage(bulletType)).instantiate()
       lastShot = timeFromCreation
     }
   }
 
   // modified bullet values getter
-  protected def modifiedBulletSpeed: Float = {
+  protected def modifiedBulletSpeed(bulletType: Bullet.Type): Float = {
     val cooldownModifiers = 1 + weaponUpgrades.count(upgrade => {
       upgrade.equals(Weapon.Speed)                 // TODO: Controler que equals fonctionne correctement
     }) * Weapon.Cooldown.reduction
@@ -59,7 +61,7 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[String])
     bulletType.baseBulletSpeed * cooldownModifiers
   }
 
-  protected def modifiedBulletCooldown: Float = {
+  protected def modifiedBulletCooldown(bulletType: Bullet.Type): Float = {
     val cooldownModifiers = 1 + weaponUpgrades.count(upgrade => {
       upgrade.equals(Weapon.Cooldown)                 // TODO: Controler que equals fonctionne correctement
     }) * Weapon.Cooldown.reduction
@@ -67,7 +69,7 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[String])
     bulletType.baseBulletCooldown * cooldownModifiers
   }
 
-  protected def modifiedBulletSize: Float = {
+  protected def modifiedBulletSize(bulletType: Bullet.Type): Float = {
     val cooldownModifiers = 1 + weaponUpgrades.count(upgrade => {
       upgrade.equals(Weapon.BulletSize)                 // TODO: Controler que equals fonctionne correctement
     }) * Weapon.Cooldown.reduction
@@ -75,7 +77,7 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[String])
     bulletType.baseBulletSize * cooldownModifiers
   }
 
-  protected def modifiedBulletExplosionSize: Float = {
+  protected def modifiedBulletExplosionSize(bulletType: Bullet.Type): Float = {
     val cooldownModifiers = 1 + weaponUpgrades.count(upgrade => {
       upgrade.equals(Weapon.ExplosionSize)                 // TODO: Controler que equals fonctionne correctement
     }) * Weapon.Cooldown.reduction
@@ -83,7 +85,7 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[String])
     bulletType.baseBulletExplosionSize * cooldownModifiers
   }
 
-  protected def modifiedBulletDamage: Float = {
+  protected def modifiedBulletDamage(bulletType: Bullet.Type): Float = {
     val cooldownModifiers = 1 + weaponUpgrades.count(upgrade => {
       upgrade.equals(Weapon.BossDamage)                 // TODO: Controler que equals fonctionne correctement
     }) * Weapon.Cooldown.reduction

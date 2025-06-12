@@ -1,5 +1,6 @@
 package scripts.game.actors.instantiables
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.{Gdx, Input}
 import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.actors.abstracts.{Object2D, Scene}
@@ -64,6 +65,8 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
   override def update(deltaT: Float): Unit = {
     super.update(deltaT)
 
+    GameManager.g.setColor(Color.WHITE)
+    GameManager.g.drawString(Globals.WINDOW_WIDTH - 200, Globals.WINDOW_HEIGHT - 40, s"DreamShards: ${player.dreamShards}")
     if (GameManager.isPaused)
       return
 

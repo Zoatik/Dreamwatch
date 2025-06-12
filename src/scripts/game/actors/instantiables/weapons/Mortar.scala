@@ -20,6 +20,7 @@ class Mortar(pos: Vector2)
   }
 
 
-  override protected val bulletType: Bullet.Type = Bullet.Bomb
+  override protected var bulletTypePrimary: Bullet.Type = Bullet.Bomb
+  override protected var bulletTypeSecondary: Bullet.Type = Bullet.Explosive
 
 }
