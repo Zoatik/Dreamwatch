@@ -48,14 +48,30 @@ class Card(pos: Vector2 = Globals.CARDS_POS(1),
   }
   override protected def onMouseEntered(mousePos: Vector2): Unit = {
     super.onMouseEntered(mousePos)
+    val prevH: Float = height
+    val prevTokenH: Float = token.height
+
     scale = scale * 1.1f
     token.scale = token.scale * 1.1f
+
+    val gain: Float = (height - prevH)
+    val tokenGain = (token.height-prevTokenH)
+
+    token.pos.add(0.0f,gain/tokenGain)
   }
 
   override protected def onMouseLeft(mousePos: Vector2): Unit = {
     super.onMouseLeft(mousePos)
+    val prevH = height
+    val prevTokenH: Float = token.height
+
     scale = scale / 1.1f
-    token.scale = token.scale/ 1.1f
+    token.scale = token.scale / 1.1f
+
+    val reduc: Float = (height - prevH)
+    val tokenReduc: Float = (token.height-prevTokenH)
+
+    token.pos.add(0.0f, -reduc/tokenReduc)
   }
 }
 
