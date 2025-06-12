@@ -122,10 +122,10 @@ object Bullet {
 
   case object Explosive extends Type {
     override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/soccer.png")
-    override val baseBulletSpeed: Float = 150.0f
-    override val baseBulletCooldown: Float = 0.1f
+    override val baseBulletSpeed: Float = 400.0f
+    override val baseBulletCooldown: Float = 0.5f
     override val baseBulletSize: Float = 10.0f
-    override val baseBulletExplosionSize: Float = 1000.0f
+    override val baseBulletExplosionSize: Float = 200.0f
     override val baseBulletDamage: Float = 1.0f
     override val bulletTrajectory: Movement2D.Trajectory = Movement2D.Sinus
   }

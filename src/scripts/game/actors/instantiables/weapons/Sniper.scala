@@ -21,6 +21,6 @@ class Sniper(pos: Vector2)
 
 
   override protected var bulletTypePrimary: Bullet.Type = Bullet.Piercing
-  override protected var bulletTypeSecondary: Bullet.Type = Bullet.Bomb
+  override protected var bulletTypeSecondary: Bullet.Type = Bullet.Explosive
 
 }

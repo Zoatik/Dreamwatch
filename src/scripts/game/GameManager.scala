@@ -70,7 +70,9 @@ object GameManager{
     currentScene.instantiate()
     gamePlayer.instantiate()
 
+
     musicPlayer.loop()
+
 
 
     println("GameManager ready")
