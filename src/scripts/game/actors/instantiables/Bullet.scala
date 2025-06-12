@@ -82,7 +82,7 @@ class Bullet(pos: Vector2,
 
   private def explode(): Unit = {
     explosionCollider.instantiate()
-    Particle2D.spawnParticles(pos, explosionSize, 1.0f, 500.0f, 20, "res/sprites/texture.png", gLayerZ)
+    Particle2D.spawnParticles(pos, bulletSize, 1.0f, 500.0f, 20, "res/sprites/texture.png", gLayerZ)
   }
 
   override def destroy(): Unit = {
@@ -130,11 +130,11 @@ object Bullet {
 
   case object Bomb extends Type {
     override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/soccer.png")
-    override val baseBulletSpeed: Float = ???
-    override val baseBulletCooldown: Float = 2.0f
-    override val baseBulletSize: Float = ???
-    override val baseBulletExplosionSize: Float = ???
-    override val baseBulletDamage: Float = ???
+    override val baseBulletSpeed: Float = 300.0f
+    override val baseBulletCooldown: Float = 1.0f
+    override val baseBulletSize: Float = 50.0f
+    override val baseBulletExplosionSize: Float = 400.0f
+    override val baseBulletDamage: Float = 800.0f
     override val bulletTrajectory: Movement2D.Trajectory = Movement2D.Spiral
   }
 }

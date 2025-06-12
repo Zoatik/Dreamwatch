@@ -20,6 +20,7 @@ class Sniper(pos: Vector2)
   }
 
 
-  override protected val bulletType: Bullet.Type = Bullet.Piercing
+  override protected var bulletTypePrimary: Bullet.Type = Bullet.Piercing
+  override protected var bulletTypeSecondary: Bullet.Type = Bullet.Bomb
 
 }
