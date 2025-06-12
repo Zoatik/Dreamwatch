@@ -71,7 +71,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
       return
 
     if(!objects.exists(t => t.isInstanceOf[Toy])) {
-      println("you lost boi")
+      println("You lost.")
       isAlive = false
     }
 
@@ -123,7 +123,6 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
 
             if (bossCounter == Globals.NBR_OF_BOSSES) {
               // Game is won !
-              println("Game is won !")
               println(s"${bossCounter} bosses were defeated.")
               waveStatus = "game won"
             }
@@ -167,13 +166,13 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
       case "wishing well" =>
 
       case "game won" => println("Game won !")
-      case "game lost" => println("Gam lost !")
+      case "game lost" => println("Game lost !")
 
       // Final default case
       case _ => // Probably sends info that the game is done
     }
   }
-
+  // TODO: give ghost their target
   def initToys(): Unit = {
     new Toy(Globals.TOY_POS(0), ArrayBuffer("src/res/sprites/toy.png")).instantiate()
     new Toy(Globals.TOY_POS(1), ArrayBuffer("src/res/sprites/toy.png")).instantiate()

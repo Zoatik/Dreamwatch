@@ -15,6 +15,7 @@ class Toy(pos: Vector2, images: ArrayBuffer[String])
 
   override var speed: Float = 0
   override var target: Vector2 = null
+  width = 200.0f
 
   override def instantiate(): Toy = {
     super.instantiate()

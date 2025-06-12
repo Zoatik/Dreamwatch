@@ -53,8 +53,8 @@ abstract class Scene extends Entity with Controller {
   def isMouseOnUi: Boolean = _isMouseOnUi
 
   var backgrounds: Array[String] = Array( "res/shaders/background_1.fp",
-                                          "res/shaders/background_2.fp",
-                                          "res/shaders/background_3.fp")
+                                          "res/shaders/background_3.fp",
+                                          "res/shaders/background_2.fp")
 
   private var currBackgroundIdx = 0
 
