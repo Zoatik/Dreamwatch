@@ -4,7 +4,7 @@ import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.actors.instantiables.Sprite2D
 import scripts.dreamwatch_engine.physics.{Area2D, Movement2D}
-import scripts.game.GameManager
+import scripts.game.{GameManager, MusicManager}
 import scripts.game.actors.abstracts.Weapon.{BossDamage, BulletSize, Cooldown, Evolution, ExplosionSize, Phase0, Phase1, Phase2, Phase3, Primary, Speed, UltimatePhase, Upgrade}
 import scripts.game.actors.instantiables.Bullet
 import scripts.utils.Globals
@@ -40,7 +40,7 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[String])
   def shoot(target: Vector2, mode: Weapon.Mode): Unit = {
     val bulletType = if (mode == Weapon.Primary) bulletTypePrimary else bulletTypeSecondary
     if(timeFromCreation > lastShot + modifiedBulletCooldown(bulletType) && canShoot) {
-      GameManager.reloadSound.play()
+      MusicManager.playSound("reload_sound")
       new Bullet(pos.cpy(),
         target,
         bulletType,
@@ -54,43 +54,43 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[String])
 
   // modified bullet values getter
   protected def modifiedBulletSpeed(bulletType: Bullet.Type): Float = {
-    val cooldownModifiers = 1 + weaponUpgrades.count(upgrade => {
+    val speedModifier = 1 + weaponUpgrades.count(upgrade => {
       upgrade.equals(Weapon.Speed)                 // TODO: Controler que equals fonctionne correctement
-    }) * Weapon.Cooldown.reduction
+    }) * Weapon.Speed.amplification
 
-    bulletType.baseBulletSpeed * cooldownModifiers
+    bulletType.baseBulletSpeed * speedModifier
   }
 
   protected def modifiedBulletCooldown(bulletType: Bullet.Type): Float = {
-    val cooldownModifiers = 1 + weaponUpgrades.count(upgrade => {
+    val cooldownModifier = 1 + weaponUpgrades.count(upgrade => {
       upgrade.equals(Weapon.Cooldown)                 // TODO: Controler que equals fonctionne correctement
     }) * Weapon.Cooldown.reduction
 
-    bulletType.baseBulletCooldown * cooldownModifiers
+    bulletType.baseBulletCooldown / cooldownModifier
   }
 
   protected def modifiedBulletSize(bulletType: Bullet.Type): Float = {
-    val cooldownModifiers = 1 + weaponUpgrades.count(upgrade => {
+    val bulletSizeModifier = 1 + weaponUpgrades.count(upgrade => {
       upgrade.equals(Weapon.BulletSize)                 // TODO: Controler que equals fonctionne correctement
-    }) * Weapon.Cooldown.reduction
+    }) * Weapon.BulletSize.amplification
 
-    bulletType.baseBulletSize * cooldownModifiers
+    bulletType.baseBulletSize * bulletSizeModifier
   }
 
   protected def modifiedBulletExplosionSize(bulletType: Bullet.Type): Float = {
-    val cooldownModifiers = 1 + weaponUpgrades.count(upgrade => {
+    val explosionSizeModifier = 1 + weaponUpgrades.count(upgrade => {
       upgrade.equals(Weapon.ExplosionSize)                 // TODO: Controler que equals fonctionne correctement
-    }) * Weapon.Cooldown.reduction
+    }) * Weapon.ExplosionSize.amplification
 
-    bulletType.baseBulletExplosionSize * cooldownModifiers
+    bulletType.baseBulletExplosionSize * explosionSizeModifier
   }
 
   protected def modifiedBulletDamage(bulletType: Bullet.Type): Float = {
-    val cooldownModifiers = 1 + weaponUpgrades.count(upgrade => {
+    val damageModifier = 1 + weaponUpgrades.count(upgrade => {
       upgrade.equals(Weapon.BossDamage)                 // TODO: Controler que equals fonctionne correctement
-    }) * Weapon.Cooldown.reduction
+    }) * Weapon.BossDamage.amplification
 
-    bulletType.baseBulletDamage * cooldownModifiers
+    bulletType.baseBulletDamage * damageModifier
   }
 
   def evolveWeapon(): Unit = {
@@ -118,44 +118,44 @@ object Weapon {
 
   sealed trait Evolution extends Holster
   case object Phase0 extends Evolution {
-    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletSpeedUpgrade.png") //TODO : Change to correct sprites
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/ui/bulletSpeedUpgrade.png") //TODO : Change to correct sprites
   }
   case object Phase1 extends Evolution {
-    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletSpeedUpgrade.png")
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/ui/bulletSpeedUpgrade.png")
   }
   case object Phase2 extends Evolution {
-    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletSpeedUpgrade.png")
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/ui/bulletSpeedUpgrade.png")
   }
   case object Phase3 extends Evolution {
-    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletSpeedUpgrade.png")
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/ui/bulletSpeedUpgrade.png")
   }
   case object UltimatePhase extends Evolution{
-    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletSpeedUpgrade.png")
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/ui/bulletSpeedUpgrade.png")
   }
 
   sealed trait Upgrade extends Holster
   // all modifiers are summed and then multiplied to base-
   case object Speed extends Upgrade{
-    val amplification: Float = 0.1f
-    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletSpeedUpgrade.png")
+    val amplification: Float = 0.2f
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/ui/bulletSpeedUpgrade.png")
   }
   case object Cooldown extends Upgrade{
-    val reduction: Float = 0.1f
-    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletCooldownUpgrade.png")
+    val reduction: Float = 0.2f
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/ui/bulletCooldownUpgrade.png")
   }
   case object BulletSize extends Upgrade{
-    val amplification: Float = 0.1f
-    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletSizeUpgrade.png")
+    val amplification: Float = 0.2f
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/ui/bulletSizeUpgrade.png")
   }
   case object ExplosionSize extends Upgrade{
-    val amplification: Float = 0.1f
-    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/explosionSizeUpgrade.png")
+    val amplification: Float = 0.2f
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/ui/explosionSizeUpgrade.png")
   }
   case object BossDamage extends Upgrade{
-    val amplification: Float = 0.1f
-    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletDamageUpgrade.png")
+    val amplification: Float = 0.2f
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/ui/bulletDamageUpgrade.png")
   }
   case object RebuildToy extends Upgrade{
-    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletSpeedUpgrade.png")
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/ui/bulletSpeedUpgrade.png")
   }
 }

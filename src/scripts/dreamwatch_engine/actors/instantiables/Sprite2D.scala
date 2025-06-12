@@ -46,6 +46,8 @@ class Sprite2D(pos: Vector2,
 
   var isVisible: Boolean = true
 
+  def toggleVisible(): Unit = isVisible = !isVisible
+
 
   override var image: BitmapImage = images(0)
 
@@ -54,8 +56,6 @@ class Sprite2D(pos: Vector2,
   override protected var _height: Float = baseHeight * scale
 
   override var areaType: Area2D.Type = area2DType
-  /*override var areaWidth: Float = if (areaType == Area2D.Box) baseWidth else baseWidth / 2
-  override var areaHeight: Float = baseHeight*/
 
   def scale: Float = _scale
   def scale_=(newScale: Float): Unit = {
@@ -88,6 +88,27 @@ class Sprite2D(pos: Vector2,
     image = images(currImageIdx)
     image
   }
+
+  override protected def onMouseEntered(mousePos: Vector2): Unit = {
+    if(isVisible)
+      super.onMouseEntered(mousePos)
+  }
+
+  override protected def onMouseLeft(mousePos: Vector2): Unit = {
+    if(isVisible)
+      super.onMouseLeft(mousePos)
+  }
+
+  override protected def onMousePressed(mousePos: Vector2, mouseButton: Int): Unit = {
+    if(isVisible)
+      super.onMousePressed(mousePos, mouseButton)
+  }
+
+  override protected def onMouseReleased(mousePos: Vector2, mouseButton: Int): Unit = {
+    if(isVisible)
+      super.onMouseReleased(mousePos, mouseButton)
+  }
+
 
   /**
    * Retrieve the current BitmapImage frame without advancing the index.

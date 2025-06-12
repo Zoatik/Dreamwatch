@@ -11,7 +11,7 @@ import scala.collection.mutable.ArrayBuffer
 class Mortar(pos: Vector2)
   extends Weapon(
     pos,
-    ArrayBuffer("res/sprites/card.png")
+    ArrayBuffer("res/sprites/ui/card.png")
   ){
 
   override def instantiate(): Mortar = {

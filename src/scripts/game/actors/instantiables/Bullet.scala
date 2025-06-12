@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.{Vector2, Vector3}
 import scripts.dreamwatch_engine.actors.abstracts.Component
 import scripts.dreamwatch_engine.actors.instantiables.{CollisionObject2D, CollisionSprite2D, Particle2D}
 import scripts.dreamwatch_engine.physics.{Area2D, Collider2D, Movement2D}
-import scripts.game.GameManager
+import scripts.game.{GameManager, MusicManager}
 import scripts.game.actors.abstracts.Nightmare
 import scripts.utils.Globals
 
@@ -48,7 +48,7 @@ class Bullet(pos: Vector2,
 
   override def update(deltaT: Float): Unit = {
     super.update(deltaT)
-    Particle2D.spawnParticles(pos, bulletSize/2, 0.3f, 500.0f, 1, "res/sprites/star.png", gLayerZ)
+    Particle2D.spawnParticles(pos, bulletSize/2, 0.3f, 500.0f, 1, "res/sprites/game/star.png", gLayerZ)
   }
 
   override def instantiate(): Bullet = {
@@ -83,8 +83,8 @@ class Bullet(pos: Vector2,
 
   private def explode(): Unit = {
     explosionCollider.instantiate()
-    Particle2D.spawnParticles(pos, bulletSize, 1.0f, 500.0f, 20, "res/sprites/texture.png", gLayerZ)
-    GameManager.explosionSound.play()
+    Particle2D.spawnParticles(pos, bulletSize, 1.0f, 500.0f, 20, "res/sprites/game/texture.png", gLayerZ)
+    MusicManager.playSound("explosion_sound")
   }
 
   override def destroy(): Unit = {
@@ -111,7 +111,7 @@ object Bullet {
 
 
   case object Piercing extends Type{
-    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/card.png")
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/ui/card.png")
     override val baseBulletSpeed: Float = 2000.0f
     override val baseBulletCooldown: Float = 0.5f
     override val baseBulletSize: Float = 4.0f
@@ -121,7 +121,7 @@ object Bullet {
   }
 
   case object Explosive extends Type {
-    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/soccer.png")
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/placeholders/soccer.png")
     override val baseBulletSpeed: Float = 400.0f
     override val baseBulletCooldown: Float = 0.5f
     override val baseBulletSize: Float = 10.0f
@@ -131,7 +131,7 @@ object Bullet {
   }
 
   case object Bomb extends Type {
-    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/soccer.png")
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/placeholders/soccer.png")
     override val baseBulletSpeed: Float = 300.0f
     override val baseBulletCooldown: Float = 1.0f
     override val baseBulletSize: Float = 50.0f

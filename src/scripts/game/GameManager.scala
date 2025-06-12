@@ -11,7 +11,7 @@ import scripts.dreamwatch_engine.inputs.InputManager
 import scripts.dreamwatch_engine.physics.Area2D
 import scripts.game.actors.abstracts.Weapon
 import scripts.game.actors.instantiables.weapons.Sniper
-import scripts.game.actors.instantiables.{GamePlayer, GameScene, MainMenuScene}
+import scripts.game.actors.instantiables.{GameScene, MainMenuScene, Player}
 import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
@@ -29,6 +29,7 @@ object GameManager{
    * Central toy position from which bullets originate (middle of screen horizontally, bottom).
    */
   val toyPos: Vector2 = new Vector2(Globals.WINDOW_WIDTH / 2f, 0)
+  val player: Player = new Player()
 
 
   var g: GdxGraphics = _
@@ -38,13 +39,7 @@ object GameManager{
 
   def mousePos: Vector2 = new Vector2(Gdx.input.getX, Gdx.graphics.getHeight - Gdx.input.getY)
 
-  val clickSound = new SoundSample("res/sounds/click_sound.mp3")
-  val clickSound2 = new SoundSample("res/sounds/click_sound_2.mp3")
-  val explosionSound = new SoundSample("res/sounds/explosion_sound.mp3")
-  val bubbleSound = new SoundSample("res/sounds/bubble_pop.mp3")
-  val reloadSound = new SoundSample("res/sounds/reload.mp3")
 
-  val musicPlayer = new MusicPlayer("res/sounds/music_1.mp3")
 
 
   /**
@@ -64,14 +59,15 @@ object GameManager{
       if(button == Input.Keys.ESCAPE) _isPaused = !_isPaused
     })
 
-    val sniper: Sniper = new Sniper(new Vector2(Globals.WINDOW_WIDTH/2, 50))
-    val gamePlayer: GamePlayer = new GamePlayer(sniper)
-    currentScene = new GameScene(gamePlayer)
-    currentScene.instantiate()
-    gamePlayer.instantiate()
+    //main menu
+    loadScene(new MainMenuScene())
+    MusicManager.playMusic(0)
 
 
-    musicPlayer.loop()
+
+
+
+
 
 
 
@@ -96,14 +92,18 @@ object GameManager{
 
   def resume(): Unit = _isPaused = false
 
+  def togglePause(): Unit = _isPaused = !_isPaused
+
   def handleMouseInput(pos: Vector2, button: Int): Unit = {
     println("handled game manager")
     currentScene.handleMouseInput(pos, button)
   }
 
   def loadScene(newScene: Scene): Unit = {
-    currentScene.destroy()
-    currentScene = newScene.instantiate()
+    if (currentScene != null)
+      currentScene.destroy()
+    currentScene = newScene
+    currentScene.instantiate()
   }
 
 }

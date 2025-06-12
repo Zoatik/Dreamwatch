@@ -6,7 +6,7 @@ import scripts.dreamwatch_engine.inputs.Controller
 import scripts.dreamwatch_engine.physics.{Collider2D, Movement2D}
 import scripts.dreamwatch_engine.utils.Layers
 import scripts.game.GameManager
-import scripts.game.actors.abstracts.Player
+import scripts.game.actors.instantiables.Player
 import scripts.utils.Globals
 
 import scala.collection.immutable.ListSet
@@ -18,7 +18,6 @@ import scala.collection.mutable.ArrayBuffer
  */
 abstract class Scene extends Entity with Controller {
 
-  val player: Player
   /**
    * Layers for rendering: a collection of Graphics2D instances grouped by Z-index.
    */
@@ -198,9 +197,6 @@ abstract class Scene extends Entity with Controller {
 
     GameManager.g.clear()
 
-    // renders background shader
-    //GameManager.g.getShaderRenderer.setUniform("mouse", new Vector3(GameManager.mousePos ,1))
-    //GameManager.g.getShaderRenderer.addEmptyTexture(Globals.WINDOW_WIDTH, Globals.WINDOW_HEIGHT, "texture0")
     GameManager.g.drawShader(timeFromCreation)
 
 
@@ -209,8 +205,6 @@ abstract class Scene extends Entity with Controller {
     for (layer <- gLayers.get()) {
       layer.elements.foreach(gElement => gElement.draw(GameManager.g))
     }
-    //println("size: " + gLayers.get(Globals.BULLET_G_LAYER).get.size)
-
 
 
     // renders UI
@@ -261,7 +255,9 @@ abstract class Scene extends Entity with Controller {
    * Remove this entity from the current scene via the ScenesManager.
    * Called when the entity should no longer exist (e.g., lifetime expired or explicit destroy).
    */
-  override def destroy(): Unit = {}
+  override def destroy(): Unit = {
+    objects.toArray.foreach(_.destroy())
+  }
 
   /**
    * Add (spawn) this entity into the current scene via the ScenesManager.

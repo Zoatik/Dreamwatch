@@ -5,8 +5,8 @@ import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.actors.abstracts.Component
 import scripts.dreamwatch_engine.actors.instantiables.{CollisionObject2D, CollisionSprite2D, Particle2D}
 import scripts.dreamwatch_engine.physics.{Area2D, Collider2D, Movement2D}
-import scripts.game.GameManager
-import scripts.game.actors.instantiables.{Bullet, GamePlayer, Toy}
+import scripts.game.{GameManager, MusicManager}
+import scripts.game.actors.instantiables.{Bullet, GameScene, Toy}
 import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
@@ -46,15 +46,15 @@ abstract class Nightmare (pos: Vector2,
 
   override def destroy(): Unit = {
     super.destroy()
-    val particles = Particle2D.spawnParticles(pos, 40.0f, 10.0f, 50.0f, 5, "res/sprites/texture.png", gLayerZ)
+    val particles = Particle2D.spawnParticles(pos, 40.0f, 10.0f, 50.0f, 5, "res/sprites/game/texture.png", gLayerZ)
     particles.foreach(particle => particle.bindMouseEntered(_ => {
       particle.speed = 500.0f
       particle.direction = null
       particle.target = new Vector2(Globals.WINDOW_WIDTH/2,0)
-      GameManager.bubbleSound.play()
+      MusicManager.playSound("bubble_sound")
       particle.stopAtTarget = true
       particle.bindTargetReached(_ =>{
-        GameManager.currentScene.player.asInstanceOf[GamePlayer].dreamShards += 1
+        GameManager.currentScene.asInstanceOf[GameScene].dreamShards += 1
         particle.unbindListeners()
         particle.destroy()
       })

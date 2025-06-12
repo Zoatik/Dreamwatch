@@ -62,10 +62,10 @@ class Boss(pos: Vector2,
 
 object Boss{
   private def loadImagesFor(bulletType: Type): ArrayBuffer[String] = bulletType match {
-    case UneAraignee => ArrayBuffer.fill(1)("res/sprites/UneAraignee.png")
-    case Ghost => ArrayBuffer.fill(1)("res/sprites/Ghost.png")
-    case TheGrimReaper => ArrayBuffer.fill(1)("res/sprites/TheGrimReaper.png")
-    case _ => ArrayBuffer.fill(1)("res/sprites/UneAraignee.png")
+    case UneAraignee => ArrayBuffer.fill(1)("res/sprites/bosses/UneAraignee.png")
+    case Ghost => ArrayBuffer.fill(1)("res/sprites/bosses/Ghost.png")
+    case TheGrimReaper => ArrayBuffer.fill(1)("res/sprites/bosses/TheGrimReaper.png")
+    case _ => ArrayBuffer.fill(1)("res/sprites/bosses/UneAraignee.png")
 
   }
   private def baseBossRadius(bossType: Type): Float = bossType match {

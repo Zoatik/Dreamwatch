@@ -10,14 +10,14 @@ import scripts.dreamwatch_engine.physics.{Collider2D, Movement2D}
 import scripts.dreamwatch_engine.utils.Layers
 import scripts.game.GameManager
 import scripts.game.GameManager.toyPos
-import scripts.game.actors.abstracts.{Nightmare, Player, Weapon}
+import scripts.game.actors.abstracts.{Nightmare, Weapon}
 import scripts.game.actors.instantiables.nightmares.Ghost
 import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Random
 
-class GameScene(gamePlayer: GamePlayer) extends Scene{
+class GameScene() extends Scene{
 
   override val gLayers: Layers[Sprite2D] = new Layers[Sprite2D](Globals.G_LAYERS_SIZE)
   override val uiLayers: Layers[UiElement] = new Layers[UiElement](Globals.UI_LAYERS_SIZE)
@@ -25,7 +25,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
   override val movableObjects: ArrayBuffer[Movement2D] = ArrayBuffer()
   override val objects: ArrayBuffer[Object2D] = ArrayBuffer()
   override val particles: ArrayBuffer[Particle2D] = ArrayBuffer()
-  override val player: GamePlayer = gamePlayer
+
 
   private var waveCounter: Int = 1
   private var waveTimer: Float = 0
@@ -38,6 +38,9 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
   private var bossCounter: Int = 1
   private var currentBoss: Option[Boss] = None
 
+  val player: Player = GameManager.player
+  var dreamShards: Int = 0
+
   // Random number generator for spawn timing and positions.
   private val rnd = new Random()
 
@@ -49,16 +52,9 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
   override def instantiate(): GameScene = {
     super.instantiate()
 
-    /*InputManager.onKeyPressed(_ => { // TODO: SHOULD BE HERE
-      println("key pressed from GameScene")
-      waveStatus match {
-        case "boss" => bossDefeated = true
-        //case "cards" => cardsSelectionDone = true
-        case _ =>
-      }
-    })*/
-    startNewWave()
     initToys()
+    startNewWave()
+
     this
   }
 
@@ -66,7 +62,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
     super.update(deltaT)
 
     GameManager.g.setColor(Color.WHITE)
-    GameManager.g.drawString(Globals.WINDOW_WIDTH - 200, Globals.WINDOW_HEIGHT - 40, s"DreamShards: ${player.dreamShards}")
+    GameManager.g.drawString(Globals.WINDOW_WIDTH - 200, Globals.WINDOW_HEIGHT - 40, s"DreamShards: ${dreamShards}")
     if (GameManager.isPaused)
       return
 
@@ -148,7 +144,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
         // What happens once you've chosen you're upgrade card
         if (cardsSelectionDone) {
           println("Cards selection DONE")
-          player.weapon.canShoot = true
+          player.weapon.get.canShoot = true
           cardsSelectionDone = false
           if (waveCounter % (Globals.NBR_WAVES_BEFORE_BOSS+1) == 0) {
             startNewBossWave()
@@ -174,14 +170,14 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
   }
   // TODO: give ghost their target
   def initToys(): Unit = {
-    new Toy(Globals.TOY_POS(0), ArrayBuffer("src/res/sprites/toy.png")).instantiate()
-    new Toy(Globals.TOY_POS(1), ArrayBuffer("src/res/sprites/toy.png")).instantiate()
-    new Toy(Globals.TOY_POS(2), ArrayBuffer("src/res/sprites/toy.png")).instantiate()
-    new Toy(Globals.TOY_POS(3), ArrayBuffer("src/res/sprites/toy.png")).instantiate()
+    new Toy(Globals.TOY_POS(0), ArrayBuffer("res/sprites/game/toy.png")).instantiate()
+    new Toy(Globals.TOY_POS(1), ArrayBuffer("res/sprites/game/toy.png")).instantiate()
+    new Toy(Globals.TOY_POS(2), ArrayBuffer("res/sprites/game/toy.png")).instantiate()
+    new Toy(Globals.TOY_POS(3), ArrayBuffer("res/sprites/game/toy.png")).instantiate()
   }
 
   def initCards(): Unit = {
-    player.weapon.canShoot = false
+    player.weapon.get.canShoot = false
     Card.create3Cards()
   }
 
