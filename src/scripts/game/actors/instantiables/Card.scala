@@ -26,10 +26,12 @@ class Card(pos: Vector2 = Globals.CARDS_POS(1),
     area2D.Box){
 
   width = 400.0f
-  val cardHighlight: UiElement = new UiElement(pos, 0, ArrayBuffer("src/res/sprites/cardHighlight.png"), 2, Area2D.Box)
+  val token: UiElement = new UiElement(pos.cpy().add(0,55),0, cardHolster.images, gLayerZ + 1, area2D.Box)
+  token.width = 170.0f
 
   override def instantiate(): Card = {
     super.instantiate()
+    token.instantiate()
     this
   }
   override protected def onMouseReleased(mousePos: Vector2, mouseButton: Int): Unit = {
@@ -47,13 +49,13 @@ class Card(pos: Vector2 = Globals.CARDS_POS(1),
   override protected def onMouseEntered(mousePos: Vector2): Unit = {
     super.onMouseEntered(mousePos)
     scale = scale * 1.1f
-    //cardHighlight.instantiate()
+    token.scale = token.scale * 1.1f
   }
 
   override protected def onMouseLeft(mousePos: Vector2): Unit = {
     super.onMouseLeft(mousePos)
     scale = scale / 1.1f
-    //cardHighlight.destroy()
+    token.scale = token.scale/ 1.1f
   }
 }
 

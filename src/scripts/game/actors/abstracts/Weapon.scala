@@ -95,30 +95,45 @@ object Weapon {
   case object Primary extends Mode
   case object Secondary extends Mode
 
-  sealed trait Holster
+  sealed trait Holster{
+    val images: ArrayBuffer[String]
+  }
 
   sealed trait Evolution extends Holster
-  case object Phase0 extends Evolution
-  case object Phase1 extends Evolution
-  case object Phase2 extends Evolution
-  case object Phase3 extends Evolution
+  case object Phase0 extends Evolution {
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletSpeedUpgrade.png") //TODO : Change to correct sprites
+  }
+  case object Phase1 extends Evolution {
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletSpeedUpgrade.png")
+  }
+  case object Phase2 extends Evolution {
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletSpeedUpgrade.png")
+  }
+  case object Phase3 extends Evolution {
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletSpeedUpgrade.png")
+  }
 
   sealed trait Upgrade extends Holster
   // all modifiers are summed and then multiplied to base-
   case object Speed extends Upgrade{
     val amplification: Float = 0.1f
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletSpeedUpgrade.png")
   }
   case object Cooldown extends Upgrade{
     val reduction: Float = 0.1f
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletCooldownUpgrade.png")
   }
   case object BulletSize extends Upgrade{
     val amplification: Float = 0.1f
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletSizeUpgrade.png")
   }
   case object ExplosionSize extends Upgrade{
     val amplification: Float = 0.1f
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/explosionSizeUpgrade.png")
   }
   case object BossDamage extends Upgrade{
     val amplification: Float = 0.1f
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletDamageUpgrade.png")
   }
 
 

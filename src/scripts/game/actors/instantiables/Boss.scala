@@ -22,7 +22,7 @@ class Boss(pos: Vector2,
     Globals.BOSS_G_LAYER,
     Globals.BOSS_C_LAYER,
     Globals.BOSS_C_LAYERMASK,
-    Area2D.Circle,
+    Area2D.Box,
     lifeTime = None
   ) with Movement2D {
 
