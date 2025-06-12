@@ -70,7 +70,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
     if (GameManager.isPaused)
       return
 
-    if(!GameManager.currentScene.objects.exists(t => t.isInstanceOf[Toy])) {
+    if(!objects.exists(t => t.isInstanceOf[Toy])) {
       println("you lost boi")
       isAlive = false
     }
@@ -93,8 +93,8 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
         else {
           // End of the wave. Do this:
           // Stop spawning nightmares
-          spawnRate = 0                                                               // Ajouté pour éviter d'avoir des balles encore vollantes lors du choix de cartes
-          if(!GameManager.currentScene.objects.exists(e => e.isInstanceOf[Nightmare]) && !GameManager.currentScene.objects.exists(f => f.isInstanceOf[Bullet]) && !GameManager.currentScene.objects.exists(s => s.isInstanceOf[Particle2D])) {
+          spawnRate = 0                                         // Ajouté pour éviter d'avoir des balles encore vollantes lors du choix de cartes
+          if(!objects.exists(e => e.isInstanceOf[Nightmare]) && !objects.exists(f => f.isInstanceOf[Bullet]) && !objects.exists(s => s.isInstanceOf[Particle2D])) {
             waveCounter += 1
             waveStatus = "cards"
             initCards()
@@ -118,7 +118,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
         // What happens when the boss is defeated
         else{
           spawnRate = 0 // Keep cause the boss died so would be bad if kept spawning out of nowhere
-          if(!GameManager.currentScene.objects.exists(e => e.isInstanceOf[Nightmare])) {
+          if(!objects.exists(e => e.isInstanceOf[Nightmare])) {
             bossDefeated = false
 
             if (bossCounter == Globals.NBR_OF_BOSSES) {
@@ -132,7 +132,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
               if(currentBoss.isDefined){
                 currentBoss.get.destroy()
                 currentBoss = None
-                GameManager.currentScene.nextBackground()
+                nextBackground()
               }
               waveCounter += 1
               waveStatus = "cards"
@@ -149,7 +149,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
         // What happens once you've chosen you're upgrade card
         if (cardsSelectionDone) {
           println("Cards selection DONE")
-          GameManager.currentScene.asInstanceOf[GameScene].player.weapon.canShoot = true
+          player.weapon.canShoot = true
           cardsSelectionDone = false
           if (waveCounter % (Globals.NBR_WAVES_BEFORE_BOSS+1) == 0) {
             startNewBossWave()
@@ -179,7 +179,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
   }
 
   def initCards(): Unit = {
-    GameManager.currentScene.asInstanceOf[GameScene].player.weapon.canShoot = false
+    player.weapon.canShoot = false
     Card.create3Cards()
   }
 
