@@ -7,7 +7,7 @@ import scripts.dreamwatch_engine.actors.instantiables.UiElement
 import scripts.dreamwatch_engine.physics.Area2D
 import scripts.game.GameManager
 import scripts.game.actors.abstracts.Weapon
-import scripts.game.actors.abstracts.Weapon.{Holster, Upgrade}
+import scripts.game.actors.abstracts.Weapon.{Holster, Phase3, RebuildToy, UltimatePhase, Upgrade}
 import scripts.game.actors.instantiables.Card.destroy3Cards
 import scripts.utils.Globals
 
@@ -85,7 +85,7 @@ object Card {
   val cards: Array[Card] = Array.ofDim(3)
 
   def create3Cards(): Unit = {
-    val u: Array[Upgrade] = generate3Upgrades()
+    var u: Array[Upgrade] = generate3Upgrades()
     cards(0) = new Card(Globals.CARDS_POS(0), u(0)).instantiate()
     cards(1) = new Card(Globals.CARDS_POS(1), u(1)).instantiate()
     cards(2) = new Card(Globals.CARDS_POS(2), u(2)).instantiate()
@@ -98,6 +98,9 @@ object Card {
   }
   def generate3Upgrades(): Array[Upgrade] = {
     val upPos: ArrayBuffer[Upgrade] = GameManager.currentScene.asInstanceOf[GameScene].player.weapon.upgradePossibilities.clone().to(ArrayBuffer)
+    /*if(GameManager.currentScene.asInstanceOf[GameScene].player.weapon.weaponEvolution == Phase3){
+      upPos.append(UltimatePhase)
+    }*/
     val cardUp: Array[Upgrade] = Array.ofDim(3)
     for(i <- cardUp.indices){
       cardUp(i) = upPos(random.nextInt(0, upPos.length))
@@ -106,4 +109,14 @@ object Card {
     }
     cardUp
   }
+  /*def generate3WishingWellUpgrades(): Array[Holster] = {
+    val wwUpPos: Array[Holster] = GameManager.currentScene.asInstanceOf[GameScene].player.weapon.upgradePossibilities
+    val wwEvoPos: Array[Holster] = GameManager.currentScene.asInstanceOf[GameScene].player.weapon.weaponEvolution
+    val wwUp: Array[Holster] = Array.ofDim(3)
+    wwUp(0) = RebuildToy
+    wwUp(1) = wwUpPos(random.nextInt(0, wwUpPos.length))
+    wwUp(2) = wwEvoPos(random.nextInt(0, wwEvoPos.length))
+
+    wwUp
+  }*/
 }
