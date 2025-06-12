@@ -61,6 +61,7 @@ class Boss(pos: Vector2,
     println("Boss has taken damage")
     hp -= amount
     scale = hp / Globals.DEFAULT_BOSS_HP
+    if (width <= 20.0f) width = 20.0f
     if(hp <= 0){
       GameManager.currentScene.asInstanceOf[GameScene].bossDefeated = true
       this.destroy()
