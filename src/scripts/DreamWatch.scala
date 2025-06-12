@@ -21,6 +21,17 @@ class DreamWatch extends PortableApplication(WINDOW_WIDTH, WINDOW_HEIGHT){
 
     g.drawFPS()
   }
+
+  override def onDispose(): Unit = {
+    super.onDispose()
+    GameManager.musicPlayer.dispose()
+    GameManager.clickSound.dispose()
+    GameManager.clickSound2.dispose()
+    GameManager.explosionSound.dispose()
+    GameManager.bubbleSound.dispose()
+    GameManager.reloadSound.dispose()
+  }
+
 }
 
 object DreamWatch extends App{

@@ -48,6 +48,7 @@ abstract class Nightmare (pos: Vector2,
       particle.speed = 500.0f
       particle.direction = null
       particle.target = new Vector2(Globals.WINDOW_WIDTH/2,0)
+      GameManager.bubbleSound.play()
       particle.stopAtTarget = true
       particle.bindTargetReached(_ =>{
         GameManager.currentScene.player.asInstanceOf[GamePlayer].dreamShards += 1

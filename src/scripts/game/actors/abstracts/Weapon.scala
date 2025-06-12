@@ -40,7 +40,7 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[String])
   def shoot(target: Vector2, mode: Weapon.Mode): Unit = {
     val bulletType = if (mode == Weapon.Primary) bulletTypePrimary else bulletTypeSecondary
     if(timeFromCreation > lastShot + modifiedBulletCooldown(bulletType) && canShoot) {
-      println("shoot")
+      GameManager.reloadSound.play()
       new Bullet(pos.cpy(),
         target,
         bulletType,

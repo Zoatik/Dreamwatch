@@ -50,6 +50,7 @@ class Card(pos: Vector2 = Globals.CARDS_POS(1),
     else
       weapon.weaponEvolution = this.cardHolster.asInstanceOf[Weapon.Evolution]
 
+    GameManager.clickSound2.play()
     destroy3Cards()
   }
   override protected def onMouseEntered(mousePos: Vector2): Unit = {
@@ -64,6 +65,8 @@ class Card(pos: Vector2 = Globals.CARDS_POS(1),
     val tokenGain = (token.height-prevTokenH)
 
     token.pos.add(0.0f,gain/tokenGain)
+
+    GameManager.clickSound.play()
   }
 
   override protected def onMouseLeft(mousePos: Vector2): Unit = {

@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.{Vector2, Vector3}
 import scripts.dreamwatch_engine.actors.abstracts.Component
 import scripts.dreamwatch_engine.actors.instantiables.{CollisionObject2D, CollisionSprite2D, Particle2D}
 import scripts.dreamwatch_engine.physics.{Area2D, Collider2D, Movement2D}
+import scripts.game.GameManager
 import scripts.game.actors.abstracts.Nightmare
 import scripts.utils.Globals
 
@@ -83,6 +84,7 @@ class Bullet(pos: Vector2,
   private def explode(): Unit = {
     explosionCollider.instantiate()
     Particle2D.spawnParticles(pos, bulletSize, 1.0f, 500.0f, 20, "res/sprites/texture.png", gLayerZ)
+    GameManager.explosionSound.play()
   }
 
   override def destroy(): Unit = {

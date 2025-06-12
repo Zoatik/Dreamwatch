@@ -1,5 +1,6 @@
 package scripts.game
 
+import ch.hevs.gdx2d.components.audio.{MusicPlayer, SoundSample}
 import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.math.{Vector2, Vector3}
@@ -37,6 +38,15 @@ object GameManager{
 
   def mousePos: Vector2 = new Vector2(Gdx.input.getX, Gdx.graphics.getHeight - Gdx.input.getY)
 
+  val clickSound = new SoundSample("res/sounds/click_sound.mp3")
+  val clickSound2 = new SoundSample("res/sounds/click_sound_2.mp3")
+  val explosionSound = new SoundSample("res/sounds/explosion_sound.mp3")
+  val bubbleSound = new SoundSample("res/sounds/bubble_pop.mp3")
+  val reloadSound = new SoundSample("res/sounds/reload.mp3")
+
+  val musicPlayer = new MusicPlayer("res/sounds/music_1.mp3")
+
+
   /**
    * Initialization logic for GameManager. Called once at startup.
    * Registers an input listener to spawn bullets based on mouse button clicks.
@@ -58,19 +68,8 @@ object GameManager{
     val gamePlayer: GamePlayer = new GamePlayer(sniper)
     currentScene = new GameScene(gamePlayer).instantiate()
     gamePlayer.instantiate()
-    //scenes += currentScene
 
-    // TESTS
-    //val im = ArrayBuffer(new BitmapImage("res/sprites/soccer.png"))
-    //val im2 = ArrayBuffer(new BitmapImage("res/sprites/cloud.png"))
-    //val test: Sprite2D = new Sprite2D(new Vector2(100,100), 0, im, 0, Area2D.Circle).instantiate()
-    //val test2: Sprite2D = new Sprite2D(new Vector2(1000,1000), 0, im2, 2, Area2D.Circle).instantiate()
-
-
-    /*val part1: Particle2D = new Particle2D("res/shaders/background_2.fp", new Vector2(0,0), 0)
-    part1.shaderRenderer.setUniform("pos", new Vector3(100,100, 100))
-    part1.instantiate()*/
-
+    musicPlayer.loop()
 
 
     println("GameManager ready")
