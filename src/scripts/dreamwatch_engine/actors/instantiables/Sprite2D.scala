@@ -48,8 +48,8 @@ class Sprite2D(pos: Vector2,
   override protected var _height: Float = baseHeight * scale
 
   override var areaType: Area2D.Type = area2DType
-  override var areaWidth: Float = if (areaType == Area2D.Box) baseWidth else baseWidth / 2
-  override var areaHeight: Float = baseHeight
+  /*override var areaWidth: Float = if (areaType == Area2D.Box) baseWidth else baseWidth / 2
+  override var areaHeight: Float = baseHeight*/
 
   def scale: Float = _scale
   def scale_=(newScale: Float): Unit = {

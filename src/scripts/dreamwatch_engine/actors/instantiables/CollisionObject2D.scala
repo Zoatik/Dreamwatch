@@ -23,12 +23,14 @@ class CollisionObject2D(
   pos: Vector2,
   angle: Float,
   override var areaType: Area2D.Type,
-  override var areaWidth: Float,
-  override var areaHeight: Float,
+  var width: Float ,
+  var height: Float ,
   override var cLayerZ: Int,
   override var cLayerMask: ArrayBuffer[Int],
   lifeTime: Option[Float] = None
 ) extends Object2D(pos, angle, lifeTime) with Collider2D {
+
+
 
   /**
    * Override spawn to run a collision check immediately upon creation.
@@ -62,6 +64,7 @@ class CollisionObject2D(
     super.destroy()
     unbindEvents()
   }
+
 
 
 }

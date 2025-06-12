@@ -15,13 +15,13 @@ import scala.collection.mutable.ArrayBuffer
 
 class Card(pos: Vector2 = Globals.CARDS_POS(1),
            var cardHolster: Holster,
-           image: ArrayBuffer[String] = ArrayBuffer("src/res/sprites/card.png"),
+           images: ArrayBuffer[String] = ArrayBuffer("src/res/sprites/card.png"),
            gLayerZ: Int = Globals.CARD_GLAYERZ,
            area2D: Area2D.type = Globals.CARD_AREA2D)
   extends UiElement(
     pos,
     0,
-    image,
+    images,
     gLayerZ,
     area2D.Box){
 
@@ -46,11 +46,13 @@ class Card(pos: Vector2 = Globals.CARDS_POS(1),
   }
   override protected def onMouseEntered(mousePos: Vector2): Unit = {
     super.onMouseEntered(mousePos)
+    scale = scale * 1.2f
     //cardHighlight.instantiate()
   }
 
   override protected def onMouseLeft(mousePos: Vector2): Unit = {
     super.onMouseLeft(mousePos)
+    scale = scale / 1.2f
     //cardHighlight.destroy()
   }
 }

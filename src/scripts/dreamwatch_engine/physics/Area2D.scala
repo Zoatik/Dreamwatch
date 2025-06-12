@@ -25,8 +25,8 @@ trait Area2D {
   def pos_=(newPos: Vector2): Unit
   var areaType: Area2D.Type
 
-  var areaWidth: Float
-  var areaHeight: Float
+  def width: Float
+  def height: Float
   /** List of functions to call when the mouse enters this area.
    * Each listener receives the mouse position as a Vector2(screenX, screenY).
    */
@@ -74,15 +74,15 @@ trait Area2D {
           case Area2D.Circle =>
             // Compare squared distance between centers to squared sum of radii
             val dist2 = pos.dst2(other.pos)
-            dist2 <= (areaWidth + other.areaWidth) * (areaWidth + other.areaWidth)
+            dist2 <= (width + other.width) * (width + other.width)
 
           case Area2D.Box =>
             // Clamp circle center to rectangle bounds, then test distance
-            val closestX = math.max(other.pos.x, math.min(pos.x, other.pos.x + other.areaWidth))
-            val closestY = math.max(other.pos.y, math.min(pos.y, other.pos.y + other.areaHeight))
+            val closestX = math.max(other.pos.x, math.min(pos.x, other.pos.x + other.width))
+            val closestY = math.max(other.pos.y, math.min(pos.y, other.pos.y + other.height))
             val dx = pos.x - closestX
             val dy = pos.y - closestY
-            dx * dx + dy * dy <= areaWidth * areaWidth
+            dx * dx + dy * dy <= width * width
 
           case _ => false
         }
@@ -92,10 +92,10 @@ trait Area2D {
             other.intersects(this)
 
           case Area2D.Box =>
-            val halfW1 = areaWidth  / 2f
-            val halfH1 = areaHeight / 2f
-            val halfW2 = other.areaWidth  / 2f
-            val halfH2 = other.areaHeight / 2f
+            val halfW1 = width  / 2f
+            val halfH1 = height / 2f
+            val halfW2 = other.width  / 2f
+            val halfH2 = other.height / 2f
 
             math.abs(pos.x - other.pos.x) <= (halfW1 + halfW2) &&
               math.abs(pos.y - other.pos.y) <= (halfH1 + halfH2)
@@ -115,12 +115,12 @@ trait Area2D {
   def containsPoint(p: Vector2): Boolean = {
     areaType match {
       case Area2D.Circle =>
-        p.cpy().sub(pos).len() <= areaWidth
+        p.cpy().sub(pos).len() <= width
 
 
       case Area2D.Box =>
-        val halfW = areaWidth  / 2f
-        val halfH = areaHeight / 2f
+        val halfW = width  / 2f
+        val halfH = height / 2f
         p.x >= pos.x - halfW && p.x <= pos.x + halfW &&
         p.y >= pos.y - halfH && p.y <= pos.y + halfH
     }
