@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.actors.instantiables.Sprite2D
 import scripts.dreamwatch_engine.physics.{Area2D, Movement2D}
 import scripts.game.GameManager
-import scripts.game.actors.abstracts.Weapon.{BossDamage, BulletSize, Cooldown, ExplosionSize, Speed, Upgrade}
+import scripts.game.actors.abstracts.Weapon.{BossDamage, BulletSize, Cooldown, Evolution, ExplosionSize, Phase0, Phase1, Phase2, Phase3, Speed, UltimatePhase, Upgrade}
 import scripts.game.actors.instantiables.Bullet
 import scripts.utils.Globals
 
@@ -85,6 +85,15 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[String])
     bulletType.baseBulletDamage * cooldownModifiers
   }
 
+  def evolveWeapon(): Unit = {
+    weaponEvolution match {
+      case Phase0 => weaponEvolution = Phase1
+      case Phase1 => weaponEvolution = Phase2
+      case Phase2 => weaponEvolution = Phase3
+      case Phase3 => weaponEvolution = UltimatePhase
+      case _ =>
+    }
+  }
 
 }
 
@@ -112,6 +121,9 @@ object Weapon {
   case object Phase3 extends Evolution {
     override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletSpeedUpgrade.png")
   }
+  case object UltimatePhase extends Evolution{
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletSpeedUpgrade.png")
+  }
 
   sealed trait Upgrade extends Holster
   // all modifiers are summed and then multiplied to base-
@@ -135,6 +147,7 @@ object Weapon {
     val amplification: Float = 0.1f
     override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletDamageUpgrade.png")
   }
-
-
+  case object RebuildToy extends Upgrade{
+    override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/bulletSpeedUpgrade.png")
+  }
 }

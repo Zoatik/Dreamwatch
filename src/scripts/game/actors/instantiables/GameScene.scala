@@ -80,15 +80,16 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
       case "normal" =>
         if (waveTimer < Globals.WAVE_LENGTH) {
           // Do stuff here during the normal wave
+          // if clicked on wishing well: 1) waveStatus = "wishing well" 2) initCards(waveStatus)
         }
         else {
           // End of the wave. Do this:
           // Stop spawning nightmares
           spawnRate = 0                                                               // Ajouté pour éviter d'avoir des balles encore vollantes lors du choix de cartes
-          if(!GameManager.currentScene.objects.exists(e => e.isInstanceOf[Nightmare]) && !GameManager.currentScene.objects.exists(f => f.isInstanceOf[Bullet])) {
+          if(!GameManager.currentScene.objects.exists(e => e.isInstanceOf[Nightmare]) && !GameManager.currentScene.objects.exists(f => f.isInstanceOf[Bullet]) && !GameManager.currentScene.objects.exists(s => s.isInstanceOf[Particle2D])) {
             waveCounter += 1
-            initCards()
             waveStatus = "cards"
+            initCards()
           }
           else{
             //println("Wait..")
@@ -125,8 +126,8 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
                 currentBoss = None
               }
               waveCounter += 1
-              initCards()
               waveStatus = "cards"
+              initCards()
               cardsSelectionDone = false // I HAVE NO CLUE WHY BUT cardsSelectionDone IS TRUE HERE
               bossCounter += 1
             }
@@ -153,6 +154,9 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
           //println("Entered cards phase.. choose your cards.")
 
         }
+
+      case "wishing well" =>
+
 
       // Final default case
       case _ => // Probably sends info that the game is done
