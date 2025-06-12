@@ -175,7 +175,10 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
   }
 
   def initToys(): Unit = {
-    new Toy(new Vector2(0,0), ArrayBuffer("src/res/sprites/brown.png")).instantiate()
+    new Toy(Globals.TOY_POS(0), ArrayBuffer("src/res/sprites/toy.png")).instantiate()
+    new Toy(Globals.TOY_POS(1), ArrayBuffer("src/res/sprites/toy.png")).instantiate()
+    new Toy(Globals.TOY_POS(2), ArrayBuffer("src/res/sprites/toy.png")).instantiate()
+    new Toy(Globals.TOY_POS(3), ArrayBuffer("src/res/sprites/toy.png")).instantiate()
   }
 
   def initCards(): Unit = {

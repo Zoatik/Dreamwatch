@@ -1,7 +1,9 @@
 package scripts.game.actors.instantiables.nightmares
 
 import com.badlogic.gdx.math.Vector2
+import scripts.dreamwatch_engine.physics.Collider2D
 import scripts.game.actors.abstracts.Nightmare
+import scripts.game.actors.instantiables.Toy
 
 import scala.collection.mutable.ArrayBuffer
 

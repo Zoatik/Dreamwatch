@@ -6,7 +6,7 @@ import scripts.dreamwatch_engine.actors.abstracts.Component
 import scripts.dreamwatch_engine.actors.instantiables.{CollisionObject2D, CollisionSprite2D, Particle2D}
 import scripts.dreamwatch_engine.physics.{Area2D, Collider2D, Movement2D}
 import scripts.game.GameManager
-import scripts.game.actors.instantiables.{Bullet, GamePlayer}
+import scripts.game.actors.instantiables.{Bullet, GamePlayer, Toy}
 import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
@@ -39,6 +39,7 @@ abstract class Nightmare (pos: Vector2,
 
   override protected def onCollision(other: Collider2D): Unit = other match{
     case _: Bullet => this.destroy()
+    case _: CollisionObject2D with Component[Toy] => this.destroy()
     case _: CollisionObject2D with Component[Bullet] => this.destroy()
     case _ =>
   }
