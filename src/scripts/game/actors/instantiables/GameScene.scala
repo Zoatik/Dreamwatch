@@ -56,8 +56,8 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
         case _ =>
       }
     })*/
-
     startNewWave()
+    initToys()
     this
   }
 
@@ -67,6 +67,11 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
     if (GameManager.isPaused)
       return
 
+    if(!GameManager.currentScene.objects.exists(t => t.isInstanceOf[Toy])) {
+      println("you lost boi")
+      isAlive = false
+    }
+
     currentTime += deltaT
     waveTimer += deltaT
     updateWave(deltaT)
@@ -74,7 +79,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
 
     if(!isAlive){
       // Game is lost !
-      println("Game is lost.")
+      waveStatus = "game lost"
     }
     waveStatus match {
       case "normal" =>
@@ -117,7 +122,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
               // Game is won !
               println("Game is won !")
               println(s"${bossCounter} bosses were defeated.")
-              waveStatus = "finished"
+              waveStatus = "game won"
             }
             else {
               // Next boss
@@ -158,10 +163,16 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
 
       case "wishing well" =>
 
+      case "game won" => println("Game won !")
+      case "game lost" => println("Gam lost !")
 
       // Final default case
       case _ => // Probably sends info that the game is done
     }
+  }
+
+  def initToys(): Unit = {
+    new Toy(new Vector2(0,0), ArrayBuffer("src/res/sprites/brown.png")).instantiate()
   }
 
   def initCards(): Unit = {

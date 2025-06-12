@@ -1,9 +1,7 @@
 package scripts.game.actors.instantiables.nightmares
 
-import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
 import scripts.game.actors.abstracts.Nightmare
-import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -21,5 +19,11 @@ class Ghost(pos: Vector2, targetPos: Vector2, animDuration: Float = 1.0f, scale:
     animDuration,
     scale) {
 
-  override var speed: Float = 100.0f
+    override var speed: Float = 100.0f
+
+    /*override protected def onTargetReached(): Unit = {
+        super.onTargetReached()
+
+    }*/
+
 }

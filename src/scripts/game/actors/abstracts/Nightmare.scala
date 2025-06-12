@@ -33,6 +33,8 @@ abstract class Nightmare (pos: Vector2,
 
   override var speed: Float
   override var target: Vector2 = targetPos.cpy
+  // Just testing to set the target to a custom value.. will somehow set target as one of the random toys
+  //override var target: Vector2 = new Vector2(GameManager.g.getScreenWidth/3, 0)
 
 
   override protected def onCollision(other: Collider2D): Unit = other match{

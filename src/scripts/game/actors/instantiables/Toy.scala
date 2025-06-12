@@ -14,9 +14,15 @@ class Toy(pos: Vector2, images: ArrayBuffer[String])
   override var speed: Float = 0
   override var target: Vector2 = null
 
+  override def instantiate(): Toy = {
+    super.instantiate()
+    this
+  }
+
   /**
    * Remove this entity from the current scene via the ScenesManager.
    * Called when the entity should no longer exist (e.g., lifetime expired or explicit destroy).
    */
-  override def destroy(): Unit = ???
+
+  //override def destroy(): Unit = ???
 }
