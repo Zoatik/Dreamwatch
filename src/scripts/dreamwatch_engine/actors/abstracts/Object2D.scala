@@ -1,8 +1,10 @@
 package scripts.dreamwatch_engine.actors.abstracts
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.physics.Area2D
 import scripts.game.GameManager
+import scripts.utils.Globals
 
 /**
  * Base class for any object in the 2D world.
@@ -24,6 +26,16 @@ abstract class Object2D(
   override def instantiate(): Object2D = {
     GameManager.currentScene.add(this)
     this
+  }
+
+  override def update(deltaT: Float): Unit = {
+    super.update(deltaT)
+    if( pos.x > Gdx.graphics.getWidth * 2 ||
+        pos.y > Gdx.graphics.getHeight * 2 ||
+        pos.x < -Gdx.graphics.getWidth ||
+        pos.y < -Gdx.graphics.getHeight) {
+      destroy()
+    }
   }
 
 }

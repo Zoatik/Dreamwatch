@@ -33,7 +33,9 @@ class Bullet(pos: Vector2,
 
   override var target: Vector2 = targetPos.cpy()
 
+  stopAtTarget = if(bulletType == Bullet.Piercing) false else true
   initMovement(bulletType.bulletTrajectory)
+
 
   width = bulletSize
 
@@ -57,11 +59,16 @@ class Bullet(pos: Vector2,
 
   override protected def onCollision(other: Collider2D): Unit = other match {
     case _: Nightmare =>
-      this.explode()
-      this.destroy()
+
+      if(this.bulletType != Bullet.Piercing) {
+        this.destroy()
+        this.explode()
+      }
     case _: Boss =>
-      this.explode()
-      this.destroy()
+      if(this.bulletType != Bullet.Piercing) {
+        this.explode()
+        this.destroy()
+      }
     case _ =>
   }
 
@@ -101,10 +108,10 @@ object Bullet {
 
   case object Piercing extends Type{
     override val images: ArrayBuffer[String] = ArrayBuffer("res/sprites/card.png")
-    override val baseBulletSpeed: Float = 5000.0f
+    override val baseBulletSpeed: Float = 2000.0f
     override val baseBulletCooldown: Float = 0.5f
     override val baseBulletSize: Float = 4.0f
-    override val baseBulletExplosionSize: Float = 0.0f
+    override val baseBulletExplosionSize: Float = 0.1f
     override val baseBulletDamage: Float = 1000.0f
     override val bulletTrajectory: Movement2D.Trajectory = Movement2D.Linear
   }

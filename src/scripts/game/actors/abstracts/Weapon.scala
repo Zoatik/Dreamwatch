@@ -39,7 +39,13 @@ abstract class Weapon(pos: Vector2, images: ArrayBuffer[String])
   def shoot(target: Vector2, mode: Weapon.Mode): Unit = {
     if(timeFromCreation > lastShot + modifiedBulletCooldown && canShoot) {
       println("shoot")
-      new Bullet(pos.cpy(), target, bulletType).instantiate() // TODO: Add modifiers
+      new Bullet(pos.cpy(),
+        target,
+        bulletType,
+        modifiedBulletSpeed,
+        modifiedBulletSize,
+        modifiedBulletExplosionSize,
+        modifiedBulletDamage).instantiate()
       lastShot = timeFromCreation
     }
   }

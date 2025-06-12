@@ -34,6 +34,12 @@ class Card(pos: Vector2 = Globals.CARDS_POS(1),
     token.instantiate()
     this
   }
+
+  override def destroy(): Unit = {
+    super.destroy()
+    token.destroy()
+  }
+
   override protected def onMouseReleased(mousePos: Vector2, mouseButton: Int): Unit = {
     super.onMouseReleased(mousePos, mouseButton)
     val weapon = GameManager.currentScene.asInstanceOf[GameScene].player.weapon

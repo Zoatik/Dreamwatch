@@ -2,6 +2,7 @@ package scripts.dreamwatch_engine.physics
 
 import com.badlogic.gdx.math.{MathUtils, Vector2}
 import scripts.dreamwatch_engine.actors.instantiables.Particle2D
+import scripts.game.actors.instantiables.Bullet
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -51,6 +52,9 @@ trait Movement2D {
   def initMovement(newTrajectory: Movement2D.Trajectory): Unit = {
     trajectory = newTrajectory
     spiralAngularSpeed = target.cpy().sub(pos).len() * 1f
+    if (!stopAtTarget){
+      direction = target.cpy().sub(pos).nor()
+    }
   }
 
   /**
@@ -68,11 +72,13 @@ trait Movement2D {
     if (stopAtTarget && targetReached()) return
 
 
+
     val toTarget = target.cpy().sub(pos)
     if (toTarget.isZero) return
 
     val unitToTarget = toTarget.nor()
     var dir: Vector2 = direction
+    if(this.isInstanceOf[Bullet]) println(direction)
     if(dir == null) {
 
         dir = trajectory match {
@@ -90,7 +96,6 @@ trait Movement2D {
           if (radius == 0f) new Vector2(0, 0)
           else {
             val radialDir = radiusVec.cpy().nor()
-            val tangential = new Vector2(-radialDir.y, radialDir.x)
             val angleDeg = spiralAngularSpeed * elapsedTime
             val inwardDir = target.cpy().sub(pos).nor()
             val spiraled = inwardDir.rotateDeg(angleDeg)
