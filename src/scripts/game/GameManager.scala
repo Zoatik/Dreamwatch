@@ -67,7 +67,7 @@ object GameManager{
     //val test2: Sprite2D = new Sprite2D(new Vector2(1000,1000), 0, im2, 2, Area2D.Circle).instantiate()
 
 
-    /*val part1: Particle2D = new Particle2D("res/shaders/fire_ball_2.fp", new Vector2(0,0), 0)
+    /*val part1: Particle2D = new Particle2D("res/shaders/background_2.fp", new Vector2(0,0), 0)
     part1.shaderRenderer.setUniform("pos", new Vector3(100,100, 100))
     part1.instantiate()*/
 

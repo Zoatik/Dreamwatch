@@ -52,8 +52,19 @@ abstract class Scene extends Entity with Controller {
 
   def isMouseOnUi: Boolean = _isMouseOnUi
 
-  GameManager.g.setShader("res/shaders/background2.fp")
+  var backgrounds: Array[String] = Array( "res/shaders/background_1.fp",
+                                          "res/shaders/background_2.fp",
+                                          "res/shaders/background_3.fp")
 
+  private var currBackgroundIdx = 0
+
+  GameManager.g.setShader(backgrounds(currBackgroundIdx))
+
+
+  def nextBackground(): Unit = {
+    currBackgroundIdx = (currBackgroundIdx+1) % backgrounds.length
+    GameManager.g.setShader(backgrounds(currBackgroundIdx))
+  }
 
   /**
    * Add a generic Entity to the scene. Depending on which traits the entity implements,

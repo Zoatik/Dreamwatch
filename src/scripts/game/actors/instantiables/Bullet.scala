@@ -73,8 +73,10 @@ class Bullet(pos: Vector2,
   }
 
   override protected def onTargetReached(): Unit = {
-    this.explode()
-    this.destroy()
+    if(this.bulletType != Bullet.Piercing) {
+      this.explode()
+      this.destroy()
+    }
   }
 
 

@@ -124,6 +124,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
               if(currentBoss.isDefined){
                 currentBoss.get.destroy()
                 currentBoss = None
+                GameManager.currentScene.nextBackground()
               }
               waveCounter += 1
               waveStatus = "cards"

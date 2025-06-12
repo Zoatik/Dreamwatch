@@ -89,7 +89,7 @@ void main(void){
   vec2 R = resolution;
   vec2 uv = (gl_FragCoord.xy*2.-R) / R.y;
   gl_FragColor.rgb *= 0.;
-  gl_FragColor.a = 0.1;
+  gl_FragColor.a = 0.4;
 
   vec2 m = (mouse.xy*2.-R)/R.y;
 

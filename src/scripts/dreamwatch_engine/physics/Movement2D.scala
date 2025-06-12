@@ -78,7 +78,6 @@ trait Movement2D {
 
     val unitToTarget = toTarget.nor()
     var dir: Vector2 = direction
-    if(this.isInstanceOf[Bullet]) println(direction)
     if(dir == null) {
 
         dir = trajectory match {
