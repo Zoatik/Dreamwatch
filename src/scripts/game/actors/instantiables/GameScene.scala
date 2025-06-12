@@ -57,8 +57,8 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
         case _ =>
       }
     })*/
-
     startNewWave()
+    initToys()
     this
   }
 
@@ -70,6 +70,11 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
     if (GameManager.isPaused)
       return
 
+    if(!objects.exists(t => t.isInstanceOf[Toy])) {
+      println("you lost boi")
+      isAlive = false
+    }
+
     currentTime += deltaT
     waveTimer += deltaT
     updateWave(deltaT)
@@ -77,7 +82,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
 
     if(!isAlive){
       // Game is lost !
-      println("Game is lost.")
+      waveStatus = "game lost"
     }
     waveStatus match {
       case "normal" =>
@@ -88,8 +93,8 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
         else {
           // End of the wave. Do this:
           // Stop spawning nightmares
-          spawnRate = 0                                                               // Ajouté pour éviter d'avoir des balles encore vollantes lors du choix de cartes
-          if(!GameManager.currentScene.objects.exists(e => e.isInstanceOf[Nightmare]) && !GameManager.currentScene.objects.exists(f => f.isInstanceOf[Bullet]) && !GameManager.currentScene.objects.exists(s => s.isInstanceOf[Particle2D])) {
+          spawnRate = 0                                         // Ajouté pour éviter d'avoir des balles encore vollantes lors du choix de cartes
+          if(!objects.exists(e => e.isInstanceOf[Nightmare]) && !objects.exists(f => f.isInstanceOf[Bullet]) && !objects.exists(s => s.isInstanceOf[Particle2D])) {
             waveCounter += 1
             waveStatus = "cards"
             initCards()
@@ -113,21 +118,21 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
         // What happens when the boss is defeated
         else{
           spawnRate = 0 // Keep cause the boss died so would be bad if kept spawning out of nowhere
-          if(!GameManager.currentScene.objects.exists(e => e.isInstanceOf[Nightmare])) {
+          if(!objects.exists(e => e.isInstanceOf[Nightmare])) {
             bossDefeated = false
 
             if (bossCounter == Globals.NBR_OF_BOSSES) {
               // Game is won !
               println("Game is won !")
               println(s"${bossCounter} bosses were defeated.")
-              waveStatus = "finished"
+              waveStatus = "game won"
             }
             else {
               // Next boss
               if(currentBoss.isDefined){
                 currentBoss.get.destroy()
                 currentBoss = None
-                GameManager.currentScene.nextBackground()
+                nextBackground()
               }
               waveCounter += 1
               waveStatus = "cards"
@@ -144,7 +149,7 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
         // What happens once you've chosen you're upgrade card
         if (cardsSelectionDone) {
           println("Cards selection DONE")
-          GameManager.currentScene.asInstanceOf[GameScene].player.weapon.canShoot = true
+          player.weapon.canShoot = true
           cardsSelectionDone = false
           if (waveCounter % (Globals.NBR_WAVES_BEFORE_BOSS+1) == 0) {
             startNewBossWave()
@@ -161,14 +166,23 @@ class GameScene(gamePlayer: GamePlayer) extends Scene{
 
       case "wishing well" =>
 
+      case "game won" => println("Game won !")
+      case "game lost" => println("Gam lost !")
 
       // Final default case
       case _ => // Probably sends info that the game is done
     }
   }
 
+  def initToys(): Unit = {
+    new Toy(Globals.TOY_POS(0), ArrayBuffer("src/res/sprites/toy.png")).instantiate()
+    new Toy(Globals.TOY_POS(1), ArrayBuffer("src/res/sprites/toy.png")).instantiate()
+    new Toy(Globals.TOY_POS(2), ArrayBuffer("src/res/sprites/toy.png")).instantiate()
+    new Toy(Globals.TOY_POS(3), ArrayBuffer("src/res/sprites/toy.png")).instantiate()
+  }
+
   def initCards(): Unit = {
-    GameManager.currentScene.asInstanceOf[GameScene].player.weapon.canShoot = false
+    player.weapon.canShoot = false
     Card.create3Cards()
   }
 

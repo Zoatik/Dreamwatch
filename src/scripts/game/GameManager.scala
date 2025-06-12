@@ -66,7 +66,8 @@ object GameManager{
 
     val sniper: Sniper = new Sniper(new Vector2(Globals.WINDOW_WIDTH/2, 50))
     val gamePlayer: GamePlayer = new GamePlayer(sniper)
-    currentScene = new GameScene(gamePlayer).instantiate()
+    currentScene = new GameScene(gamePlayer)
+    currentScene.instantiate()
     gamePlayer.instantiate()
 
     musicPlayer.loop()
