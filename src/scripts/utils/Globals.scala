@@ -1,6 +1,5 @@
 package scripts.utils
 
-import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.physics.Area2D
 
@@ -38,9 +37,9 @@ object Globals {
   val DEFAULT_SPAWN_RATE: Float = 0.5f
 
   val NBR_WAVES_BEFORE_BOSS: Int = 2 // Should be 5
-  val NBR_OF_BOSSES: Int = 3          // Should be 4
+  val NBR_OF_BOSSES: Int = 3
   val DEFAULT_BOSS_POS: Vector2 = new Vector2(WINDOW_WIDTH/2, WINDOW_HEIGHT-300)
-  val DEFAULT_BOSS_HP: Float = 20
+  val DEFAULT_BOSS_HP: Float = 10_000
 
   val CARDS_POS: Array[Vector2] = Array(new Vector2(460, 500), new Vector2(960, 500), new Vector2(1460, 500))
   val CARD_GLAYERZ: Int = 0

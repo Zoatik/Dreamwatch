@@ -1,8 +1,6 @@
 package scripts.game.actors.instantiables.weapons
 
-import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
-import scripts.dreamwatch_engine.actors.instantiables.Sprite2D
 import scripts.game.actors.abstracts.Weapon
 import scripts.game.actors.instantiables.Bullet
 

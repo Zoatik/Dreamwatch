@@ -23,9 +23,5 @@ class Ghost(pos: Vector2, targetPos: Vector2, animDuration: Float = 1.0f, scale:
 
     override var speed: Float = 100.0f
 
-    /*override protected def onTargetReached(): Unit = {
-        super.onTargetReached()
-
-    }*/
 
 }

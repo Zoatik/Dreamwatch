@@ -18,8 +18,6 @@ class DreamWatch extends PortableApplication(WINDOW_WIDTH, WINDOW_HEIGHT){
 
   override def onGraphicRender(g: GdxGraphics): Unit = {
     GameManager.update(Gdx.graphics.getDeltaTime)
-
-    g.drawFPS()
   }
 
   override def onDispose(): Unit = {

@@ -49,7 +49,7 @@ class MainMenuScene() extends Scene {
       0,
       Area2D.Box
     )
-    playButton.width = 400.0f
+    playButton.width = 300.0f
 
     playButton.bindMouseEntered(_ => {
       playButton.scale = playButton.scale * 1.1f
@@ -66,7 +66,6 @@ class MainMenuScene() extends Scene {
       val gameScene = new GameScene()
       GameManager.loadScene(gameScene)
       gameScene.add(createSettingsButton())
-      gameScene.add(createSettingsPanel())
       GameManager.player.weapon = Some(new Sniper(new Vector2(Globals.WINDOW_WIDTH / 2, 50)).instantiate())
     })
 
@@ -114,6 +113,7 @@ class MainMenuScene() extends Scene {
       0,
       Area2D.Box
     )
+    settingsPanel.width = 300.0f
     settingsPanel.isVisible = false
 
     settingsPanel

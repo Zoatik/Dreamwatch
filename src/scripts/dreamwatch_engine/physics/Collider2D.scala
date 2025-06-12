@@ -1,6 +1,5 @@
 package scripts.dreamwatch_engine.physics
 
-import scripts.dreamwatch_engine.actors.abstracts.Object2D
 import scripts.dreamwatch_engine.utils.{Layer, Layers}
 
 import scala.collection.mutable.ArrayBuffer
@@ -91,28 +90,6 @@ object Collider2D{
     })
   }
 
-  def checkAndNotifyCollisions(layer: Layer[Collider2D]): Unit = {
-    // Get the number of colliders in the layer
-    val size = layer.size
-    // Copy elements to an array for indexed access
-    val elements = layer.elements.toArray
-    var i = 0
-    // Iterate over every unique pair (i, j) where i < j
-    while (i < size) {
-      var j = i + 1
-      while (j < size) {
-        val a = elements(i)
-        val b = elements(j)
-        // If the two colliders overlap, notify both
-        if (a.collidesWith(b)) {
-          a.collided(b)
-          b.collided(a)
-        }
-        j += 1
-      }
-      i += 1
-    }
-  }
 
   /**
    * Checks and notifies a specific pair of colliders if they overlap.

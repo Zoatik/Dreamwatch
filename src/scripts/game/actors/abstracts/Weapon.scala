@@ -1,16 +1,14 @@
 package scripts.game.actors.abstracts
 
-import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.actors.instantiables.Sprite2D
 import scripts.dreamwatch_engine.physics.{Area2D, Movement2D}
-import scripts.game.{GameManager, MusicManager}
-import scripts.game.actors.abstracts.Weapon.{BossDamage, BulletSize, Cooldown, Evolution, ExplosionSize, Phase0, Phase1, Phase2, Phase3, Primary, Speed, UltimatePhase, Upgrade}
+import scripts.game.actors.abstracts.Weapon._
 import scripts.game.actors.instantiables.Bullet
+import scripts.game.{GameManager, MusicManager}
 import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
-import scala.reflect.internal.Mode
 
 abstract class Weapon(pos: Vector2, images: ArrayBuffer[String])
   extends Sprite2D(pos, 0, images, Globals.WEAPON_G_LAYER, Area2D.Box) with Movement2D {

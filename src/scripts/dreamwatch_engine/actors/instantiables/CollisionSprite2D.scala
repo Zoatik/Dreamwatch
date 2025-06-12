@@ -1,6 +1,5 @@
 package scripts.dreamwatch_engine.actors.instantiables
 
-import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.physics.{Area2D, Collider2D}
 

@@ -1,8 +1,6 @@
 package scripts.dreamwatch_engine.physics
 
 import com.badlogic.gdx.math.{MathUtils, Vector2}
-import scripts.dreamwatch_engine.actors.instantiables.Particle2D
-import scripts.game.actors.instantiables.Bullet
 
 import scala.collection.mutable.ArrayBuffer
 

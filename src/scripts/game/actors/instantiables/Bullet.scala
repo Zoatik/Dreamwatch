@@ -1,11 +1,10 @@
 package scripts.game.actors.instantiables
 
-import ch.hevs.gdx2d.components.bitmaps.BitmapImage
-import com.badlogic.gdx.math.{Vector2, Vector3}
+import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.actors.abstracts.Component
 import scripts.dreamwatch_engine.actors.instantiables.{CollisionObject2D, CollisionSprite2D, Particle2D}
 import scripts.dreamwatch_engine.physics.{Area2D, Collider2D, Movement2D}
-import scripts.game.{GameManager, MusicManager}
+import scripts.game.MusicManager
 import scripts.game.actors.abstracts.Nightmare
 import scripts.utils.Globals
 
@@ -53,8 +52,6 @@ class Bullet(pos: Vector2,
 
   override def instantiate(): Bullet = {
     super.instantiate()
-    //val partTest = new Particle2D("res/shaders/electrical_ball.fp", pos)
-
     this
   }
 
@@ -116,7 +113,7 @@ object Bullet {
     override val baseBulletCooldown: Float = 0.5f
     override val baseBulletSize: Float = 4.0f
     override val baseBulletExplosionSize: Float = 0.1f
-    override val baseBulletDamage: Float = 1000.0f
+    override val baseBulletDamage: Float = 50.0f
     override val bulletTrajectory: Movement2D.Trajectory = Movement2D.Linear
   }
 
@@ -125,8 +122,8 @@ object Bullet {
     override val baseBulletSpeed: Float = 400.0f
     override val baseBulletCooldown: Float = 0.5f
     override val baseBulletSize: Float = 10.0f
-    override val baseBulletExplosionSize: Float = 200.0f
-    override val baseBulletDamage: Float = 1.0f
+    override val baseBulletExplosionSize: Float = 150.0f
+    override val baseBulletDamage: Float = 30.0f
     override val bulletTrajectory: Movement2D.Trajectory = Movement2D.Sinus
   }
 
@@ -136,7 +133,7 @@ object Bullet {
     override val baseBulletCooldown: Float = 1.0f
     override val baseBulletSize: Float = 50.0f
     override val baseBulletExplosionSize: Float = 400.0f
-    override val baseBulletDamage: Float = 800.0f
+    override val baseBulletDamage: Float = 70.0f
     override val bulletTrajectory: Movement2D.Trajectory = Movement2D.Spiral
   }
 }

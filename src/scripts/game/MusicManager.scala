@@ -61,6 +61,7 @@ object MusicManager {
 
   def nextMusic(): Unit = {
     if(!_musicsMuted) {
+      stopMusic()
       currentMusicId = (currentMusicId + 1) % musicPlayers.length
       musicPlayers(currentMusicId).loop()
     }

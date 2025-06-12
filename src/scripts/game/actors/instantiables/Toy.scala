@@ -1,11 +1,9 @@
 package scripts.game.actors.instantiables
 
-import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.actors.instantiables.CollisionSprite2D
 import scripts.dreamwatch_engine.physics.{Area2D, Collider2D, Movement2D}
 import scripts.game.actors.abstracts.Nightmare
-import scripts.game.actors.instantiables.nightmares.Ghost
 import scripts.utils.Globals
 
 import scala.collection.mutable.ArrayBuffer
@@ -25,7 +23,7 @@ class Toy(pos: Vector2, images: ArrayBuffer[String])
   override def onCollision(other: Collider2D): Unit = other match{
     case _: Bullet => this.destroy()
     case _: Nightmare => this.destroy()
-    case _ => println("Some form of collision")
+    case _ =>
   }
 
   /**

@@ -1,15 +1,11 @@
 package scripts.dreamwatch_engine.actors.abstracts
 
-import com.badlogic.gdx.math.Vector3
 import scripts.dreamwatch_engine.actors.instantiables.{Particle2D, Sprite2D, UiElement}
 import scripts.dreamwatch_engine.inputs.Controller
 import scripts.dreamwatch_engine.physics.{Collider2D, Movement2D}
 import scripts.dreamwatch_engine.utils.Layers
 import scripts.game.GameManager
-import scripts.game.actors.instantiables.Player
-import scripts.utils.Globals
 
-import scala.collection.immutable.ListSet
 import scala.collection.mutable.ArrayBuffer
 
 /**
@@ -72,9 +68,7 @@ abstract class Scene extends Entity with Controller {
    * @param object2D The Object2D to add.
    */
   def add(object2D: Object2D): Unit = {
-    // Track entity in the master list
     objects += object2D
-    //println(s"element : $object2D added to scene")
 
     // If the entity supports rendering (Sprite2D), add it to the appropriate render layer
     object2D match {
@@ -120,10 +114,8 @@ abstract class Scene extends Entity with Controller {
    * @param object2D The Object2D to remove.
    */
   def remove(object2D: Object2D): Unit = {
-    // Remove from master list
     objects -= object2D
-    //println(s"element : $object2D removed from scene")
-    // If the entity supports rendering, remove from all render layers and dispose its images
+
     object2D match {
       case u: UiElement =>
         uiLayers.remove(u)
@@ -132,14 +124,12 @@ abstract class Scene extends Entity with Controller {
       case _ =>
     }
 
-    // If the entity supports collisions, remove from all collision layers
     object2D match {
       case c: Collider2D =>
         cLayers.remove(c)
       case _ =>
     }
 
-    // If the entity supports movement, remove it from the movableObjects buffer
     object2D match {
       case m: Movement2D =>
         movableObjects -= m
@@ -165,7 +155,6 @@ abstract class Scene extends Entity with Controller {
     // Iterate through each existing collision layer
 
     for (layer <- cLayers.get()) {
-      //Collider2D.checkAndNotifyCollisions(layer)
       for (collider <- layer.elements.toArray){
         Collider2D.checkAndNotifyCollisions(collider, cLayers)
       }
@@ -242,9 +231,11 @@ abstract class Scene extends Entity with Controller {
   private def checkMouse(): Unit = {
     for (layer <- uiLayers.get()){
       for (el <- layer.elements){
-        if (el.containsPoint(GameManager.mousePos)){
-          _isMouseOnUi = true
-          return
+        if(el.isVisible) {
+          if (el.containsPoint(GameManager.mousePos)) {
+            _isMouseOnUi = true
+            return
+          }
         }
       }
     }

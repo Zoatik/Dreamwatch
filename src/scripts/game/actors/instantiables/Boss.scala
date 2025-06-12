@@ -1,6 +1,5 @@
 package scripts.game.actors.instantiables
 
-import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import com.badlogic.gdx.math.Vector2
 import scripts.dreamwatch_engine.actors.abstracts.Component
 import scripts.dreamwatch_engine.actors.instantiables.{CollisionObject2D, CollisionSprite2D}
@@ -26,9 +25,10 @@ class Boss(pos: Vector2,
     lifeTime = None
   ) with Movement2D {
 
+  width = 300.0f
 
-  override var speed: Float = 0
-  override var target: Vector2 = new Vector2(0,0)
+  override var speed: Float = 80.0f
+  override var target: Vector2 = new Vector2(Globals.WINDOW_WIDTH,Globals.WINDOW_HEIGHT/1.4f)
 
   var hp: Float = bossHp(bossType)
 
@@ -49,9 +49,18 @@ class Boss(pos: Vector2,
     super.destroy()
   }
 
+  override def onTargetReached(): Unit = {
+    super.onTargetReached()
+    if(target.x == Globals.WINDOW_WIDTH)
+      target = new Vector2(0,Globals.WINDOW_HEIGHT/1.4f)
+    else
+      target = new Vector2(Globals.WINDOW_WIDTH,Globals.WINDOW_HEIGHT/1.4f)
+  }
+
   protected def takeDamage(amount: Float): Unit = {
     println("Boss has taken damage")
     hp -= amount
+    scale = hp / Globals.DEFAULT_BOSS_HP
     if(hp <= 0){
       GameManager.currentScene.asInstanceOf[GameScene].bossDefeated = true
       this.destroy()

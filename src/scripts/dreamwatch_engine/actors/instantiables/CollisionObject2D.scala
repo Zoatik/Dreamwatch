@@ -42,7 +42,6 @@ class CollisionObject2D(
   override def instantiate(): CollisionObject2D = {
     super.instantiate()
     // Perform an immediate collision check with all colliders in the same layer
-    //val cLayer: Layer[Collider2D] = GameManager.currentScene.cLayers.get(cLayerZ).get
     Collider2D.checkAndNotifyCollisions(this, GameManager.currentScene.cLayers)
     this
   }

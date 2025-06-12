@@ -1,20 +1,12 @@
 package scripts.game
 
-import ch.hevs.gdx2d.components.audio.{MusicPlayer, SoundSample}
-import ch.hevs.gdx2d.components.bitmaps.BitmapImage
 import ch.hevs.gdx2d.lib.GdxGraphics
-import com.badlogic.gdx.math.{Vector2, Vector3}
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.{Gdx, Input}
 import scripts.dreamwatch_engine.actors.abstracts.Scene
-import scripts.dreamwatch_engine.actors.instantiables.{Particle2D, Sprite2D, UiElement}
 import scripts.dreamwatch_engine.inputs.InputManager
-import scripts.dreamwatch_engine.physics.Area2D
-import scripts.game.actors.abstracts.Weapon
-import scripts.game.actors.instantiables.weapons.Sniper
-import scripts.game.actors.instantiables.{GameScene, MainMenuScene, Player}
+import scripts.game.actors.instantiables.{MainMenuScene, Player}
 import scripts.utils.Globals
-
-import scala.collection.mutable.ArrayBuffer
 
 /**
  * GameManager handles high-level game logic: input-driven bullet spawning and random enemy spawning.
@@ -71,7 +63,6 @@ object GameManager{
 
 
 
-    println("GameManager ready")
   }
 
   /**
@@ -95,7 +86,6 @@ object GameManager{
   def togglePause(): Unit = _isPaused = !_isPaused
 
   def handleMouseInput(pos: Vector2, button: Int): Unit = {
-    println("handled game manager")
     currentScene.handleMouseInput(pos, button)
   }
 

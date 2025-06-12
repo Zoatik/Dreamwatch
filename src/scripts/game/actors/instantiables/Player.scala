@@ -11,6 +11,8 @@ class Player extends Entity with Controller{
   private var dreamGems: Int = 0
 
   override def handleMouseInput(pos: Vector2, button: Int): Boolean = {
+    if(GameManager.currentScene.isMouseOnUi)
+      return false
     GameManager.currentScene match {
       case scene: GameScene =>
         button match {
