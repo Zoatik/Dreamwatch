@@ -26,7 +26,9 @@ trait Area2D {
   var areaType: Area2D.Type
 
   def width: Float
+  def width_=(newWidth: Float): Unit
   def height: Float
+  def height_=(newHeight: Float): Unit
   /** List of functions to call when the mouse enters this area.
    * Each listener receives the mouse position as a Vector2(screenX, screenY).
    */
@@ -77,12 +79,16 @@ trait Area2D {
             dist2 <= (width + other.width) * (width + other.width)
 
           case Area2D.Box =>
-            // Clamp circle center to rectangle bounds, then test distance
-            val closestX = math.max(other.pos.x, math.min(pos.x, other.pos.x + other.width))
-            val closestY = math.max(other.pos.y, math.min(pos.y, other.pos.y + other.height))
+            // demi-largeur / demi-hauteur du rectangle
+            val halfW = other.width  / 2f
+            val halfH = other.height / 2f
+            // clamp du centre du cercle aux bords du rectangle
+            val closestX = math.max(other.pos.x - halfW, math.min(pos.x, other.pos.x + halfW))
+            val closestY = math.max(other.pos.y - halfH, math.min(pos.y, other.pos.y + halfH))
+            // test de distance cercle-rectangle
             val dx = pos.x - closestX
             val dy = pos.y - closestY
-            dx * dx + dy * dy <= width * width
+            dx*dx + dy*dy <= width * width
 
           case _ => false
         }

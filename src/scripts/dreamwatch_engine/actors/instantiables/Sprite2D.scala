@@ -32,8 +32,14 @@ class Sprite2D(pos: Vector2,
 
   val images: ArrayBuffer[BitmapImage] = imagesPaths.map(path => new BitmapImage(path))
 
-  private val baseWidth: Float = images(0).getImage.getWidth
-  private val baseHeight: Float = images(0).getImage.getHeight
+  private val baseWidth: Float = {
+    if(area2DType == Area2D.Circle) images(0).getImage.getWidth / 2
+    else images(0).getImage.getWidth
+  }
+  private val baseHeight: Float = {
+    if(area2DType == Area2D.Circle) images(0).getImage.getHeight / 2
+    else images(0).getImage.getHeight
+  }
 
   private var currImageIdx: Int = 0
   private var dt: Float = 0

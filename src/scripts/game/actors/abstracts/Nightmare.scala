@@ -25,7 +25,7 @@ abstract class Nightmare (pos: Vector2,
     Globals.NIGHTMARE_G_LAYER,
     Globals.NIGHTMARE_C_LAYER,
     Globals.NIGHTMARE_C_LAYERMASK,
-    Area2D.Circle,
+    Area2D.Box,
     animDuration,
     spriteScale = scale,
     lifeTime = lifeTime
@@ -43,7 +43,7 @@ abstract class Nightmare (pos: Vector2,
 
   override def destroy(): Unit = {
     super.destroy()
-    val particles = Particle2D.spawnParticles(pos, 100.0f, 10.0f, 50.0f, 10, "res/sprites/texture.png", gLayerZ)
+    val particles = Particle2D.spawnParticles(pos, 40.0f, 10.0f, 50.0f, 5, "res/sprites/texture.png", gLayerZ)
     particles.foreach(particle => particle.bindMouseEntered(_ => {
       particle.speed = 500.0f
       particle.direction = null

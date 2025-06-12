@@ -26,6 +26,7 @@ class Boss(pos: Vector2,
     lifeTime = None
   ) with Movement2D {
 
+
   override var speed: Float = 0
   override var target: Vector2 = new Vector2(0,0)
 
